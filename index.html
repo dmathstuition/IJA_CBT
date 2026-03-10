@@ -7,6 +7,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<!-- KaTeX for LaTeX math rendering -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css"/>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<!-- Chart.js for admin analytics -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
 /* ================================================================
    DESIGN SYSTEM — Infant Jesus Academy CBT v2
@@ -893,8 +899,89 @@ tbody tr{transition:background 0.15s}
 .search-bar i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--gray-400);pointer-events:none;font-size:0.85rem}
 
 /* ================================================================
-   PRINT STYLES
+   QUESTION DIAGRAM — ASCII Art + LaTeX Display
    ================================================================ */
+.question-text{
+  font-size:1.05rem;color:var(--gray-800);
+  margin-bottom:22px;line-height:1.75;
+  padding:16px;background:var(--gray-50);
+  border-radius:var(--radius-sm);
+  border-left:3px solid var(--crimson);
+}
+.q-text-plain{line-height:1.75;margin-bottom:6px}
+.q-diagram-block{
+  background:var(--crimson-ultra);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:var(--radius-sm);
+  padding:14px 16px;
+  margin:12px 0;
+  overflow-x:auto;
+}
+.q-diagram-block pre{
+  font-family:'Courier New',Courier,monospace;
+  font-size:0.82rem;
+  color:#f0e6e8;
+  white-space:pre;
+  line-height:1.55;
+  margin:0;
+  tab-size:4;
+}
+.q-math-inline .katex{font-size:1.05em}
+.q-math-block{
+  padding:10px 0;
+  overflow-x:auto;
+  text-align:center;
+}
+.option-text .katex{font-size:0.98em}
+
+/* ================================================================
+   LEADERBOARD & CHARTS
+   ================================================================ */
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px}
+@media(max-width:860px){.chart-grid{grid-template-columns:1fr}}
+.chart-card{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+.chart-card-header{
+  padding:14px 18px;
+  border-bottom:1px solid var(--gray-100);
+  display:flex;align-items:center;gap:8px;
+}
+.chart-card-title{
+  font-family:var(--font-display);font-size:1rem;
+  color:var(--crimson-dark);font-weight:700;
+}
+.chart-body{padding:18px;position:relative;height:280px}
+.chart-body canvas{max-height:250px !important}
+.leaderboard-list{padding:0 18px 18px}
+.leaderboard-item{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 12px;border-radius:var(--radius-sm);
+  margin-bottom:6px;
+  transition:var(--transition);
+  border:1px solid transparent;
+}
+.leaderboard-item:hover{background:var(--gray-50);border-color:var(--gray-200)}
+.leaderboard-rank{
+  width:32px;height:32px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:0.82rem;flex-shrink:0;
+}
+.rank-1{background:linear-gradient(135deg,#FFD700,#FFA500);color:#3d1000}
+.rank-2{background:linear-gradient(135deg,#C0C0C0,#A0A0A0);color:#1a1a1a}
+.rank-3{background:linear-gradient(135deg,#CD7F32,#8B4513);color:#fff}
+.rank-other{background:var(--gray-100);color:var(--gray-600)}
+.leaderboard-info{flex:1;min-width:0}
+.leaderboard-name{font-weight:700;font-size:0.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.leaderboard-meta{font-size:0.76rem;color:var(--gray-600)}
+.leaderboard-score{text-align:right;flex-shrink:0}
+.leaderboard-score strong{display:block;color:var(--crimson-dark);font-size:1rem}
+.leaderboard-score span{font-size:0.75rem;color:var(--gray-600)}
+.lb-bar-wrap{flex:1;height:6px;background:var(--gray-200);border-radius:3px;overflow:hidden;min-width:50px}
+.lb-bar-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--crimson-light),var(--amber))}
+.rank-1 ~ .lb-bar-wrap .lb-bar-fill{background:linear-gradient(90deg,#FFD700,#FFA500)}
+.refresh-btn-sm{background:none;border:1px solid var(--gray-200);border-radius:var(--radius-sm);padding:4px 10px;font-size:0.75rem;color:var(--gray-600);cursor:pointer;font-family:var(--font-body);transition:var(--transition)}
+.refresh-btn-sm:hover{border-color:var(--crimson);color:var(--crimson)}
+.chart-empty{display:flex;align-items:center;justify-content:center;height:200px;color:var(--gray-400);font-size:0.86rem;flex-direction:column;gap:8px}
+.chart-empty i{font-size:2rem}
 @media print{
   body *{visibility:hidden}
   #printArea,#printArea *{visibility:visible}
@@ -1210,7 +1297,8 @@ tbody tr{transition:background 0.15s}
   </header>
 
   <nav class="admin-nav">
-    <button class="admin-nav-btn active" onclick="switchPanel('panelDashboard',this)"><i class="fas fa-chart-pie"></i> Dashboard</button>
+    <button class="admin-nav-btn active" onclick="switchPanel('panelDashboard',this);loadDashboardCharts()"><i class="fas fa-chart-pie"></i> Dashboard</button>
+    <button class="admin-nav-btn" onclick="switchPanel('panelLeaderboard',this);loadLeaderboard()"><i class="fas fa-trophy"></i> Leaderboard</button>
     <button class="admin-nav-btn" onclick="switchPanel('panelQuestions',this);loadAdminQuestions()"><i class="fas fa-circle-question"></i> Questions</button>
     <button class="admin-nav-btn" onclick="switchPanel('panelSessions',this);loadAdminSessions()"><i class="fas fa-calendar-days"></i> Sessions</button>
     <button class="admin-nav-btn" onclick="switchPanel('panelStudents',this);loadAdminStudents()"><i class="fas fa-users"></i> Students</button>
@@ -1230,11 +1318,95 @@ tbody tr{transition:background 0.15s}
         <div class="stat-card"><div class="stat-icon"><i class="fas fa-chart-line"></i></div><div class="stat-info"><p>Avg. Score</p><h3 id="stAvgScore">—</h3></div></div>
         <div class="stat-card"><div class="stat-icon"><i class="fas fa-trophy"></i></div><div class="stat-info"><p>Pass Rate</p><h3 id="stPassRate">—</h3></div></div>
       </div>
-      <div class="card">
-        <div class="card-body" style="text-align:center;padding:44px">
-          <i class="fas fa-graduation-cap" style="font-size:3.5rem;color:var(--amber);display:block;margin-bottom:14px"></i>
-          <h3 style="font-family:var(--font-display);color:var(--crimson-dark);font-size:1.4rem;margin-bottom:8px">Welcome to the CBT Admin Panel</h3>
-          <p style="color:var(--gray-600);max-width:480px;margin:0 auto">Use the navigation above to manage questions, sessions, students and view results.</p>
+      <div class="chart-grid">
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <i class="fas fa-chart-pie" style="color:var(--amber)"></i>
+            <span class="chart-card-title">Pass / Fail Distribution</span>
+            <button class="refresh-btn-sm" style="margin-left:auto" onclick="loadDashboardCharts()"><i class="fas fa-rotate"></i> Refresh</button>
+          </div>
+          <div class="chart-body" id="chartPassFailBody">
+            <div class="chart-empty" id="chartPassFailEmpty"><i class="fas fa-database"></i>Load results to see data</div>
+            <canvas id="chartPassFail" style="display:none"></canvas>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <i class="fas fa-chart-bar" style="color:var(--crimson)"></i>
+            <span class="chart-card-title">Score Distribution</span>
+          </div>
+          <div class="chart-body" id="chartDistBody">
+            <div class="chart-empty" id="chartDistEmpty"><i class="fas fa-database"></i>Load results to see data</div>
+            <canvas id="chartDist" style="display:none"></canvas>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <i class="fas fa-book" style="color:var(--info)"></i>
+            <span class="chart-card-title">Subject Average Scores</span>
+          </div>
+          <div class="chart-body" id="chartSubjectBody">
+            <div class="chart-empty" id="chartSubjectEmpty"><i class="fas fa-database"></i>Load results to see data</div>
+            <canvas id="chartSubject" style="display:none"></canvas>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <i class="fas fa-users" style="color:var(--success)"></i>
+            <span class="chart-card-title">Class Performance</span>
+          </div>
+          <div class="chart-body" id="chartClassBody">
+            <div class="chart-empty" id="chartClassEmpty"><i class="fas fa-database"></i>Load results to see data</div>
+            <canvas id="chartClass" style="display:none"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LEADERBOARD -->
+    <div id="panelLeaderboard" class="admin-panel">
+      <div class="chart-grid">
+        <div class="chart-card" style="grid-column:1/-1">
+          <div class="chart-card-header">
+            <i class="fas fa-crown" style="color:var(--amber)"></i>
+            <span class="chart-card-title">Top 15 Students — Overall Leaderboard</span>
+            <div style="margin-left:auto;display:flex;gap:8px;align-items:center">
+              <select class="form-control" id="lbSubjectFilter" style="max-width:200px;padding:5px 10px;font-size:0.82rem" onchange="loadLeaderboard()">
+                <option value="">All Subjects</option>
+                <option>Mathematics</option><option>English Language</option>
+                <option>Physics</option><option>Chemistry</option><option>Biology</option>
+                <option>Further Mathematics</option><option>Geography</option>
+              </select>
+              <button class="refresh-btn-sm" onclick="loadLeaderboard()"><i class="fas fa-rotate"></i> Refresh</button>
+            </div>
+          </div>
+          <div class="chart-body" style="height:auto;padding:0">
+            <div id="leaderboardContent">
+              <div class="chart-empty" style="padding:40px"><i class="fas fa-trophy"></i>Click "Leaderboard" tab to load data</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="chart-grid">
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <i class="fas fa-chart-bar" style="color:var(--crimson)"></i>
+            <span class="chart-card-title">Top 10 — Score Chart</span>
+          </div>
+          <div class="chart-body" style="height:320px">
+            <div class="chart-empty" id="lbChartEmpty"><i class="fas fa-database"></i>No data yet</div>
+            <canvas id="chartLeaderboard" style="display:none"></canvas>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <i class="fas fa-medal" style="color:var(--amber)"></i>
+            <span class="chart-card-title">Grade Distribution</span>
+          </div>
+          <div class="chart-body" style="height:320px">
+            <div class="chart-empty" id="lbGradeEmpty"><i class="fas fa-database"></i>No data yet</div>
+            <canvas id="chartGrades" style="display:none"></canvas>
+          </div>
         </div>
       </div>
     </div>
@@ -1845,6 +2017,106 @@ function updateTimerDisplay(){
 }
 
 // =============================================================
+// QUESTION TEXT — ASCII DIAGRAM + LaTeX RENDERER
+// =============================================================
+const ASCII_CHARS = /[─│┌┐└┘├┤┬┴┼═║╔╗╚╝←→↑↓▲▼■□●○◆◇⊥∠°′″≈≠≤≥±×÷∞αβγδθφψωΩ]/;
+const LATEX_PATTERN = /(\\\([\s\S]+?\\\)|\\\[[\s\S]+?\\\]|\$\$[\s\S]+?\$\$|\$[^$\n]+?\$)/;
+
+function isDiagramLine(line) {
+  if (ASCII_CHARS.test(line)) return true;
+  if (/^[\s\|\/\\─]*$/.test(line) && line.trim().length > 0 && /[|\/\\─]/.test(line)) return true;
+  // Lines with heavy leading whitespace and mixed chars (typical of ASCII art)
+  const m = line.match(/^(\s+)/);
+  if (m && m[1].length >= 3 && /[A-Za-z0-9\/\\|.]/.test(line)) return true;
+  return false;
+}
+
+function hasLatex(text) {
+  return LATEX_PATTERN.test(text);
+}
+
+function hasDiagramContent(text) {
+  return text.split('\n').some(l => isDiagramLine(l) && l.trim().length > 0);
+}
+
+function renderQuestionHTML(rawText) {
+  const lines = rawText.split('\n');
+  let html = '';
+  let textBuf = [];
+  let diagBuf = [];
+
+  function flushText() {
+    if (!textBuf.length) return;
+    const joined = textBuf.join('\n').trim();
+    if (joined) {
+      html += `<div class="q-text-plain">${escapeAndLatex(joined)}</div>`;
+    }
+    textBuf = [];
+  }
+  function flushDiag() {
+    if (!diagBuf.length) return;
+    const content = diagBuf.join('\n');
+    if (content.trim()) {
+      html += `<div class="q-diagram-block"><pre>${escHtml(content)}</pre></div>`;
+    }
+    diagBuf = [];
+  }
+
+  for (const line of lines) {
+    if (isDiagramLine(line)) {
+      flushText();
+      diagBuf.push(line);
+    } else {
+      flushDiag();
+      textBuf.push(line);
+    }
+  }
+  flushText();
+  flushDiag();
+  return html;
+}
+
+function escapeAndLatex(text) {
+  // First escape HTML entities for the plain text portions
+  // Then we'll let KaTeX handle any $...$ or \(...\) patterns
+  // We split by LaTeX delimiters, escape non-LaTeX parts, reassemble
+  const parts = text.split(LATEX_PATTERN);
+  return parts.map((part, i) => {
+    if (LATEX_PATTERN.test(part)) {
+      // It's a LaTeX fragment — pass through as-is (KaTeX will handle it)
+      return `<span class="q-math-inline">${escHtml(part)}</span>`;
+    }
+    // Plain text — escape and allow newlines
+    return escHtml(part).replace(/\n/g, '<br>');
+  }).join('');
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function renderKaTeX(container) {
+  if (typeof renderMathInElement !== 'undefined') {
+    renderMathInElement(container, {
+      delimiters: [
+        {left:'$$', right:'$$', display:true},
+        {left:'$', right:'$', display:false},
+        {left:'\\(', right:'\\)', display:false},
+        {left:'\\[', right:'\\]', display:true},
+      ],
+      throwOnError: false,
+    });
+  }
+}
+
+function renderOptionHTML(text) {
+  if (LATEX_PATTERN.test(text) || ASCII_CHARS.test(text)) {
+    return `<span class="q-math-inline">${escHtml(text)}</span>`;
+  }
+  return escHtml(text);
+}
+
+// =============================================================
 // QUESTION RENDERING
 // =============================================================
 function renderQuestion(){
@@ -1852,18 +2124,32 @@ function renderQuestion(){
   const total=state.questions.length;
   document.getElementById('currentQNum').textContent=state.currentQ+1;
   document.getElementById('examProgressLabel').textContent=`Q ${state.currentQ+1} of ${total}`;
-  document.getElementById('questionText').textContent=q.questionText;
+
+  // Smart question text rendering (ASCII diagrams + LaTeX)
+  const qTextEl=document.getElementById('questionText');
+  if(hasDiagramContent(q.questionText)||hasLatex(q.questionText)){
+    qTextEl.innerHTML=renderQuestionHTML(q.questionText);
+  } else {
+    qTextEl.innerHTML=`<div class="q-text-plain">${escHtml(q.questionText).replace(/\n/g,'<br>')}</div>`;
+  }
+  // Apply KaTeX rendering
+  renderKaTeX(qTextEl);
+
   const isFlagged=state.flagged.has(state.currentQ);
   const flagBtn=document.getElementById('flagBtn');
   flagBtn.className='flag-btn'+(isFlagged?' flagged':'');
   document.getElementById('flagBtnText').textContent=isFlagged?'Flagged':'Flag for Review';
   const saved=state.answers[state.currentQ];
-  document.getElementById('optionsList').innerHTML=q.options.map(o=>`
+  const optionsEl=document.getElementById('optionsList');
+  optionsEl.innerHTML=q.options.map(o=>`
     <div class="option-item ${saved&&saved.key===o.key?'selected':''}" onclick="selectAnswer('${o.key}',${o.key===q.correctAnswer})">
       <div class="option-key">${o.key}</div>
-      <div class="option-text">${esc(o.text)}</div>
+      <div class="option-text">${renderOptionHTML(o.text)}</div>
     </div>
   `).join('');
+  // Apply KaTeX to options too
+  renderKaTeX(optionsEl);
+
   document.getElementById('btnPrev').disabled=state.currentQ===0;
   document.getElementById('btnNext').innerHTML=state.currentQ===total-1
     ?'<i class="fas fa-flag-checkered"></i> Finish'
@@ -2032,7 +2318,9 @@ async function adminLogin(){
   state.adminToken=res.data.token;state.admin=res.data.admin;
   document.getElementById('adminHeaderName').textContent=state.admin.username;
   document.getElementById('adminHeaderRole').textContent=state.admin.role;
-  loadDashboardStats();showScreen('screenAdmin');showToast('Admin login successful!');
+  loadDashboardStats();
+  loadDashboardCharts();
+  showScreen('screenAdmin');showToast('Admin login successful!');
 }
 function adminLogout(){
   state.adminToken=null;state.admin=null;
@@ -2637,6 +2925,259 @@ function renderPagination(containerId,total,currentPage,onPageChange){
     if(id==='qDropZone')handleQFile(input);else handleStuFile(input);
   });
 });
+
+// =============================================================
+// DASHBOARD CHARTS
+// =============================================================
+let _charts = {};
+function destroyChart(id){if(_charts[id]){_charts[id].destroy();delete _charts[id];}}
+
+const CHART_CRIMSON   = 'rgba(155,27,48,0.82)';
+const CHART_AMBER     = 'rgba(212,131,10,0.82)';
+const CHART_SUCCESS   = 'rgba(26,122,58,0.82)';
+const CHART_DANGER    = 'rgba(192,21,43,0.82)';
+const CHART_INFO      = 'rgba(14,107,140,0.82)';
+const CHART_PURPLE    = 'rgba(124,31,162,0.82)';
+
+function chartDefaults(){
+  return{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{labels:{font:{family:"'Plus Jakarta Sans',sans-serif",size:11},color:'#3d1010'}}},
+    scales:{x:{ticks:{font:{family:"'Plus Jakarta Sans',sans-serif",size:10},color:'#8a5a5a'},grid:{color:'rgba(0,0,0,0.04)'}},
+             y:{ticks:{font:{family:"'Plus Jakarta Sans',sans-serif",size:10},color:'#8a5a5a'},grid:{color:'rgba(0,0,0,0.06)'},beginAtZero:true}},
+  };
+}
+
+async function loadDashboardCharts(){
+  if(!state.adminToken)return;
+  // Always reload results for fresh chart data
+  showSpinner('Loading analytics...');
+  const res=await api({action:'getResults',token:state.adminToken});
+  hideSpinner();
+  if(!res.success||!res.data.length){
+    ['chartPassFailEmpty','chartDistEmpty','chartSubjectEmpty','chartClassEmpty'].forEach(id=>{
+      const el=document.getElementById(id);if(el){el.style.display='flex';el.innerHTML='<i class="fas fa-inbox"></i>No exam results yet';}
+    });
+    return;
+  }
+  const results=res.data;
+
+  // ── Pass / Fail Doughnut ──
+  const passed=results.filter(r=>parseFloat(r.Percentage)>=50).length;
+  const failed=results.length-passed;
+  buildPassFailChart(passed,failed);
+
+  // ── Score Distribution ──
+  buildDistChart(results);
+
+  // ── Subject Averages ──
+  buildSubjectChart(results);
+
+  // ── Class Performance ──
+  buildClassChart(results);
+}
+
+function buildPassFailChart(passed,failed){
+  destroyChart('pf');
+  const empty=document.getElementById('chartPassFailEmpty');
+  const canvas=document.getElementById('chartPassFail');
+  empty.style.display='none';canvas.style.display='block';
+  _charts.pf=new Chart(canvas,{
+    type:'doughnut',
+    data:{
+      labels:['Passed','Failed'],
+      datasets:[{data:[passed,failed],backgroundColor:[CHART_SUCCESS,CHART_DANGER],borderWidth:2,borderColor:'#fff',hoverOffset:8}],
+    },
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{position:'bottom',labels:{font:{family:"'Plus Jakarta Sans',sans-serif",size:11},color:'#3d1010',padding:14}},
+               tooltip:{callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw} (${Math.round(ctx.raw/(passed+failed)*100)}%)`}}},
+      cutout:'65%',
+    },
+  });
+}
+
+function buildDistChart(results){
+  destroyChart('dist');
+  const empty=document.getElementById('chartDistEmpty');
+  const canvas=document.getElementById('chartDist');
+  empty.style.display='none';canvas.style.display='block';
+  const buckets={'0–20%':0,'21–40%':0,'41–60%':0,'61–80%':0,'81–100%':0};
+  results.forEach(r=>{
+    const p=parseFloat(r.Percentage)||0;
+    if(p<=20)buckets['0–20%']++;
+    else if(p<=40)buckets['21–40%']++;
+    else if(p<=60)buckets['41–60%']++;
+    else if(p<=80)buckets['61–80%']++;
+    else buckets['81–100%']++;
+  });
+  const colors=[CHART_DANGER,'rgba(200,80,10,0.82)',CHART_AMBER,CHART_INFO,CHART_SUCCESS];
+  _charts.dist=new Chart(canvas,{
+    type:'bar',
+    data:{labels:Object.keys(buckets),datasets:[{label:'Students',data:Object.values(buckets),backgroundColor:colors,borderRadius:6,borderSkipped:false}]},
+    options:{...chartDefaults(),plugins:{legend:{display:false}}},
+  });
+}
+
+function buildSubjectChart(results){
+  destroyChart('subj');
+  const empty=document.getElementById('chartSubjectEmpty');
+  const canvas=document.getElementById('chartSubject');
+  empty.style.display='none';canvas.style.display='block';
+  const subjMap={};
+  results.forEach(r=>{
+    if(!subjMap[r.Subject])subjMap[r.Subject]={sum:0,count:0};
+    subjMap[r.Subject].sum+=parseFloat(r.Percentage)||0;
+    subjMap[r.Subject].count++;
+  });
+  const labels=Object.keys(subjMap);
+  const data=labels.map(s=>Math.round(subjMap[s].sum/subjMap[s].count));
+  const colors=[CHART_CRIMSON,CHART_AMBER,CHART_INFO,CHART_SUCCESS,CHART_PURPLE,'rgba(255,77,109,0.82)','rgba(0,128,128,0.82)'];
+  _charts.subj=new Chart(canvas,{
+    type:'bar',
+    data:{labels,datasets:[{label:'Avg %',data,backgroundColor:colors.slice(0,labels.length),borderRadius:6,borderSkipped:false}]},
+    options:{...chartDefaults(),indexAxis:'y',plugins:{legend:{display:false}}},
+  });
+}
+
+function buildClassChart(results){
+  destroyChart('cls');
+  const empty=document.getElementById('chartClassEmpty');
+  const canvas=document.getElementById('chartClass');
+  if(!canvas){return;}
+  empty.style.display='none';canvas.style.display='block';
+  // Group by student — use best score per student per class
+  const studentMap={};
+  results.forEach(r=>{
+    const key=r.RegNumber||r.StudentName;
+    if(!studentMap[key]){studentMap[key]={name:r.StudentName,pct:parseFloat(r.Percentage)||0,class:r.Class||'—'};}
+    else{studentMap[key].pct=Math.max(studentMap[key].pct,parseFloat(r.Percentage)||0);}
+  });
+  const classMap={};
+  Object.values(studentMap).forEach(s=>{
+    if(!classMap[s.class])classMap[s.class]={sum:0,count:0};
+    classMap[s.class].sum+=s.pct;classMap[s.class].count++;
+  });
+  const labels=Object.keys(classMap);
+  const data=labels.map(c=>Math.round(classMap[c].sum/classMap[c].count));
+  _charts.cls=new Chart(canvas,{
+    type:'radar',
+    data:{labels,datasets:[{label:'Avg %',data,backgroundColor:'rgba(155,27,48,0.15)',borderColor:CHART_CRIMSON,pointBackgroundColor:CHART_AMBER,pointBorderColor:'#fff',pointHoverBackgroundColor:'#fff',pointHoverBorderColor:CHART_CRIMSON,borderWidth:2}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      scales:{r:{beginAtZero:true,max:100,ticks:{font:{size:9},color:'#8a5a5a',stepSize:20},grid:{color:'rgba(0,0,0,0.06)'},angleLines:{color:'rgba(0,0,0,0.08)'},pointLabels:{font:{family:"'Plus Jakarta Sans',sans-serif",size:10},color:'#3d1010'}}},
+      plugins:{legend:{display:false}},
+    },
+  });
+}
+
+// =============================================================
+// LEADERBOARD
+// =============================================================
+let _lbData=[];
+async function loadLeaderboard(){
+  if(!state.adminToken)return;
+  showSpinner('Loading leaderboard...');
+  const res=await api({action:'getResults',token:state.adminToken});
+  hideSpinner();
+  if(!res.success){showToast(res.message,'error');return;}
+
+  const subjectFilter=document.getElementById('lbSubjectFilter')?.value||'';
+  let data=res.data;
+  if(subjectFilter)data=data.filter(r=>r.Subject===subjectFilter);
+
+  // Aggregate: best score per student
+  const studentBest={};
+  data.forEach(r=>{
+    const key=r.RegNumber||r.StudentName;
+    const pct=parseFloat(r.Percentage)||0;
+    if(!studentBest[key]||pct>studentBest[key].pct){
+      studentBest[key]={
+        name:r.StudentName||'Unknown',
+        reg:r.RegNumber||'—',
+        pct,score:parseInt(r.Score)||0,total:parseInt(r.TotalQuestions)||0,
+        subject:r.Subject,grade:getGrade(pct),passed:pct>=50,exams:0,
+      };
+    }
+    studentBest[key].exams=(studentBest[key].exams||0)+1;
+  });
+
+  _lbData=Object.values(studentBest).sort((a,b)=>b.pct-a.pct).slice(0,15);
+  renderLeaderboard(_lbData);
+  buildLeaderboardChart(_lbData.slice(0,10));
+  buildGradeChart(_lbData);
+}
+
+function renderLeaderboard(data){
+  const container=document.getElementById('leaderboardContent');
+  if(!data.length){
+    container.innerHTML='<div class="chart-empty" style="padding:40px"><i class="fas fa-trophy"></i>No results found</div>';
+    return;
+  }
+  container.innerHTML=`
+    <div class="leaderboard-list">
+      ${data.map((s,i)=>{
+        const rankClass=i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':'rank-other';
+        const medal=i===0?'🥇':i===1?'🥈':i===2?'🥉':'';
+        return`<div class="leaderboard-item">
+          <div class="leaderboard-rank ${rankClass}">${medal||i+1}</div>
+          <div class="leaderboard-info">
+            <div class="leaderboard-name">${esc(s.name)}</div>
+            <div class="leaderboard-meta">${esc(s.reg)} &nbsp;·&nbsp; ${s.exams} exam${s.exams!==1?'s':''} &nbsp;·&nbsp; ${esc(s.subject)}</div>
+          </div>
+          <div class="lb-bar-wrap"><div class="lb-bar-fill" style="width:${s.pct}%"></div></div>
+          <div class="leaderboard-score">
+            <strong>${s.pct}%</strong>
+            <span>${s.score}/${s.total} · Grade ${s.grade}</span>
+          </div>
+          <span class="badge ${s.passed?'badge-success':'badge-danger'}" style="flex-shrink:0">${s.passed?'PASS':'FAIL'}</span>
+        </div>`;
+      }).join('')}
+    </div>
+  `;
+}
+
+function buildLeaderboardChart(data){
+  destroyChart('lb');
+  const empty=document.getElementById('lbChartEmpty');
+  const canvas=document.getElementById('chartLeaderboard');
+  if(!data.length){empty.style.display='flex';canvas.style.display='none';return;}
+  empty.style.display='none';canvas.style.display='block';
+  const colors=data.map((_,i)=>i===0?'rgba(255,215,0,0.9)':i===1?'rgba(192,192,192,0.9)':i===2?'rgba(205,127,50,0.9)':CHART_CRIMSON);
+  _charts.lb=new Chart(canvas,{
+    type:'bar',
+    data:{
+      labels:data.map(s=>s.name.split(' ')[0]),
+      datasets:[{label:'Score %',data:data.map(s=>s.pct),backgroundColor:colors,borderRadius:6,borderSkipped:false}],
+    },
+    options:{
+      ...chartDefaults(),
+      plugins:{
+        legend:{display:false},
+        tooltip:{callbacks:{label:ctx=>`${ctx.raw}% — ${data[ctx.dataIndex].name}`}},
+      },
+      scales:{...chartDefaults().scales,y:{...chartDefaults().scales.y,max:100,ticks:{...chartDefaults().scales.y.ticks,callback:v=>v+'%'}}},
+    },
+  });
+}
+
+function buildGradeChart(data){
+  destroyChart('grade');
+  const empty=document.getElementById('lbGradeEmpty');
+  const canvas=document.getElementById('chartGrades');
+  if(!data.length){empty.style.display='flex';canvas.style.display='none';return;}
+  empty.style.display='none';canvas.style.display='block';
+  const grades={A:0,B:0,C:0,D:0,F:0};
+  data.forEach(s=>grades[s.grade]=(grades[s.grade]||0)+1);
+  _charts.grade=new Chart(canvas,{
+    type:'pie',
+    data:{
+      labels:Object.keys(grades).map(g=>({A:'A (75–100%)',B:'B (65–74%)',C:'C (55–64%)',D:'D (45–54%)',F:'F (<45%)'}[g])),
+      datasets:[{data:Object.values(grades),backgroundColor:[CHART_SUCCESS,'rgba(59,130,246,0.85)',CHART_INFO,CHART_AMBER,CHART_DANGER],borderWidth:2,borderColor:'#fff',hoverOffset:6}],
+    },
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{position:'right',labels:{font:{family:"'Plus Jakarta Sans',sans-serif",size:11},color:'#3d1010',padding:10}}},
+    },
+  });
+}
 
 // =============================================================
 // KEYBOARD SHORTCUTS
