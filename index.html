@@ -5,774 +5,1097 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Infant Jesus Academy — CBT Portal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 <style>
-/* ===== CSS VARIABLES ===== */
+/* ================================================================
+   DESIGN SYSTEM — Infant Jesus Academy CBT v2
+   Theme: Deep Crimson × Warm Amber × Glassmorphism
+   ================================================================ */
 :root {
-  --navy: #1a237e;
-  --navy-dark: #0d1642;
-  --navy-light: #283593;
-  --gold: #f9a825;
-  --gold-light: #fdd835;
-  --gold-dark: #f57f17;
-  --white: #ffffff;
-  --gray-50: #fafafa;
-  --gray-100: #f5f5f5;
-  --gray-200: #eeeeee;
-  --gray-400: #bdbdbd;
-  --gray-600: #757575;
-  --gray-800: #424242;
-  --success: #2e7d32;
-  --success-light: #e8f5e9;
-  --danger: #c62828;
-  --danger-light: #ffebee;
-  --warning: #e65100;
-  --warning-light: #fff3e0;
-  --radius: 12px;
-  --radius-sm: 8px;
-  --shadow: 0 4px 20px rgba(26,35,126,0.12);
-  --shadow-lg: 0 8px 40px rgba(26,35,126,0.18);
-  --transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+  --crimson:       #9B1B30;
+  --crimson-dark:  #5C0A19;
+  --crimson-deeper:#2D0008;
+  --crimson-light: #C0293F;
+  --crimson-ultra: #160004;
+  --amber:         #D4830A;
+  --amber-light:   #F0A830;
+  --amber-pale:    #FFF0D0;
+  --rose:          #FF4D6D;
+  --rose-pale:     #FFE4EA;
+  --cream:         #FDF6EE;
+  --white:         #FFFFFF;
+  --glass-bg:      rgba(255,255,255,0.07);
+  --glass-bg2:     rgba(255,255,255,0.12);
+  --glass-border:  rgba(255,255,255,0.14);
+  --glass-card:    rgba(255,255,255,0.92);
+  --glass-card2:   rgba(253,246,238,0.95);
+  --gray-50:       #fdfafa;
+  --gray-100:      #f7f0f0;
+  --gray-200:      #eddada;
+  --gray-400:      #c4a0a0;
+  --gray-600:      #8a5a5a;
+  --gray-800:      #3d1010;
+  --success:       #1a7a3a;
+  --success-light: #d4f0dc;
+  --danger:        #c0152b;
+  --danger-light:  #ffe0e4;
+  --info:          #0e6b8c;
+  --info-light:    #d0eef8;
+  --radius:        14px;
+  --radius-sm:     9px;
+  --radius-lg:     20px;
+  --shadow:        0 4px 24px rgba(93,10,25,0.13);
+  --shadow-lg:     0 12px 48px rgba(93,10,25,0.22);
+  --shadow-glow:   0 0 40px rgba(155,27,48,0.25);
+  --transition:    all 0.3s cubic-bezier(0.4,0,0.2,1);
+  --font-display:  'Cormorant Garamond', serif;
+  --font-body:     'Plus Jakarta Sans', sans-serif;
 }
 
-/* ===== RESET & BASE ===== */
+/* ================================================================
+   RESET & BASE
+   ================================================================ */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{
-  font-family:'DM Sans',sans-serif;
+  font-family:var(--font-body);
   background:var(--gray-100);
   color:var(--gray-800);
   min-height:100vh;
   font-size:16px;
-  line-height:1.6;
+  line-height:1.65;
 }
 button{cursor:pointer;font-family:inherit}
 input,select,textarea{font-family:inherit;font-size:1rem}
 a{text-decoration:none;color:inherit}
 
-/* ===== SCREENS ===== */
-.screen{display:none;min-height:100vh;animation:fadeIn 0.4s ease}
-.screen.active{display:flex;flex-direction:column}
-@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+/* ================================================================
+   ANIMATED BACKGROUND ORBS
+   ================================================================ */
+.orb-bg{
+  position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;
+}
+.orb{
+  position:absolute;border-radius:50%;filter:blur(80px);opacity:0.35;
+  animation:orbFloat 12s ease-in-out infinite alternate;
+}
+.orb-1{width:500px;height:500px;background:radial-gradient(circle,var(--crimson-light),transparent);top:-15%;left:-10%;animation-delay:0s}
+.orb-2{width:400px;height:400px;background:radial-gradient(circle,var(--amber),transparent);bottom:-10%;right:-10%;animation-delay:-4s}
+.orb-3{width:300px;height:300px;background:radial-gradient(circle,var(--rose),transparent);top:50%;left:40%;animation-delay:-8s;opacity:0.2}
+@keyframes orbFloat{
+  0%{transform:translateY(0) scale(1)}
+  100%{transform:translateY(-40px) scale(1.08)}
+}
 
-/* ===== HEADER ===== */
+/* ================================================================
+   SCREENS
+   ================================================================ */
+.screen{display:none;min-height:100vh;position:relative}
+.screen.active{display:flex;flex-direction:column}
+@keyframes fadeSlideIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.screen.active .screen-content{animation:fadeSlideIn 0.45s cubic-bezier(0.4,0,0.2,1)}
+
+/* ================================================================
+   GLASSMORPHISM CARD
+   ================================================================ */
+.glass{
+  background:var(--glass-bg);
+  backdrop-filter:blur(20px) saturate(180%);
+  -webkit-backdrop-filter:blur(20px) saturate(180%);
+  border:1px solid var(--glass-border);
+  border-radius:var(--radius);
+}
+.glass-card{
+  background:var(--glass-card);
+  backdrop-filter:blur(24px) saturate(200%);
+  -webkit-backdrop-filter:blur(24px) saturate(200%);
+  border:1px solid rgba(155,27,48,0.10);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+}
+.glass-card2{
+  background:var(--glass-card2);
+  backdrop-filter:blur(24px);
+  border:1px solid var(--gray-200);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+}
+
+/* ================================================================
+   HEADER
+   ================================================================ */
 .portal-header{
-  background:linear-gradient(135deg,var(--navy-dark) 0%,var(--navy) 60%,var(--navy-light) 100%);
-  padding:16px 24px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  box-shadow:0 2px 12px rgba(0,0,0,0.3);
-  position:sticky;top:0;z-index:100;
+  background:linear-gradient(135deg,var(--crimson-ultra) 0%,var(--crimson-dark) 50%,var(--crimson) 100%);
+  padding:14px 24px;
+  display:flex;align-items:center;justify-content:space-between;
+  box-shadow:0 2px 20px rgba(0,0,0,0.4);
+  position:sticky;top:0;z-index:200;
+  border-bottom:1px solid rgba(255,255,255,0.08);
 }
 .header-brand{display:flex;align-items:center;gap:14px}
 .header-logo{
-  width:52px;height:52px;
-  background:var(--gold);
+  width:50px;height:50px;
+  background:linear-gradient(135deg,var(--amber-light),var(--amber));
   border-radius:50%;
   display:flex;align-items:center;justify-content:center;
-  font-size:22px;font-weight:700;color:var(--navy-dark);
-  font-family:'Playfair Display',serif;
-  box-shadow:0 2px 8px rgba(0,0,0,0.3);
+  font-size:20px;font-weight:700;color:var(--crimson-dark);
+  font-family:var(--font-display);
+  box-shadow:0 4px 16px rgba(212,131,10,0.5),inset 0 1px 0 rgba(255,255,255,0.3);
   flex-shrink:0;
 }
 .header-text h1{
-  font-family:'Playfair Display',serif;
-  color:var(--white);
-  font-size:1.15rem;
-  font-weight:700;
-  line-height:1.2;
+  font-family:var(--font-display);color:var(--white);
+  font-size:1.12rem;font-weight:700;line-height:1.2;
+  text-shadow:0 1px 4px rgba(0,0,0,0.3);
 }
-.header-text p{color:var(--gold);font-size:0.78rem;font-weight:500;letter-spacing:1.5px;text-transform:uppercase}
-.header-actions{display:flex;align-items:center;gap:12px}
-.header-user{color:rgba(255,255,255,0.85);font-size:0.85rem;text-align:right}
-.header-user strong{display:block;color:var(--white);font-size:0.95rem}
-.btn-icon{
-  background:rgba(255,255,255,0.12);
-  border:1px solid rgba(255,255,255,0.2);
-  color:var(--white);
-  padding:8px 12px;
-  border-radius:var(--radius-sm);
-  font-size:0.85rem;
-  transition:var(--transition);
-  display:flex;align-items:center;gap:6px;
+.header-text p{color:var(--amber-light);font-size:0.72rem;font-weight:600;letter-spacing:2px;text-transform:uppercase}
+.header-actions{display:flex;align-items:center;gap:10px}
+.header-user{color:rgba(255,255,255,0.8);font-size:0.82rem;text-align:right}
+.header-user strong{display:block;color:var(--white);font-size:0.92rem}
+.btn-header{
+  background:rgba(255,255,255,0.1);
+  border:1px solid rgba(255,255,255,0.18);
+  color:var(--white);padding:7px 14px;
+  border-radius:var(--radius-sm);font-size:0.82rem;font-weight:600;
+  transition:var(--transition);display:flex;align-items:center;gap:6px;
+  backdrop-filter:blur(8px);
 }
-.btn-icon:hover{background:rgba(255,255,255,0.22)}
+.btn-header:hover{background:rgba(255,255,255,0.2);border-color:rgba(255,255,255,0.35)}
 
-/* ===== MAIN CONTENT ===== */
-.main-content{flex:1;padding:28px 24px;max-width:1200px;width:100%;margin:0 auto}
+/* ================================================================
+   MAIN CONTENT
+   ================================================================ */
+.main-content{flex:1;padding:24px;max-width:1260px;width:100%;margin:0 auto}
 
-/* ===== CARDS ===== */
-.card{
-  background:var(--white);
-  border-radius:var(--radius);
-  box-shadow:var(--shadow);
-  overflow:hidden;
-}
-.card-header{
-  padding:20px 24px;
-  border-bottom:2px solid var(--gray-100);
-  display:flex;align-items:center;justify-content:space-between;
-}
-.card-title{
-  font-family:'Playfair Display',serif;
-  font-size:1.2rem;
-  color:var(--navy);
-  display:flex;align-items:center;gap:10px;
-}
-.card-body{padding:24px}
-
-/* ===== BUTTONS ===== */
+/* ================================================================
+   BUTTONS
+   ================================================================ */
 .btn{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:10px 20px;
-  border-radius:var(--radius-sm);
-  border:none;
-  font-size:0.9rem;font-weight:600;
-  transition:var(--transition);
-  white-space:nowrap;
+  display:inline-flex;align-items:center;gap:7px;
+  padding:10px 20px;border-radius:var(--radius-sm);border:none;
+  font-size:0.88rem;font-weight:600;transition:var(--transition);
+  white-space:nowrap;cursor:pointer;position:relative;overflow:hidden;
 }
-.btn-primary{background:var(--navy);color:var(--white)}
-.btn-primary:hover{background:var(--navy-dark);transform:translateY(-1px);box-shadow:0 4px 12px rgba(26,35,126,0.3)}
-.btn-gold{background:var(--gold);color:var(--navy-dark)}
-.btn-gold:hover{background:var(--gold-dark);transform:translateY(-1px)}
-.btn-outline{background:transparent;border:2px solid var(--navy);color:var(--navy)}
-.btn-outline:hover{background:var(--navy);color:var(--white)}
-.btn-danger{background:var(--danger);color:var(--white)}
-.btn-danger:hover{background:#b71c1c}
-.btn-success{background:var(--success);color:var(--white)}
-.btn-sm{padding:6px 14px;font-size:0.82rem}
-.btn-lg{padding:14px 28px;font-size:1rem}
-.btn:disabled{opacity:0.5;cursor:not-allowed;transform:none !important}
+.btn::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,0.12),transparent);
+  opacity:0;transition:opacity 0.2s;
+}
+.btn:hover::after{opacity:1}
+.btn-primary{
+  background:linear-gradient(135deg,var(--crimson-light) 0%,var(--crimson-dark) 100%);
+  color:var(--white);box-shadow:0 4px 14px rgba(155,27,48,0.4);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(155,27,48,0.5)}
+.btn-amber{
+  background:linear-gradient(135deg,var(--amber-light) 0%,var(--amber) 100%);
+  color:var(--crimson-dark);box-shadow:0 4px 14px rgba(212,131,10,0.4);
+}
+.btn-amber:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(212,131,10,0.5)}
+.btn-outline{background:transparent;border:2px solid var(--crimson);color:var(--crimson)}
+.btn-outline:hover{background:var(--crimson);color:var(--white)}
+.btn-glass{
+  background:var(--glass-bg2);backdrop-filter:blur(12px);
+  border:1px solid var(--glass-border);color:var(--white);
+}
+.btn-glass:hover{background:rgba(255,255,255,0.2)}
+.btn-danger{background:linear-gradient(135deg,#e53e3e,#c0152b);color:var(--white);box-shadow:0 4px 12px rgba(192,21,43,0.35)}
+.btn-danger:hover{transform:translateY(-1px)}
+.btn-success{background:linear-gradient(135deg,#38a169,#1a7a3a);color:var(--white)}
+.btn-info{background:linear-gradient(135deg,#3182ce,#0e6b8c);color:var(--white)}
+.btn-sm{padding:6px 13px;font-size:0.8rem}
+.btn-lg{padding:13px 28px;font-size:1rem}
+.btn:disabled{opacity:0.45;cursor:not-allowed;transform:none !important;box-shadow:none !important}
 
-/* ===== FORMS ===== */
-.form-group{margin-bottom:18px}
-.form-label{display:block;margin-bottom:6px;font-weight:600;font-size:0.88rem;color:var(--gray-800)}
+/* ================================================================
+   FORMS
+   ================================================================ */
+.form-group{margin-bottom:16px}
+.form-label{display:block;margin-bottom:5px;font-weight:600;font-size:0.84rem;color:var(--gray-600)}
 .form-control{
-  width:100%;padding:11px 14px;
+  width:100%;padding:10px 14px;
   border:2px solid var(--gray-200);
   border-radius:var(--radius-sm);
-  background:var(--white);
-  color:var(--gray-800);
-  font-size:0.95rem;
+  background:rgba(255,255,255,0.8);
+  color:var(--gray-800);font-size:0.93rem;
   transition:var(--transition);
 }
-.form-control:focus{outline:none;border-color:var(--navy);box-shadow:0 0 0 3px rgba(26,35,126,0.08)}
+.form-control:focus{
+  outline:none;
+  border-color:var(--crimson);
+  background:var(--white);
+  box-shadow:0 0 0 3px rgba(155,27,48,0.1);
+}
 .form-control::placeholder{color:var(--gray-400)}
-select.form-control{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23757575'%3E%3Cpath d='M7 7l3 3 3-3'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-size:20px}
+select.form-control{
+  appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%239B1B30'%3E%3Cpath d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 12px center;background-size:20px;
+}
+textarea.form-control{resize:vertical;min-height:80px}
 
-/* ===== BADGES ===== */
-.badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:0.78rem;font-weight:600}
+/* ================================================================
+   BADGES
+   ================================================================ */
+.badge{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:3px 10px;border-radius:20px;
+  font-size:0.75rem;font-weight:700;letter-spacing:0.3px;
+}
 .badge-success{background:var(--success-light);color:var(--success)}
 .badge-danger{background:var(--danger-light);color:var(--danger)}
-.badge-warning{background:var(--warning-light);color:var(--warning)}
-.badge-primary{background:#e8eaf6;color:var(--navy)}
-.badge-gold{background:#fff9c4;color:#f57f17}
+.badge-warning{background:#fff3cd;color:#92400e}
+.badge-primary{background:#ffe0e6;color:var(--crimson-dark)}
+.badge-amber{background:var(--amber-pale);color:#7c4a00}
+.badge-info{background:var(--info-light);color:var(--info)}
 
-/* ===== TABLES ===== */
-.table-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;font-size:0.9rem}
-th{background:var(--gray-50);padding:11px 14px;text-align:left;font-weight:600;color:var(--navy);border-bottom:2px solid var(--gray-200);white-space:nowrap}
-td{padding:11px 14px;border-bottom:1px solid var(--gray-100);vertical-align:middle}
-tr:hover td{background:var(--gray-50)}
-tr:last-child td{border-bottom:none}
-
-/* ===== TABS ===== */
-.tabs{display:flex;border-bottom:2px solid var(--gray-200);gap:4px;overflow-x:auto;scrollbar-width:none}
-.tabs::-webkit-scrollbar{display:none}
-.tab-btn{
-  padding:10px 18px;
-  background:none;border:none;
-  font-size:0.88rem;font-weight:600;
-  color:var(--gray-600);
-  border-bottom:3px solid transparent;
-  margin-bottom:-2px;
-  transition:var(--transition);
-  white-space:nowrap;
-  cursor:pointer;
-  display:flex;align-items:center;gap:6px;
+/* ================================================================
+   TABLES
+   ================================================================ */
+.table-wrap{overflow-x:auto;border-radius:var(--radius-sm)}
+table{width:100%;border-collapse:collapse;font-size:0.87rem}
+thead{background:linear-gradient(90deg,var(--crimson-dark),var(--crimson))}
+th{
+  padding:11px 14px;text-align:left;
+  font-weight:700;color:var(--white);
+  white-space:nowrap;font-size:0.8rem;
+  letter-spacing:0.5px;text-transform:uppercase;
 }
-.tab-btn.active{color:var(--navy);border-bottom-color:var(--gold)}
-.tab-btn:hover{color:var(--navy)}
-.tab-panel{display:none;padding-top:24px}
-.tab-panel.active{display:block}
+td{padding:11px 14px;border-bottom:1px solid var(--gray-100);vertical-align:middle}
+tr:hover td{background:rgba(155,27,48,0.03)}
+tr:last-child td{border-bottom:none}
+tbody tr{transition:background 0.15s}
 
-/* ===== STAT CARDS ===== */
-.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px;margin-bottom:24px}
+/* ================================================================
+   STAT CARDS
+   ================================================================ */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:14px;margin-bottom:22px}
 .stat-card{
   background:var(--white);border-radius:var(--radius);
-  padding:20px;box-shadow:var(--shadow);
+  padding:18px 16px;box-shadow:var(--shadow);
   display:flex;align-items:center;gap:14px;
-  border-left:4px solid var(--navy);
+  border-top:3px solid var(--crimson);
   transition:var(--transition);
+  position:relative;overflow:hidden;
 }
-.stat-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
-.stat-card:nth-child(2){border-left-color:var(--gold)}
-.stat-card:nth-child(3){border-left-color:var(--success)}
-.stat-card:nth-child(4){border-left-color:#7b1fa2}
-.stat-card:nth-child(5){border-left-color:#0288d1}
-.stat-card:nth-child(6){border-left-color:var(--warning)}
+.stat-card::before{
+  content:'';position:absolute;top:0;right:0;
+  width:80px;height:80px;
+  background:radial-gradient(circle at top right,rgba(155,27,48,0.06),transparent);
+  border-radius:0 0 0 100%;
+}
+.stat-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg)}
+.stat-card:nth-child(2){border-top-color:var(--amber)}
+.stat-card:nth-child(3){border-top-color:var(--success)}
+.stat-card:nth-child(4){border-top-color:#7b1fa2}
+.stat-card:nth-child(5){border-top-color:var(--info)}
+.stat-card:nth-child(6){border-top-color:var(--rose)}
 .stat-icon{
-  width:48px;height:48px;border-radius:12px;
-  background:linear-gradient(135deg,var(--navy) 0%,var(--navy-light) 100%);
+  width:46px;height:46px;border-radius:12px;
+  background:linear-gradient(135deg,var(--crimson-light),var(--crimson-dark));
   display:flex;align-items:center;justify-content:center;
-  color:var(--white);font-size:1.2rem;flex-shrink:0;
+  color:var(--white);font-size:1.15rem;flex-shrink:0;
+  box-shadow:0 4px 12px rgba(155,27,48,0.35);
 }
-.stat-card:nth-child(2) .stat-icon{background:linear-gradient(135deg,var(--gold-dark),var(--gold))}
-.stat-card:nth-child(3) .stat-icon{background:linear-gradient(135deg,#1b5e20,var(--success))}
-.stat-card:nth-child(4) .stat-icon{background:linear-gradient(135deg,#4a148c,#7b1fa2)}
-.stat-card:nth-child(5) .stat-icon{background:linear-gradient(135deg,#01579b,#0288d1)}
-.stat-card:nth-child(6) .stat-icon{background:linear-gradient(135deg,#bf360c,var(--warning))}
-.stat-info p{font-size:0.8rem;color:var(--gray-600);font-weight:500}
-.stat-info h3{font-size:1.6rem;font-weight:700;color:var(--navy);line-height:1}
+.stat-card:nth-child(2) .stat-icon{background:linear-gradient(135deg,var(--amber-light),var(--amber))}
+.stat-card:nth-child(3) .stat-icon{background:linear-gradient(135deg,#38a169,#1a7a3a)}
+.stat-card:nth-child(4) .stat-icon{background:linear-gradient(135deg,#9c27b0,#6a0080)}
+.stat-card:nth-child(5) .stat-icon{background:linear-gradient(135deg,#3182ce,#0e6b8c)}
+.stat-card:nth-child(6) .stat-icon{background:linear-gradient(135deg,#ff6b8a,var(--rose))}
+.stat-info p{font-size:0.76rem;color:var(--gray-600);font-weight:600;text-transform:uppercase;letter-spacing:0.5px}
+.stat-info h3{font-size:1.55rem;font-weight:700;color:var(--crimson-dark);line-height:1}
 
-/* ===== TOAST ===== */
+/* ================================================================
+   CARD COMPONENT
+   ================================================================ */
+.card{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+.card-header{
+  padding:18px 22px;
+  border-bottom:1px solid var(--gray-100);
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  flex-wrap:wrap;
+}
+.card-title{
+  font-family:var(--font-display);font-size:1.18rem;
+  color:var(--crimson-dark);
+  display:flex;align-items:center;gap:9px;font-weight:700;
+}
+.card-body{padding:22px}
+
+/* ================================================================
+   TOAST
+   ================================================================ */
 #toastContainer{
   position:fixed;top:20px;right:20px;z-index:9999;
-  display:flex;flex-direction:column;gap:8px;
-  max-width:340px;
+  display:flex;flex-direction:column;gap:8px;max-width:340px;
 }
 .toast{
-  background:var(--white);border-radius:var(--radius-sm);
-  padding:12px 18px;box-shadow:0 4px 20px rgba(0,0,0,0.15);
+  background:var(--white);
+  border-radius:var(--radius-sm);
+  padding:12px 16px;
+  box-shadow:var(--shadow-lg);
   display:flex;align-items:center;gap:10px;
   border-left:4px solid var(--success);
-  animation:toastIn 0.3s ease;font-size:0.88rem;font-weight:500;
+  animation:toastIn 0.35s cubic-bezier(0.34,1.56,0.64,1);
+  font-size:0.86rem;font-weight:500;
+  backdrop-filter:blur(12px);
 }
 .toast.error{border-left-color:var(--danger)}
-.toast.warning{border-left-color:var(--warning)}
+.toast.warning{border-left-color:var(--amber)}
 .toast i{font-size:1rem}
 .toast.success i{color:var(--success)}
 .toast.error i{color:var(--danger)}
-.toast.warning i{color:var(--warning)}
-@keyframes toastIn{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
+.toast.warning i{color:var(--amber)}
+@keyframes toastIn{from{opacity:0;transform:translateX(50px)}to{opacity:1;transform:translateX(0)}}
 
-/* ===== SPINNER ===== */
+/* ================================================================
+   SPINNER
+   ================================================================ */
 .spinner-overlay{
   position:fixed;inset:0;
-  background:rgba(13,22,66,0.5);
+  background:rgba(45,0,8,0.55);
   display:flex;align-items:center;justify-content:center;
-  z-index:9998;backdrop-filter:blur(4px);
+  z-index:9998;backdrop-filter:blur(6px);
+}
+.spinner-wrap{
+  background:rgba(255,255,255,0.08);backdrop-filter:blur(20px);
+  border:1px solid rgba(255,255,255,0.15);
+  border-radius:var(--radius);padding:28px;
+  display:flex;flex-direction:column;align-items:center;gap:14px;
 }
 .spinner{
-  width:56px;height:56px;
-  border:4px solid rgba(255,255,255,0.2);
-  border-top-color:var(--gold);
+  width:52px;height:52px;
+  border:4px solid rgba(255,255,255,0.15);
+  border-top-color:var(--amber-light);
   border-radius:50%;
-  animation:spin 0.8s linear infinite;
+  animation:spin 0.75s linear infinite;
 }
+.spinner-wrap p{color:rgba(255,255,255,0.8);font-size:0.85rem;font-weight:500}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* ===== MODAL ===== */
+/* ================================================================
+   MODALS
+   ================================================================ */
 .modal-backdrop{
-  position:fixed;inset:0;background:rgba(0,0,0,0.5);
+  position:fixed;inset:0;
+  background:rgba(45,0,8,0.55);
   display:flex;align-items:center;justify-content:center;
   z-index:9990;padding:20px;
   animation:fadeIn 0.2s ease;
+  backdrop-filter:blur(4px);
 }
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
 .modal{
-  background:var(--white);border-radius:var(--radius);
-  box-shadow:var(--shadow-lg);
-  max-width:520px;width:100%;
-  max-height:85vh;overflow-y:auto;
-  animation:modalIn 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  background:var(--white);border-radius:var(--radius-lg);
+  box-shadow:0 24px 80px rgba(92,10,25,0.3);
+  max-width:560px;width:100%;
+  max-height:90vh;overflow-y:auto;
+  animation:modalIn 0.35s cubic-bezier(0.34,1.56,0.64,1);
 }
-@keyframes modalIn{from{opacity:0;transform:scale(0.9)}to{opacity:1;transform:scale(1)}}
+.modal-wide{max-width:780px}
+@keyframes modalIn{from{opacity:0;transform:scale(0.88) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
 .modal-header{
-  padding:20px 24px;background:var(--navy);color:var(--white);
-  display:flex;align-items:center;justify-content:space-between;
-  border-radius:var(--radius) var(--radius) 0 0;
-}
-.modal-title{font-family:'Playfair Display',serif;font-size:1.1rem}
-.modal-close{background:none;border:none;color:rgba(255,255,255,0.7);font-size:1.3rem;cursor:pointer;padding:4px}
-.modal-close:hover{color:var(--white)}
-.modal-body{padding:24px}
-.modal-footer{padding:16px 24px;border-top:1px solid var(--gray-100);display:flex;gap:10px;justify-content:flex-end}
-
-/* ===================================================
-   SCREEN 1: LANDING / LOGIN CHOOSER
-   =================================================== */
-#screenLanding{
-  background:linear-gradient(160deg,var(--navy-dark) 0%,var(--navy) 50%,var(--navy-light) 100%);
-  align-items:center;justify-content:center;padding:20px;
-}
-.landing-content{
-  text-align:center;max-width:500px;width:100%;
-  animation:fadeIn 0.6s ease;
-}
-.landing-logo{
-  width:90px;height:90px;
-  background:var(--gold);
-  border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  font-size:38px;font-weight:700;
-  font-family:'Playfair Display',serif;
-  color:var(--navy-dark);
-  margin:0 auto 20px;
-  box-shadow:0 8px 32px rgba(0,0,0,0.3);
-}
-.landing-content h1{
-  font-family:'Playfair Display',serif;
-  color:var(--white);font-size:1.9rem;
-  margin-bottom:6px;line-height:1.2;
-}
-.landing-content h2{
-  color:var(--gold);font-size:1rem;font-weight:500;
-  letter-spacing:2px;text-transform:uppercase;
-  margin-bottom:10px;
-}
-.landing-content p{color:rgba(255,255,255,0.65);margin-bottom:36px;font-size:0.92rem}
-.login-cards{display:flex;gap:16px;flex-wrap:wrap;justify-content:center}
-.login-card{
-  flex:1;min-width:190px;max-width:220px;
-  background:rgba(255,255,255,0.07);
-  border:1px solid rgba(255,255,255,0.15);
-  border-radius:var(--radius);padding:28px 20px;
-  cursor:pointer;text-align:center;
-  transition:var(--transition);
+  padding:20px 24px;
+  background:linear-gradient(135deg,var(--crimson-ultra),var(--crimson-dark));
   color:var(--white);
-}
-.login-card:hover{
-  background:rgba(255,255,255,0.15);
-  border-color:var(--gold);
-  transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,0.3);
-}
-.login-card i{font-size:2.2rem;color:var(--gold);margin-bottom:14px;display:block}
-.login-card h3{font-size:1rem;font-weight:700;margin-bottom:6px}
-.login-card p{font-size:0.8rem;color:rgba(255,255,255,0.6)}
-.landing-footer{margin-top:32px;color:rgba(255,255,255,0.35);font-size:0.78rem}
-
-/* ===================================================
-   SCREEN 2: STUDENT LOGIN
-   =================================================== */
-#screenStudentLogin{
-  background:linear-gradient(160deg,var(--navy-dark) 0%,var(--navy) 100%);
-  align-items:center;justify-content:center;padding:20px;
-}
-.login-box{
-  background:var(--white);border-radius:16px;
-  padding:40px;max-width:420px;width:100%;
-  box-shadow:0 20px 60px rgba(0,0,0,0.35);
-  animation:modalIn 0.4s cubic-bezier(0.34,1.56,0.64,1);
-}
-.login-box-header{text-align:center;margin-bottom:30px}
-.login-box-header .logo-mini{
-  width:64px;height:64px;background:var(--navy);
-  border-radius:50%;display:flex;align-items:center;justify-content:center;
-  margin:0 auto 14px;font-size:26px;font-weight:700;
-  color:var(--gold);font-family:'Playfair Display',serif;
-}
-.login-box-header h2{
-  font-family:'Playfair Display',serif;
-  color:var(--navy);font-size:1.4rem;
-}
-.login-box-header p{color:var(--gray-600);font-size:0.88rem;margin-top:4px}
-.btn-back{
-  background:none;border:none;color:var(--gray-600);
-  font-size:0.85rem;cursor:pointer;
-  display:flex;align-items:center;gap:6px;
-  margin-top:16px;padding:6px 0;transition:var(--transition);
-}
-.btn-back:hover{color:var(--navy)}
-
-/* ===================================================
-   SCREEN 3: STUDENT DASHBOARD
-   =================================================== */
-.student-welcome{
-  background:linear-gradient(135deg,var(--navy) 0%,var(--navy-light) 100%);
-  border-radius:var(--radius);padding:24px;
   display:flex;align-items:center;justify-content:space-between;
-  margin-bottom:24px;gap:16px;flex-wrap:wrap;
+  border-radius:var(--radius-lg) var(--radius-lg) 0 0;
 }
-.student-welcome-text h2{
-  font-family:'Playfair Display',serif;
-  color:var(--white);font-size:1.5rem;margin-bottom:4px;
+.modal-title{
+  font-family:var(--font-display);font-size:1.1rem;font-weight:700;
+  display:flex;align-items:center;gap:8px;
 }
-.student-welcome-text p{color:rgba(255,255,255,0.75);font-size:0.9rem}
-.welcome-badge{
-  background:var(--gold);color:var(--navy-dark);
-  padding:8px 18px;border-radius:20px;
-  font-weight:700;font-size:0.88rem;
-}
-.sessions-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
-.session-card{
-  background:var(--white);border-radius:var(--radius);
-  box-shadow:var(--shadow);overflow:hidden;
-  transition:var(--transition);border:2px solid transparent;
-}
-.session-card:hover{border-color:var(--navy);transform:translateY(-2px);box-shadow:var(--shadow-lg)}
-.session-card.submitted{opacity:0.65}
-.session-card-top{
-  background:linear-gradient(135deg,var(--navy) 0%,var(--navy-light) 100%);
-  padding:16px 20px;
-}
-.session-card-top h3{color:var(--white);font-size:1rem;font-weight:700}
-.session-card-top span{color:var(--gold);font-size:0.82rem;font-weight:600}
-.session-card-body{padding:16px 20px}
-.session-meta{display:flex;gap:16px;margin-bottom:14px;flex-wrap:wrap}
-.session-meta-item{display:flex;align-items:center;gap:5px;font-size:0.82rem;color:var(--gray-600)}
-.session-meta-item i{color:var(--navy);font-size:0.85rem}
-.empty-state{
-  text-align:center;padding:60px 20px;
-  color:var(--gray-600);
-}
-.empty-state i{font-size:3rem;color:var(--gray-200);margin-bottom:16px;display:block}
+.modal-close{background:none;border:none;color:rgba(255,255,255,0.65);font-size:1.2rem;cursor:pointer;padding:4px;border-radius:6px;transition:var(--transition)}
+.modal-close:hover{color:var(--white);background:rgba(255,255,255,0.15)}
+.modal-body{padding:24px}
+.modal-footer{padding:16px 24px;border-top:1px solid var(--gray-100);display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
 
-/* ===================================================
-   SCREEN 4: EXAM
-   =================================================== */
-#screenExam{background:var(--gray-100)}
-.exam-header{
-  background:var(--navy-dark);padding:14px 20px;
-  display:flex;align-items:center;justify-content:space-between;gap:12px;
-  flex-wrap:wrap;
-  position:sticky;top:0;z-index:50;
-  box-shadow:0 2px 10px rgba(0,0,0,0.3);
-}
-.exam-header-title{color:var(--white);font-size:0.95rem;font-weight:700}
-.exam-header-title span{color:var(--gold);display:block;font-size:0.78rem;font-weight:400}
-.exam-timer{
-  background:rgba(255,255,255,0.1);
-  border:2px solid rgba(255,255,255,0.2);
-  border-radius:var(--radius-sm);
-  padding:8px 16px;
-  color:var(--white);font-size:1.2rem;font-weight:700;
-  font-family:monospace;letter-spacing:2px;
-  min-width:100px;text-align:center;
-}
-.exam-timer.urgent{border-color:var(--danger);color:#ff5252;animation:pulse 1s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.6}}
-.exam-progress{
-  display:flex;align-items:center;gap:10px;
-  color:rgba(255,255,255,0.8);font-size:0.85rem;
-}
-.exam-layout{display:grid;grid-template-columns:1fr 220px;gap:20px;padding:20px;max-width:1100px;margin:0 auto}
-@media(max-width:768px){.exam-layout{grid-template-columns:1fr}}
-
-.question-panel{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
-.question-panel-header{
-  padding:16px 20px;background:linear-gradient(135deg,var(--navy),var(--navy-light));
-  display:flex;align-items:center;justify-content:space-between;
-}
-.question-num{color:var(--white);font-weight:700}
-.question-num span{color:var(--gold)}
-.flag-btn{
-  background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.3);
-  color:rgba(255,255,255,0.7);padding:5px 12px;border-radius:20px;
-  font-size:0.8rem;cursor:pointer;transition:var(--transition);
-  display:flex;align-items:center;gap:5px;
-}
-.flag-btn.flagged{background:var(--gold);border-color:var(--gold);color:var(--navy-dark)}
-.flag-btn:hover{background:rgba(255,255,255,0.2)}
-.question-body{padding:24px}
-.question-text{font-size:1.05rem;color:var(--gray-800);margin-bottom:24px;line-height:1.7}
-.options-list{display:flex;flex-direction:column;gap:12px}
-.option-item{
-  display:flex;align-items:center;gap:12px;
-  padding:13px 16px;border:2px solid var(--gray-200);
-  border-radius:var(--radius-sm);cursor:pointer;
-  transition:var(--transition);
-}
-.option-item:hover{border-color:var(--navy);background:#f8f9ff}
-.option-item.selected{border-color:var(--navy);background:#e8eaf6}
-.option-item.correct{border-color:var(--success);background:var(--success-light)}
-.option-item.wrong{border-color:var(--danger);background:var(--danger-light)}
-.option-key{
-  width:32px;height:32px;
-  border-radius:50%;background:var(--gray-100);
-  display:flex;align-items:center;justify-content:center;
-  font-weight:700;font-size:0.9rem;color:var(--gray-600);
-  flex-shrink:0;transition:var(--transition);
-}
-.option-item.selected .option-key{background:var(--navy);color:var(--white)}
-.option-text{font-size:0.95rem}
-.question-nav{
-  padding:16px 20px;border-top:1px solid var(--gray-100);
-  display:flex;justify-content:space-between;align-items:center;gap:10px;
-}
-
-.palette-panel{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px}
-.palette-title{
-  font-weight:700;color:var(--navy);margin-bottom:12px;
-  font-size:0.9rem;padding-bottom:10px;border-bottom:1px solid var(--gray-100);
-}
-.palette-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-bottom:16px}
-.palette-item{
-  aspect-ratio:1;border-radius:6px;border:2px solid var(--gray-200);
-  background:var(--gray-100);font-size:0.75rem;font-weight:700;
-  cursor:pointer;transition:var(--transition);
-  display:flex;align-items:center;justify-content:center;
-  color:var(--gray-600);
-}
-.palette-item.answered{background:var(--navy);border-color:var(--navy);color:var(--white)}
-.palette-item.flagged{background:var(--gold);border-color:var(--gold-dark);color:var(--navy-dark)}
-.palette-item.current{box-shadow:0 0 0 3px var(--navy-light);transform:scale(1.1)}
-.palette-legend{display:flex;flex-direction:column;gap:6px}
-.legend-item{display:flex;align-items:center;gap:8px;font-size:0.78rem;color:var(--gray-600)}
-.legend-dot{width:14px;height:14px;border-radius:4px;flex-shrink:0}
-.legend-dot.answered{background:var(--navy)}
-.legend-dot.flagged{background:var(--gold)}
-.legend-dot.unanswered{background:var(--gray-200);border:2px solid var(--gray-400)}
-.exam-summary{margin-top:12px;padding-top:12px;border-top:1px solid var(--gray-100);font-size:0.82rem}
-.exam-summary div{display:flex;justify-content:space-between;color:var(--gray-600);margin-bottom:3px}
-.exam-summary strong{color:var(--navy)}
-
-/* ===================================================
-   SCREEN 5: RESULT
-   =================================================== */
-#screenResult{
-  background:linear-gradient(160deg,var(--navy-dark),var(--navy));
-  align-items:center;justify-content:center;padding:20px;
-}
-.result-card{
-  background:var(--white);border-radius:16px;
-  max-width:500px;width:100%;
-  box-shadow:0 20px 60px rgba(0,0,0,0.35);
-  overflow:hidden;animation:modalIn 0.5s cubic-bezier(0.34,1.56,0.64,1);
-}
-.result-header{
-  background:linear-gradient(135deg,var(--navy),var(--navy-light));
-  padding:30px;text-align:center;
-}
-.result-grade-circle{
-  width:100px;height:100px;border-radius:50%;
-  background:var(--gold);
-  display:flex;align-items:center;justify-content:center;
-  margin:0 auto 16px;
-  font-family:'Playfair Display',serif;
-  font-size:2.8rem;font-weight:700;
-  color:var(--navy-dark);
-  box-shadow:0 8px 24px rgba(0,0,0,0.3);
-}
-.result-grade-circle.pass{background:var(--gold)}
-.result-grade-circle.fail{background:var(--danger)}
-.result-header h2{color:var(--white);font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:4px}
-.result-header p{color:rgba(255,255,255,0.7);font-size:0.88rem}
-.result-body{padding:28px}
-.result-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px}
-.result-stat{
-  background:var(--gray-50);border-radius:var(--radius-sm);
-  padding:14px;text-align:center;
-}
-.result-stat p{font-size:0.78rem;color:var(--gray-600);margin-bottom:4px}
-.result-stat h3{font-size:1.4rem;font-weight:700;color:var(--navy)}
-.result-passed-badge{
-  text-align:center;padding:10px;border-radius:var(--radius-sm);
-  font-weight:700;font-size:0.95rem;margin-bottom:20px;
-}
-.result-passed-badge.pass{background:var(--success-light);color:var(--success)}
-.result-passed-badge.fail{background:var(--danger-light);color:var(--danger)}
-
-/* ===================================================
-   SCREEN 6: ADMIN LOGIN
-   =================================================== */
-#screenAdminLogin{
-  background:linear-gradient(160deg,var(--navy-dark) 0%,#37006e 100%);
-  align-items:center;justify-content:center;padding:20px;
-}
-
-/* ===================================================
-   SCREEN 7: ADMIN DASHBOARD
-   =================================================== */
-#screenAdmin{background:var(--gray-100)}
+/* ================================================================
+   TABS (ADMIN NAV)
+   ================================================================ */
 .admin-nav{
-  background:var(--navy-dark);padding:0 24px;
+  background:linear-gradient(90deg,var(--crimson-ultra),var(--crimson-dark));
+  padding:0 24px;
   display:flex;align-items:center;
   overflow-x:auto;scrollbar-width:none;gap:2px;
+  border-bottom:1px solid rgba(255,255,255,0.06);
 }
 .admin-nav::-webkit-scrollbar{display:none}
 .admin-nav-btn{
-  background:none;border:none;color:rgba(255,255,255,0.65);
-  padding:14px 16px;font-size:0.85rem;font-weight:600;
+  background:none;border:none;
+  color:rgba(255,255,255,0.55);
+  padding:14px 15px;font-size:0.82rem;font-weight:600;
   cursor:pointer;transition:var(--transition);
   border-bottom:3px solid transparent;
-  white-space:nowrap;display:flex;align-items:center;gap:7px;
+  white-space:nowrap;display:flex;align-items:center;gap:6px;
+  font-family:var(--font-body);
 }
-.admin-nav-btn.active{color:var(--gold);border-bottom-color:var(--gold)}
-.admin-nav-btn:hover{color:var(--white)}
-.admin-panel{display:none;padding:24px 0}
-.admin-panel.active{display:block}
+.admin-nav-btn.active{color:var(--amber-light);border-bottom-color:var(--amber-light)}
+.admin-nav-btn:hover:not(.active){color:rgba(255,255,255,0.85)}
+.admin-panel{display:none;padding:22px 0}
+.admin-panel.active{display:block;animation:fadeSlideIn 0.3s ease}
 
-/* Cheat warning banner */
-.cheat-warning{
-  position:fixed;top:0;left:0;right:0;
-  background:linear-gradient(90deg,var(--danger),#b71c1c);
-  color:var(--white);
-  padding:12px 20px;text-align:center;
-  font-weight:700;z-index:9995;
-  display:flex;align-items:center;justify-content:center;gap:10px;
-  animation:fadeIn 0.3s ease;
+/* ================================================================
+   LANDING SCREEN
+   ================================================================ */
+#screenLanding{
+  background:linear-gradient(160deg,var(--crimson-ultra) 0%,var(--crimson-dark) 40%,var(--crimson) 80%,var(--crimson-light) 100%);
+  align-items:center;justify-content:center;padding:20px;min-height:100vh;
 }
-.cheat-warning button{
+.landing-content{
+  text-align:center;max-width:520px;width:100%;
+  animation:fadeSlideIn 0.6s ease;
+  position:relative;z-index:1;
+}
+.landing-logo-wrap{position:relative;display:inline-block;margin-bottom:24px}
+.landing-logo{
+  width:96px;height:96px;
+  background:linear-gradient(135deg,var(--amber-light),var(--amber));
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:40px;font-weight:700;
+  font-family:var(--font-display);color:var(--crimson-dark);
+  box-shadow:0 12px 40px rgba(212,131,10,0.5),0 0 0 1px rgba(255,255,255,0.15);
+  position:relative;
+}
+.landing-logo-ring{
+  position:absolute;inset:-8px;border-radius:50%;
+  border:1px solid rgba(255,255,255,0.15);
+  animation:ringPulse 3s ease-in-out infinite;
+}
+.landing-logo-ring2{
+  position:absolute;inset:-18px;border-radius:50%;
+  border:1px solid rgba(255,255,255,0.07);
+  animation:ringPulse 3s ease-in-out infinite 1s;
+}
+@keyframes ringPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.05);opacity:0.5}}
+.landing-badge{
+  display:inline-block;
+  background:rgba(212,131,10,0.2);
+  border:1px solid rgba(240,168,48,0.35);
+  color:var(--amber-light);
+  padding:5px 16px;border-radius:20px;
+  font-size:0.72rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;
+  margin-bottom:14px;
+}
+.landing-content h1{
+  font-family:var(--font-display);color:var(--white);
+  font-size:2.2rem;margin-bottom:8px;line-height:1.15;
+  text-shadow:0 2px 20px rgba(0,0,0,0.3);
+}
+.landing-content p.sub{
+  color:rgba(255,255,255,0.6);margin-bottom:38px;
+  font-size:0.9rem;max-width:380px;margin-left:auto;margin-right:auto;
+}
+.login-cards{display:flex;gap:16px;flex-wrap:wrap;justify-content:center}
+.login-card{
+  flex:1;min-width:195px;max-width:230px;
+  background:rgba(255,255,255,0.06);
+  backdrop-filter:blur(20px);
+  border:1px solid rgba(255,255,255,0.13);
+  border-radius:var(--radius);padding:30px 20px;
+  cursor:pointer;text-align:center;
+  transition:var(--transition);color:var(--white);
+}
+.login-card:hover{
+  background:rgba(255,255,255,0.13);
+  border-color:rgba(240,168,48,0.5);
+  transform:translateY(-6px);
+  box-shadow:0 16px 48px rgba(0,0,0,0.35),0 0 0 1px rgba(240,168,48,0.2);
+}
+.login-card-icon{
+  width:60px;height:60px;border-radius:16px;
+  background:linear-gradient(135deg,rgba(212,131,10,0.3),rgba(155,27,48,0.3));
+  border:1px solid rgba(240,168,48,0.3);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 16px;font-size:1.6rem;color:var(--amber-light);
+  transition:var(--transition);
+}
+.login-card:hover .login-card-icon{background:linear-gradient(135deg,var(--amber),var(--amber-light));color:var(--crimson-dark)}
+.login-card h3{font-size:1rem;font-weight:700;margin-bottom:5px}
+.login-card p{font-size:0.78rem;color:rgba(255,255,255,0.55)}
+.landing-footer{margin-top:36px;color:rgba(255,255,255,0.3);font-size:0.76rem}
+
+/* ================================================================
+   LOGIN BOXES
+   ================================================================ */
+.auth-screen-bg{
+  flex:1;
+  display:flex;align-items:center;justify-content:center;padding:20px;
+  background:linear-gradient(160deg,var(--crimson-ultra) 0%,var(--crimson-dark) 50%,var(--crimson) 100%);
+}
+.login-box{
+  background:rgba(255,255,255,0.96);
+  backdrop-filter:blur(24px);
+  border-radius:var(--radius-lg);
+  padding:40px;max-width:430px;width:100%;
+  box-shadow:0 24px 80px rgba(0,0,0,0.4),0 0 0 1px rgba(255,255,255,0.1);
+  animation:modalIn 0.45s cubic-bezier(0.34,1.56,0.64,1);
+  position:relative;z-index:1;
+}
+.login-box-deco{
+  position:absolute;top:-1px;left:0;right:0;height:4px;
+  background:linear-gradient(90deg,var(--crimson-dark),var(--amber-light),var(--crimson-dark));
+  border-radius:var(--radius-lg) var(--radius-lg) 0 0;
+}
+.login-box-header{text-align:center;margin-bottom:28px}
+.login-logo-mini{
+  width:68px;height:68px;
+  background:linear-gradient(135deg,var(--crimson-light),var(--crimson-dark));
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 14px;
+  font-size:28px;font-weight:700;color:var(--amber-light);
+  font-family:var(--font-display);
+  box-shadow:0 8px 24px rgba(155,27,48,0.5);
+}
+.login-box-header h2{font-family:var(--font-display);color:var(--crimson-dark);font-size:1.5rem;font-weight:700}
+.login-box-header p{color:var(--gray-600);font-size:0.86rem;margin-top:4px}
+.btn-back{
+  background:none;border:none;color:rgba(255,255,255,0.65);
+  font-size:0.84rem;cursor:pointer;
+  display:inline-flex;align-items:center;gap:6px;
+  margin-top:18px;padding:6px 0;transition:var(--transition);
+}
+.btn-back:hover{color:var(--white)}
+.btn-back-dark{color:var(--gray-600)}
+.btn-back-dark:hover{color:var(--crimson)}
+
+/* ================================================================
+   STUDENT DASHBOARD
+   ================================================================ */
+.student-welcome{
+  background:linear-gradient(135deg,var(--crimson-dark) 0%,var(--crimson) 60%,var(--crimson-light) 100%);
+  border-radius:var(--radius);padding:24px;
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:22px;gap:16px;flex-wrap:wrap;
+  box-shadow:var(--shadow-glow);
+  position:relative;overflow:hidden;
+}
+.student-welcome::before{
+  content:'';position:absolute;right:-20px;top:-20px;
+  width:180px;height:180px;border-radius:50%;
+  background:rgba(255,255,255,0.05);
+}
+.student-welcome::after{
+  content:'';position:absolute;right:60px;bottom:-30px;
+  width:120px;height:120px;border-radius:50%;
+  background:rgba(255,255,255,0.04);
+}
+.student-welcome-text h2{
+  font-family:var(--font-display);color:var(--white);
+  font-size:1.5rem;margin-bottom:4px;
+}
+.student-welcome-text p{color:rgba(255,255,255,0.7);font-size:0.88rem}
+.welcome-chip{
+  background:rgba(255,255,255,0.15);
+  border:1px solid rgba(255,255,255,0.25);
+  backdrop-filter:blur(8px);
+  color:var(--white);padding:8px 18px;border-radius:30px;
+  font-weight:700;font-size:0.85rem;
+  display:flex;align-items:center;gap:7px;
+  white-space:nowrap;
+}
+.welcome-chip i{color:var(--amber-light)}
+.sessions-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(265px,1fr));gap:16px}
+.session-card{
+  background:var(--white);border-radius:var(--radius);
+  box-shadow:var(--shadow);overflow:hidden;
+  transition:var(--transition);border:1px solid transparent;
+}
+.session-card:hover{
+  border-color:rgba(155,27,48,0.2);
+  transform:translateY(-3px);box-shadow:var(--shadow-lg);
+}
+.session-card.submitted{opacity:0.62}
+.session-card-top{
+  background:linear-gradient(135deg,var(--crimson-dark) 0%,var(--crimson) 100%);
+  padding:16px 20px;position:relative;overflow:hidden;
+}
+.session-card-top::after{
+  content:'';position:absolute;right:-20px;top:-20px;
+  width:100px;height:100px;border-radius:50%;
+  background:rgba(255,255,255,0.06);
+}
+.session-card-top h3{color:var(--white);font-size:1rem;font-weight:700;position:relative}
+.session-card-top .class-tag{
+  color:var(--amber-light);font-size:0.79rem;font-weight:600;
+  display:flex;align-items:center;gap:4px;margin-top:3px;position:relative;
+}
+.session-card-body{padding:16px 20px}
+.session-meta{display:flex;gap:14px;margin-bottom:14px;flex-wrap:wrap}
+.session-meta-item{display:flex;align-items:center;gap:5px;font-size:0.8rem;color:var(--gray-600)}
+.session-meta-item i{color:var(--crimson);font-size:0.82rem}
+.empty-state{text-align:center;padding:56px 20px;color:var(--gray-600)}
+.empty-state i{font-size:3rem;color:var(--gray-200);margin-bottom:14px;display:block}
+.empty-state h3{color:var(--gray-600);margin-bottom:6px}
+
+/* ================================================================
+   EXAM SCREEN
+   ================================================================ */
+#screenExam{background:var(--gray-100)}
+.exam-header{
+  background:linear-gradient(90deg,var(--crimson-ultra),var(--crimson-dark));
+  padding:13px 20px;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  flex-wrap:wrap;position:sticky;top:0;z-index:150;
+  box-shadow:0 2px 16px rgba(0,0,0,0.4);
+  border-bottom:1px solid rgba(255,255,255,0.06);
+}
+.exam-subject-tag{
+  display:flex;flex-direction:column;
+}
+.exam-subject-tag strong{color:var(--white);font-size:0.92rem}
+.exam-subject-tag span{color:var(--amber-light);font-size:0.72rem;letter-spacing:1px;text-transform:uppercase}
+.exam-timer{
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.2);
+  backdrop-filter:blur(8px);
+  border-radius:var(--radius-sm);
+  padding:8px 18px;
+  color:var(--white);font-size:1.3rem;font-weight:700;
+  font-family:monospace;letter-spacing:3px;
+  min-width:108px;text-align:center;
+}
+.exam-timer.urgent{
+  border-color:rgba(255,77,109,0.7);
+  color:var(--rose);
+  background:rgba(255,77,109,0.12);
+  animation:timerPulse 1s infinite;
+}
+@keyframes timerPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,77,109,0)}50%{box-shadow:0 0 0 6px rgba(255,77,109,0.2)}}
+.exam-progress-text{color:rgba(255,255,255,0.75);font-size:0.83rem;display:flex;align-items:center;gap:7px}
+.exam-layout{
+  display:grid;grid-template-columns:1fr 230px;
+  gap:18px;padding:18px;max-width:1100px;margin:0 auto;
+}
+@media(max-width:800px){.exam-layout{grid-template-columns:1fr}}
+.question-panel{
+  background:var(--white);border-radius:var(--radius);
+  box-shadow:var(--shadow);overflow:hidden;
+}
+.question-panel-header{
+  padding:15px 20px;
+  background:linear-gradient(135deg,var(--crimson-dark),var(--crimson));
+  display:flex;align-items:center;justify-content:space-between;
+}
+.question-num{color:var(--white);font-weight:700;font-size:0.95rem}
+.question-num span{color:var(--amber-light)}
+.flag-btn{
+  background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.25);
+  color:rgba(255,255,255,0.75);padding:5px 13px;border-radius:20px;
+  font-size:0.78rem;font-weight:600;cursor:pointer;transition:var(--transition);
+  display:flex;align-items:center;gap:5px;
+}
+.flag-btn.flagged{background:var(--amber);border-color:var(--amber-light);color:var(--crimson-dark)}
+.question-body{padding:24px}
+.question-text{
+  font-size:1.05rem;color:var(--gray-800);
+  margin-bottom:22px;line-height:1.75;
+  padding:16px;background:var(--gray-50);
+  border-radius:var(--radius-sm);
+  border-left:3px solid var(--crimson);
+}
+.options-list{display:flex;flex-direction:column;gap:10px}
+.option-item{
+  display:flex;align-items:center;gap:12px;
+  padding:13px 16px;
+  border:2px solid var(--gray-200);
+  border-radius:var(--radius-sm);cursor:pointer;
+  transition:var(--transition);background:var(--white);
+}
+.option-item:hover{border-color:var(--crimson);background:#fff5f6}
+.option-item.selected{border-color:var(--crimson);background:rgba(155,27,48,0.05)}
+.option-key{
+  width:32px;height:32px;border-radius:50%;
+  background:var(--gray-100);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:0.87rem;color:var(--gray-600);
+  flex-shrink:0;transition:var(--transition);
+}
+.option-item.selected .option-key{background:var(--crimson);color:var(--white);box-shadow:0 3px 10px rgba(155,27,48,0.4)}
+.option-text{font-size:0.93rem}
+.question-nav{
+  padding:15px 20px;border-top:1px solid var(--gray-100);
+  display:flex;justify-content:space-between;align-items:center;gap:10px;
+}
+.palette-panel{
+  background:var(--white);border-radius:var(--radius);
+  box-shadow:var(--shadow);padding:16px;
+}
+.palette-title{
+  font-weight:700;color:var(--crimson-dark);margin-bottom:12px;
+  font-size:0.85rem;padding-bottom:10px;
+  border-bottom:1px solid var(--gray-100);
+  display:flex;align-items:center;gap:7px;
+}
+.palette-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-bottom:14px}
+.palette-item{
+  aspect-ratio:1;border-radius:6px;
+  border:2px solid var(--gray-200);
+  background:var(--gray-100);font-size:0.72rem;font-weight:700;
+  cursor:pointer;transition:var(--transition);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--gray-600);
+}
+.palette-item.answered{background:var(--crimson);border-color:var(--crimson-dark);color:var(--white)}
+.palette-item.flagged{background:var(--amber);border-color:var(--amber);color:var(--crimson-dark)}
+.palette-item.current{
+  box-shadow:0 0 0 3px var(--crimson-light);
+  transform:scale(1.12);z-index:1;position:relative;
+}
+.palette-legend{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.legend-item{display:flex;align-items:center;gap:7px;font-size:0.76rem;color:var(--gray-600)}
+.legend-dot{width:13px;height:13px;border-radius:3px;flex-shrink:0}
+.legend-dot.answered{background:var(--crimson)}
+.legend-dot.flagged{background:var(--amber)}
+.legend-dot.unanswered{background:var(--gray-200);border:2px solid var(--gray-400)}
+.exam-summary{padding-top:12px;border-top:1px solid var(--gray-100);font-size:0.8rem}
+.exam-summary div{display:flex;justify-content:space-between;color:var(--gray-600);margin-bottom:4px}
+.exam-summary strong{color:var(--crimson-dark)}
+
+/* ================================================================
+   RESULT SCREEN
+   ================================================================ */
+#screenResult{
+  background:linear-gradient(160deg,var(--crimson-ultra),var(--crimson-dark));
+  align-items:center;justify-content:center;padding:20px;
+}
+.result-card{
+  background:var(--white);border-radius:var(--radius-lg);
+  max-width:510px;width:100%;
+  box-shadow:0 24px 80px rgba(0,0,0,0.4);
+  overflow:hidden;
+  animation:modalIn 0.5s cubic-bezier(0.34,1.56,0.64,1);
+}
+.result-header{
+  background:linear-gradient(135deg,var(--crimson-dark),var(--crimson-light));
+  padding:32px;text-align:center;position:relative;overflow:hidden;
+}
+.result-header::before{
+  content:'';position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.result-grade-circle{
+  width:100px;height:100px;border-radius:50%;
+  background:linear-gradient(135deg,var(--amber-light),var(--amber));
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 16px;
+  font-family:var(--font-display);
+  font-size:2.8rem;font-weight:700;
+  color:var(--crimson-dark);
+  box-shadow:0 10px 30px rgba(0,0,0,0.3),inset 0 1px 0 rgba(255,255,255,0.3);
+  position:relative;
+}
+.result-grade-circle.fail{background:linear-gradient(135deg,#ff6b6b,var(--danger))}
+.result-grade-circle.fail{color:var(--white)}
+.result-header h2{
+  color:var(--white);font-family:var(--font-display);
+  font-size:1.5rem;margin-bottom:4px;position:relative;
+}
+.result-header p{color:rgba(255,255,255,0.65);font-size:0.86rem;position:relative}
+.result-body{padding:28px}
+.result-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:22px}
+.result-stat{
+  background:var(--gray-50);border-radius:var(--radius-sm);
+  padding:14px;text-align:center;
+  border:1px solid var(--gray-100);
+}
+.result-stat p{font-size:0.74rem;color:var(--gray-600);margin-bottom:5px;text-transform:uppercase;letter-spacing:0.5px;font-weight:600}
+.result-stat h3{font-size:1.4rem;font-weight:700;color:var(--crimson-dark)}
+.result-verdict{
+  text-align:center;padding:12px;border-radius:var(--radius-sm);
+  font-weight:700;font-size:0.95rem;margin-bottom:20px;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.result-verdict.pass{background:var(--success-light);color:var(--success)}
+.result-verdict.fail{background:var(--danger-light);color:var(--danger)}
+
+/* ================================================================
+   DRAG & DROP UPLOAD
+   ================================================================ */
+.drop-zone{
+  border:2px dashed var(--gray-200);
+  border-radius:var(--radius);
+  padding:36px 20px;
+  text-align:center;cursor:pointer;
+  transition:var(--transition);
+  position:relative;
+  background:var(--gray-50);
+}
+.drop-zone:hover,.drop-zone.drag-over{
+  border-color:var(--crimson);
+  background:rgba(155,27,48,0.03);
+}
+.drop-zone input[type=file]{
+  position:absolute;inset:0;opacity:0;cursor:pointer;
+}
+.drop-zone-icon{font-size:2.5rem;color:var(--gray-400);margin-bottom:10px}
+.drop-zone:hover .drop-zone-icon{color:var(--crimson)}
+.drop-zone h4{color:var(--gray-800);margin-bottom:4px;font-size:0.95rem}
+.drop-zone p{color:var(--gray-600);font-size:0.82rem}
+.drop-zone.has-file{border-color:var(--success);background:var(--success-light)}
+.drop-zone.has-file .drop-zone-icon{color:var(--success)}
+
+/* Preview table for bulk upload */
+.preview-wrap{margin-top:16px;max-height:300px;overflow-y:auto;border-radius:var(--radius-sm);border:1px solid var(--gray-200)}
+.preview-wrap table{margin:0}
+.preview-wrap thead{position:sticky;top:0}
+
+/* Progress bar */
+.upload-progress{margin-top:12px}
+.progress-bar-wrap{
+  height:8px;background:var(--gray-200);border-radius:4px;overflow:hidden;margin-top:6px;
+}
+.progress-bar-fill{
+  height:100%;border-radius:4px;
+  background:linear-gradient(90deg,var(--crimson),var(--amber));
+  transition:width 0.3s ease;
+}
+.progress-text{font-size:0.82rem;color:var(--gray-600);display:flex;justify-content:space-between}
+
+/* ================================================================
+   CHEAT WARNING
+   ================================================================ */
+.cheat-banner{
+  position:fixed;top:0;left:0;right:0;
+  background:linear-gradient(90deg,#7b0000,var(--danger));
+  color:var(--white);padding:13px 20px;
+  text-align:center;font-weight:700;z-index:9995;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  animation:fadeIn 0.3s;font-size:0.9rem;
+  box-shadow:0 4px 20px rgba(192,21,43,0.5);
+}
+.cheat-banner button{
   background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.4);
   color:var(--white);padding:5px 14px;border-radius:20px;
-  cursor:pointer;font-size:0.82rem;font-weight:600;
-  margin-left:12px;
+  cursor:pointer;font-size:0.8rem;font-weight:600;margin-left:10px;
 }
 
-/* ===== PAGINATION ===== */
-.pagination{display:flex;gap:6px;align-items:center;justify-content:center;margin-top:16px;flex-wrap:wrap}
+/* ================================================================
+   PAGINATION
+   ================================================================ */
+.pagination{display:flex;gap:6px;align-items:center;justify-content:center;margin-top:14px;flex-wrap:wrap}
 .page-btn{
-  padding:6px 12px;border:2px solid var(--gray-200);
+  padding:5px 11px;border:1.5px solid var(--gray-200);
   border-radius:var(--radius-sm);background:var(--white);
-  font-size:0.82rem;cursor:pointer;transition:var(--transition);font-weight:600;
+  font-size:0.8rem;cursor:pointer;transition:var(--transition);font-weight:600;
 }
-.page-btn.active{background:var(--navy);border-color:var(--navy);color:var(--white)}
-.page-btn:hover:not(.active){border-color:var(--navy);color:var(--navy)}
+.page-btn.active{background:var(--crimson);border-color:var(--crimson);color:var(--white)}
+.page-btn:hover:not(.active){border-color:var(--crimson);color:var(--crimson)}
 
-/* ===== SEARCH BAR ===== */
+/* ================================================================
+   SEARCH BAR
+   ================================================================ */
 .search-bar{position:relative}
 .search-bar input{padding-left:36px}
-.search-bar i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--gray-400);pointer-events:none}
+.search-bar i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--gray-400);pointer-events:none;font-size:0.85rem}
 
-/* ===== RESPONSIVE ===== */
-@media(max-width:600px){
-  .main-content{padding:16px}
+/* ================================================================
+   PRINT STYLES
+   ================================================================ */
+@media print{
+  body *{visibility:hidden}
+  #printArea,#printArea *{visibility:visible}
+  #printArea{
+    position:fixed;top:0;left:0;right:0;
+    background:white;padding:20px;
+    font-family:Arial,sans-serif;
+  }
+  .no-print{display:none!important}
+  .print-header{margin-bottom:20px;border-bottom:2px solid #9B1B30;padding-bottom:12px;display:flex;align-items:center;justify-content:space-between}
+  .print-header h1{font-size:18px;color:#9B1B30}
+  .print-header p{font-size:11px;color:#666}
+  .print-table{width:100%;border-collapse:collapse;font-size:11px}
+  .print-table th{background:#9B1B30;color:white;padding:7px 10px;text-align:left}
+  .print-table td{padding:6px 10px;border-bottom:1px solid #ddd}
+  .print-table tr:nth-child(even) td{background:#f9f0f0}
+}
+
+/* ================================================================
+   RESPONSIVE
+   ================================================================ */
+@media(max-width:640px){
+  .main-content{padding:14px}
   .card-body{padding:16px}
   .login-box{padding:28px 20px}
-  .landing-content h1{font-size:1.5rem}
-  .exam-layout{padding:12px}
+  .landing-content h1{font-size:1.7rem}
+  .exam-layout{padding:12px;gap:12px}
   .result-stats{grid-template-columns:1fr 1fr}
-}
-@media(max-width:480px){
   .stats-grid{grid-template-columns:1fr 1fr}
   .sessions-grid{grid-template-columns:1fr}
+}
+@media(max-width:400px){
+  .stats-grid{grid-template-columns:1fr}
+}
+
+/* ================================================================
+   DIVIDER
+   ================================================================ */
+.section-divider{
+  display:flex;align-items:center;gap:12px;margin:20px 0;color:var(--gray-400);font-size:0.8rem;font-weight:600;
+}
+.section-divider::before,.section-divider::after{content:'';flex:1;height:1px;background:var(--gray-200)}
+
+/* ================================================================
+   INFO BOX
+   ================================================================ */
+.info-box{
+  background:var(--info-light);border:1px solid rgba(14,107,140,0.2);
+  border-radius:var(--radius-sm);padding:12px 16px;
+  display:flex;align-items:flex-start;gap:10px;font-size:0.84rem;color:var(--info);
+  margin-bottom:16px;
+}
+.info-box i{flex-shrink:0;margin-top:2px}
+.warning-box{
+  background:#fff8e1;border:1px solid rgba(212,131,10,0.3);
+  border-radius:var(--radius-sm);padding:12px 16px;
+  display:flex;align-items:flex-start;gap:10px;font-size:0.84rem;color:#7c4a00;
+  margin-bottom:16px;
 }
 </style>
 </head>
 <body>
 
-<div id="toastContainer"></div>
+<!-- Background Orbs (only shown on dark screens) -->
+<div class="orb-bg" id="orbBg" style="display:none">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
 
-<!-- ================================
+<div id="toastContainer"></div>
+<div id="printArea" style="display:none"></div>
+
+<!-- ================================================================
      SCREEN: LANDING
-================================ -->
+================================================================ -->
 <div id="screenLanding" class="screen active">
-  <div class="landing-content">
-    <div class="landing-logo">IJ</div>
-    <h2>CBT Portal</h2>
-    <h1>Infant Jesus Academy</h1>
-    <p>Secure Computer-Based Testing Platform for SS1 Students</p>
-    <div class="login-cards">
-      <div class="login-card" onclick="showScreen('screenStudentLogin')">
-        <i class="fas fa-user-graduate"></i>
-        <h3>Student</h3>
-        <p>Take exams and view your results</p>
+  <div class="auth-screen-bg" style="background:linear-gradient(160deg,var(--crimson-ultra),var(--crimson-dark) 40%,var(--crimson) 80%,#D4400A 100%)">
+    <div class="landing-content screen-content">
+      <div class="landing-logo-wrap">
+        <div class="landing-logo">IJ</div>
+        <div class="landing-logo-ring"></div>
+        <div class="landing-logo-ring2"></div>
       </div>
-      <div class="login-card" onclick="showScreen('screenAdminLogin')">
-        <i class="fas fa-user-shield"></i>
-        <h3>Admin / Teacher</h3>
-        <p>Manage exams, questions and students</p>
+      <div class="landing-badge"><i class="fas fa-shield-halved"></i> &nbsp;Secure CBT Platform</div>
+      <h1>Infant Jesus Academy</h1>
+      <p class="sub">Computer-Based Testing Portal · Asaba, Delta State · Year 10 & Beyond</p>
+      <div class="login-cards">
+        <div class="login-card" onclick="showScreen('screenStudentLogin')">
+          <div class="login-card-icon"><i class="fas fa-user-graduate"></i></div>
+          <h3>Student Portal</h3>
+          <p>Take exams and view your results</p>
+        </div>
+        <div class="login-card" onclick="showScreen('screenAdminLogin')">
+          <div class="login-card-icon"><i class="fas fa-user-shield"></i></div>
+          <h3>Admin Panel</h3>
+          <p>Manage exams, questions & students</p>
+        </div>
       </div>
+      <p class="landing-footer">© 2024 Infant Jesus Academy · All rights reserved</p>
     </div>
-    <p class="landing-footer">© 2024 Infant Jesus Academy · Asaba, Delta State, Nigeria</p>
   </div>
 </div>
 
-<!-- ================================
+<!-- ================================================================
      SCREEN: STUDENT LOGIN
-================================ -->
+================================================================ -->
 <div id="screenStudentLogin" class="screen">
-  <div style="flex:1;background:linear-gradient(160deg,var(--navy-dark),var(--navy));display:flex;align-items:center;justify-content:center;padding:20px">
-    <div style="width:100%;max-width:420px">
-      <div class="login-box">
+  <div class="auth-screen-bg">
+    <div style="width:100%;max-width:430px">
+      <div class="login-box screen-content">
+        <div class="login-box-deco"></div>
         <div class="login-box-header">
-          <div class="logo-mini">IJ</div>
+          <div class="login-logo-mini">IJ</div>
           <h2>Student Login</h2>
-          <p>Enter your registration number and PIN</p>
+          <p>Enter your registration number and PIN to continue</p>
         </div>
         <div class="form-group">
-          <label class="form-label"><i class="fas fa-id-card" style="color:var(--navy);margin-right:6px"></i>Registration Number</label>
+          <label class="form-label"><i class="fas fa-id-card" style="color:var(--crimson);margin-right:5px"></i>Registration Number</label>
           <input type="text" id="stuRegNumber" class="form-control" placeholder="e.g. IJA/2024/001" autocomplete="off"/>
         </div>
         <div class="form-group">
-          <label class="form-label"><i class="fas fa-lock" style="color:var(--navy);margin-right:6px"></i>PIN</label>
+          <label class="form-label"><i class="fas fa-lock" style="color:var(--crimson);margin-right:5px"></i>PIN</label>
           <div style="position:relative">
-            <input type="password" id="stuPin" class="form-control" placeholder="Enter your 4-digit PIN"
-              onkeydown="if(event.key==='Enter')studentLogin()"/>
-            <button onclick="togglePwd('stuPin',this)" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--gray-400);cursor:pointer;font-size:0.9rem"><i class="fas fa-eye"></i></button>
+            <input type="password" id="stuPin" class="form-control" placeholder="Enter your PIN"
+              onkeydown="if(event.key==='Enter')studentLogin()" style="padding-right:42px"/>
+            <button onclick="togglePwd('stuPin',this)" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--gray-400);cursor:pointer"><i class="fas fa-eye"></i></button>
           </div>
         </div>
-        <button class="btn btn-primary btn-lg" style="width:100%" onclick="studentLogin()">
-          <i class="fas fa-sign-in-alt"></i> Login
+        <button class="btn btn-primary btn-lg" style="width:100%;margin-top:4px" onclick="studentLogin()">
+          <i class="fas fa-sign-in-alt"></i> Login to Portal
         </button>
         <div style="text-align:center">
-          <button class="btn-back" onclick="showScreen('screenLanding')"><i class="fas fa-arrow-left"></i> Back to home</button>
+          <button class="btn-back btn-back-dark" onclick="showScreen('screenLanding')"><i class="fas fa-arrow-left"></i> Back to home</button>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ================================
+<!-- ================================================================
      SCREEN: STUDENT DASHBOARD
-================================ -->
+================================================================ -->
 <div id="screenStudentDashboard" class="screen">
   <header class="portal-header">
     <div class="header-brand">
       <div class="header-logo">IJ</div>
       <div class="header-text">
         <h1>Infant Jesus Academy</h1>
-        <p>CBT Portal</p>
+        <p>CBT Student Portal</p>
       </div>
     </div>
     <div class="header-actions">
       <div class="header-user">
         <strong id="headerStudentName">Student</strong>
-        <span id="headerStudentClass"></span>
+        <span id="headerStudentClass" style="color:var(--amber-light);font-size:0.75rem"></span>
       </div>
-      <button class="btn-icon" onclick="studentLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+      <button class="btn-header" onclick="studentLogout()"><i class="fas fa-right-from-bracket"></i> Logout</button>
     </div>
   </header>
-  <div class="main-content">
+  <div class="main-content screen-content">
     <div class="student-welcome">
       <div class="student-welcome-text">
-        <h2>Welcome back, <span id="welcomeName">Student</span>!</h2>
+        <h2>Welcome back, <span id="welcomeName">Student</span>! 👋</h2>
         <p>Select an available exam session below to begin your test.</p>
       </div>
-      <div class="welcome-badge"><i class="fas fa-star"></i> <span id="welcomeClass"></span></div>
+      <div class="welcome-chip"><i class="fas fa-graduation-cap"></i> <span id="welcomeClass"></span></div>
     </div>
     <div class="card">
       <div class="card-header">
-        <div class="card-title"><i class="fas fa-clipboard-list" style="color:var(--gold)"></i> Available Exam Sessions</div>
-        <button class="btn btn-outline btn-sm" onclick="loadStudentSessions()"><i class="fas fa-sync"></i> Refresh</button>
+        <div class="card-title"><i class="fas fa-clipboard-list" style="color:var(--amber)"></i> Available Exam Sessions</div>
+        <button class="btn btn-outline btn-sm" onclick="loadStudentSessions()"><i class="fas fa-rotate"></i> Refresh</button>
       </div>
       <div class="card-body">
         <div id="sessionsGrid" class="sessions-grid">
-          <div class="empty-state"><i class="fas fa-inbox"></i><p>No available sessions at this time.</p></div>
+          <div class="empty-state"><i class="fas fa-inbox"></i><h3>No Sessions Available</h3><p>Check back later or contact your teacher.</p></div>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ================================
+<!-- ================================================================
      SCREEN: EXAM
-================================ -->
+================================================================ -->
 <div id="screenExam" class="screen">
   <div class="exam-header">
-    <div class="exam-header-title">
-      <span id="examSubjectLabel">Subject</span>
-      Infant Jesus Academy — CBT
+    <div class="exam-subject-tag">
+      <strong id="examSubjectLabel">Subject</strong>
+      <span>Infant Jesus Academy · CBT</span>
     </div>
     <div class="exam-timer" id="examTimer">--:--</div>
-    <div class="exam-progress">
-      <i class="fas fa-list-ol"></i>
-      <span id="examProgressLabel">Q 1 of 0</span>
-    </div>
-    <button class="btn btn-gold btn-sm" onclick="confirmSubmit()">
-      <i class="fas fa-paper-plane"></i> Submit
-    </button>
+    <div class="exam-progress-text"><i class="fas fa-list-ol"></i><span id="examProgressLabel">Q 1 of 0</span></div>
+    <button class="btn btn-amber btn-sm" onclick="confirmSubmit()"><i class="fas fa-paper-plane"></i> Submit Exam</button>
   </div>
-
   <div class="exam-layout">
-    <!-- Question Panel -->
     <div class="question-panel">
       <div class="question-panel-header">
         <div class="question-num">Question <span id="currentQNum">1</span></div>
         <button class="flag-btn" id="flagBtn" onclick="toggleFlag()">
-          <i class="fas fa-flag"></i> <span id="flagBtnText">Flag</span>
+          <i class="fas fa-flag"></i> <span id="flagBtnText">Flag for Review</span>
         </button>
       </div>
       <div class="question-body">
@@ -781,14 +1104,12 @@ tr:last-child td{border-bottom:none}
       </div>
       <div class="question-nav">
         <button class="btn btn-outline btn-sm" id="btnPrev" onclick="prevQuestion()"><i class="fas fa-chevron-left"></i> Previous</button>
-        <span style="font-size:0.82rem;color:var(--gray-600)" id="navHint"></span>
+        <span style="font-size:0.8rem;color:var(--gray-600)" id="navHint"></span>
         <button class="btn btn-primary btn-sm" id="btnNext" onclick="nextQuestion()">Next <i class="fas fa-chevron-right"></i></button>
       </div>
     </div>
-
-    <!-- Palette Panel -->
     <div class="palette-panel">
-      <div class="palette-title"><i class="fas fa-th" style="color:var(--gold)"></i> Question Palette</div>
+      <div class="palette-title"><i class="fas fa-grid-2" style="color:var(--amber)"></i> Question Palette</div>
       <div class="palette-grid" id="paletteGrid"></div>
       <div class="palette-legend">
         <div class="legend-item"><div class="legend-dot answered"></div>Answered</div>
@@ -800,145 +1121,152 @@ tr:last-child td{border-bottom:none}
   </div>
 </div>
 
-<!-- ================================
+<!-- ================================================================
      SCREEN: RESULT
-================================ -->
+================================================================ -->
 <div id="screenResult" class="screen">
-  <div class="result-card" id="resultCard">
-    <div class="result-header">
-      <div class="result-grade-circle" id="resultGradeCircle">A</div>
-      <h2 id="resultSubject">Mathematics</h2>
-      <p id="resultStudentName">Student Name</p>
-    </div>
-    <div class="result-body">
-      <div class="result-passed-badge pass" id="resultPassedBadge">
-        <i class="fas fa-check-circle"></i> PASSED
+  <div style="flex:1;background:linear-gradient(160deg,var(--crimson-ultra),var(--crimson-dark));display:flex;align-items:center;justify-content:center;padding:20px">
+    <div class="result-card screen-content">
+      <div class="result-header">
+        <div class="result-grade-circle" id="resultGradeCircle">A</div>
+        <h2 id="resultSubject">Mathematics</h2>
+        <p id="resultStudentName">Student Name</p>
       </div>
-      <div class="result-stats">
-        <div class="result-stat"><p>Score</p><h3 id="resultScore">0/0</h3></div>
-        <div class="result-stat"><p>Percentage</p><h3 id="resultPct">0%</h3></div>
-        <div class="result-stat"><p>Grade</p><h3 id="resultGrade">-</h3></div>
-        <div class="result-stat"><p>Time Spent</p><h3 id="resultTime">-</h3></div>
+      <div class="result-body">
+        <div class="result-verdict pass" id="resultVerdict">
+          <i class="fas fa-check-circle"></i> EXAMINATION PASSED
+        </div>
+        <div class="result-stats">
+          <div class="result-stat"><p>Score</p><h3 id="resultScore">0/0</h3></div>
+          <div class="result-stat"><p>Percentage</p><h3 id="resultPct">0%</h3></div>
+          <div class="result-stat"><p>Grade</p><h3 id="resultGrade">-</h3></div>
+          <div class="result-stat"><p>Time Spent</p><h3 id="resultTime">-</h3></div>
+        </div>
+        <button class="btn btn-primary" style="width:100%" onclick="goToDashboard()">
+          <i class="fas fa-house"></i> Back to Dashboard
+        </button>
       </div>
-      <button class="btn btn-primary" style="width:100%" onclick="goToDashboard()">
-        <i class="fas fa-home"></i> Back to Dashboard
-      </button>
     </div>
   </div>
 </div>
 
-<!-- ================================
+<!-- ================================================================
      SCREEN: ADMIN LOGIN
-================================ -->
+================================================================ -->
 <div id="screenAdminLogin" class="screen">
-  <div style="flex:1;background:linear-gradient(160deg,var(--navy-dark),#37006e);display:flex;align-items:center;justify-content:center;padding:20px">
-    <div style="width:100%;max-width:420px">
-      <div class="login-box">
+  <div class="auth-screen-bg" style="background:linear-gradient(160deg,var(--crimson-ultra),#3d0015 50%,#700020 100%)">
+    <div style="width:100%;max-width:430px">
+      <div class="login-box screen-content">
+        <div class="login-box-deco" style="background:linear-gradient(90deg,var(--amber-light),var(--crimson-dark),var(--amber-light))"></div>
         <div class="login-box-header">
-          <div class="logo-mini" style="background:#37006e;color:var(--gold)"><i class="fas fa-user-shield"></i></div>
+          <div class="login-logo-mini" style="background:linear-gradient(135deg,#3d0015,#700020)">
+            <i class="fas fa-shield-halved" style="font-size:1.4rem"></i>
+          </div>
           <h2>Admin Login</h2>
-          <p>Access the CBT management panel</p>
+          <p>Authorised personnel only</p>
         </div>
         <div class="form-group">
-          <label class="form-label"><i class="fas fa-user" style="color:var(--navy);margin-right:6px"></i>Username</label>
+          <label class="form-label"><i class="fas fa-user" style="color:var(--crimson);margin-right:5px"></i>Username</label>
           <input type="text" id="adminUsername" class="form-control" placeholder="Enter admin username" autocomplete="off"/>
         </div>
         <div class="form-group">
-          <label class="form-label"><i class="fas fa-lock" style="color:var(--navy);margin-right:6px"></i>Password</label>
+          <label class="form-label"><i class="fas fa-lock" style="color:var(--crimson);margin-right:5px"></i>Password</label>
           <div style="position:relative">
             <input type="password" id="adminPassword" class="form-control" placeholder="Enter password"
-              onkeydown="if(event.key==='Enter')adminLogin()"/>
+              onkeydown="if(event.key==='Enter')adminLogin()" style="padding-right:42px"/>
             <button onclick="togglePwd('adminPassword',this)" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--gray-400);cursor:pointer"><i class="fas fa-eye"></i></button>
           </div>
         </div>
-        <button class="btn btn-primary btn-lg" style="width:100%;background:linear-gradient(135deg,var(--navy),#37006e)" onclick="adminLogin()">
-          <i class="fas fa-sign-in-alt"></i> Login
+        <button class="btn btn-lg" style="width:100%;background:linear-gradient(135deg,#3d0015,#700020,var(--crimson));color:var(--white);box-shadow:0 6px 20px rgba(61,0,21,0.5)" onclick="adminLogin()">
+          <i class="fas fa-sign-in-alt"></i> Access Admin Panel
         </button>
         <div style="text-align:center">
-          <button class="btn-back" onclick="showScreen('screenLanding')"><i class="fas fa-arrow-left"></i> Back to home</button>
+          <button class="btn-back btn-back-dark" onclick="showScreen('screenLanding')"><i class="fas fa-arrow-left"></i> Back to home</button>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ================================
+<!-- ================================================================
      SCREEN: ADMIN DASHBOARD
-================================ -->
+================================================================ -->
 <div id="screenAdmin" class="screen">
   <header class="portal-header">
     <div class="header-brand">
-      <div class="header-logo" style="background:linear-gradient(135deg,var(--gold),var(--gold-dark))">IJ</div>
+      <div class="header-logo">IJ</div>
       <div class="header-text">
-        <h1>CBT Admin Panel</h1>
+        <h1>CBT Administration</h1>
         <p>Infant Jesus Academy</p>
       </div>
     </div>
     <div class="header-actions">
       <div class="header-user">
         <strong id="adminHeaderName">Admin</strong>
-        <span id="adminHeaderRole" style="color:var(--gold);font-size:0.78rem"></span>
+        <span id="adminHeaderRole" style="color:var(--amber-light);font-size:0.72rem;text-transform:uppercase;letter-spacing:1px"></span>
       </div>
-      <button class="btn-icon" onclick="adminLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+      <button class="btn-header" onclick="adminLogout()"><i class="fas fa-right-from-bracket"></i> Logout</button>
     </div>
   </header>
 
   <nav class="admin-nav">
-    <button class="admin-nav-btn active" onclick="switchAdminPanel('panelDashboard',this)"><i class="fas fa-chart-pie"></i> Dashboard</button>
-    <button class="admin-nav-btn" onclick="switchAdminPanel('panelQuestions',this);loadAdminQuestions()"><i class="fas fa-question-circle"></i> Questions</button>
-    <button class="admin-nav-btn" onclick="switchAdminPanel('panelSessions',this);loadAdminSessions()"><i class="fas fa-calendar-alt"></i> Sessions</button>
-    <button class="admin-nav-btn" onclick="switchAdminPanel('panelStudents',this);loadAdminStudents()"><i class="fas fa-users"></i> Students</button>
-    <button class="admin-nav-btn" onclick="switchAdminPanel('panelResults',this);loadAdminResults()"><i class="fas fa-chart-bar"></i> Results</button>
-    <button class="admin-nav-btn" onclick="switchAdminPanel('panelViolations',this);loadViolations()"><i class="fas fa-shield-alt"></i> Audit Log</button>
+    <button class="admin-nav-btn active" onclick="switchPanel('panelDashboard',this)"><i class="fas fa-chart-pie"></i> Dashboard</button>
+    <button class="admin-nav-btn" onclick="switchPanel('panelQuestions',this);loadAdminQuestions()"><i class="fas fa-circle-question"></i> Questions</button>
+    <button class="admin-nav-btn" onclick="switchPanel('panelSessions',this);loadAdminSessions()"><i class="fas fa-calendar-days"></i> Sessions</button>
+    <button class="admin-nav-btn" onclick="switchPanel('panelStudents',this);loadAdminStudents()"><i class="fas fa-users"></i> Students</button>
+    <button class="admin-nav-btn" onclick="switchPanel('panelResults',this);loadAdminResults()"><i class="fas fa-chart-bar"></i> Results</button>
+    <button class="admin-nav-btn" onclick="switchPanel('panelViolations',this);loadViolations()"><i class="fas fa-shield-alt"></i> Audit Log</button>
   </nav>
 
-  <div class="main-content">
+  <div class="main-content screen-content">
 
-    <!-- PANEL: DASHBOARD -->
+    <!-- DASHBOARD -->
     <div id="panelDashboard" class="admin-panel active">
-      <div class="stats-grid" id="adminStatsGrid">
-        <div class="stat-card"><div class="stat-icon"><i class="fas fa-users"></i></div><div class="stat-info"><p>Total Students</p><h3 id="stTotalStudents">-</h3></div></div>
-        <div class="stat-card"><div class="stat-icon"><i class="fas fa-user-check"></i></div><div class="stat-info"><p>Active Students</p><h3 id="stActiveStudents">-</h3></div></div>
-        <div class="stat-card"><div class="stat-icon"><i class="fas fa-file-alt"></i></div><div class="stat-info"><p>Exams Taken</p><h3 id="stTotalExams">-</h3></div></div>
-        <div class="stat-card"><div class="stat-icon"><i class="fas fa-calendar-check"></i></div><div class="stat-info"><p>Active Sessions</p><h3 id="stActiveSessions">-</h3></div></div>
-        <div class="stat-card"><div class="stat-icon"><i class="fas fa-chart-line"></i></div><div class="stat-info"><p>Avg. Score</p><h3 id="stAvgScore">-</h3></div></div>
-        <div class="stat-card"><div class="stat-icon"><i class="fas fa-trophy"></i></div><div class="stat-info"><p>Pass Rate</p><h3 id="stPassRate">-</h3></div></div>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-icon"><i class="fas fa-users"></i></div><div class="stat-info"><p>Total Students</p><h3 id="stTotalStudents">—</h3></div></div>
+        <div class="stat-card"><div class="stat-icon"><i class="fas fa-user-check"></i></div><div class="stat-info"><p>Active Students</p><h3 id="stActiveStudents">—</h3></div></div>
+        <div class="stat-card"><div class="stat-icon"><i class="fas fa-file-circle-check"></i></div><div class="stat-info"><p>Exams Taken</p><h3 id="stTotalExams">—</h3></div></div>
+        <div class="stat-card"><div class="stat-icon"><i class="fas fa-calendar-check"></i></div><div class="stat-info"><p>Active Sessions</p><h3 id="stActiveSessions">—</h3></div></div>
+        <div class="stat-card"><div class="stat-icon"><i class="fas fa-chart-line"></i></div><div class="stat-info"><p>Avg. Score</p><h3 id="stAvgScore">—</h3></div></div>
+        <div class="stat-card"><div class="stat-icon"><i class="fas fa-trophy"></i></div><div class="stat-info"><p>Pass Rate</p><h3 id="stPassRate">—</h3></div></div>
       </div>
       <div class="card">
-        <div class="card-body" style="text-align:center;padding:40px">
-          <i class="fas fa-graduation-cap" style="font-size:3rem;color:var(--gold);display:block;margin-bottom:12px"></i>
-          <h3 style="font-family:'Playfair Display',serif;color:var(--navy);margin-bottom:6px">Welcome to the CBT Admin Panel</h3>
-          <p style="color:var(--gray-600)">Use the navigation above to manage questions, sessions, students, and view results.</p>
+        <div class="card-body" style="text-align:center;padding:44px">
+          <i class="fas fa-graduation-cap" style="font-size:3.5rem;color:var(--amber);display:block;margin-bottom:14px"></i>
+          <h3 style="font-family:var(--font-display);color:var(--crimson-dark);font-size:1.4rem;margin-bottom:8px">Welcome to the CBT Admin Panel</h3>
+          <p style="color:var(--gray-600);max-width:480px;margin:0 auto">Use the navigation above to manage questions, sessions, students and view results.</p>
         </div>
       </div>
     </div>
 
-    <!-- PANEL: QUESTIONS -->
+    <!-- QUESTIONS -->
     <div id="panelQuestions" class="admin-panel">
       <div class="card">
         <div class="card-header">
-          <div class="card-title"><i class="fas fa-question-circle" style="color:var(--gold)"></i> Manage Questions</div>
-          <button class="btn btn-primary btn-sm" onclick="openQuestionModal()"><i class="fas fa-plus"></i> Add Question</button>
+          <div class="card-title"><i class="fas fa-circle-question" style="color:var(--amber)"></i> Manage Questions</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn btn-info btn-sm" onclick="openBulkQModal()"><i class="fas fa-file-import"></i> Bulk JSON Upload</button>
+            <button class="btn btn-primary btn-sm" onclick="openQuestionModal()"><i class="fas fa-plus"></i> Add Question</button>
+          </div>
         </div>
         <div class="card-body">
-          <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap">
+          <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap">
             <div class="search-bar" style="flex:1;min-width:180px">
-              <i class="fas fa-search"></i>
+              <i class="fas fa-magnifying-glass"></i>
               <input type="text" class="form-control" id="qSearchInput" placeholder="Search questions..." oninput="filterQuestions()"/>
             </div>
             <select class="form-control" id="qSubjectFilter" style="max-width:200px" onchange="filterQuestions()">
               <option value="">All Subjects</option>
               <option>Mathematics</option><option>English Language</option>
-              <option>Physics</option><option>Chemistry</option>
-              <option>Biology</option><option>Economics</option>
-              <option>Government</option><option>Literature</option>
+              <option>Physics</option><option>Chemistry</option><option>Biology</option>
+              <option>Economics</option><option>Government</option><option>Literature</option>
               <option>Further Mathematics</option><option>Geography</option>
             </select>
           </div>
           <div class="table-wrap">
-            <table id="questionsTable">
+            <table>
               <thead><tr><th>#</th><th>Subject</th><th>Topic</th><th>Question</th><th>Correct</th><th>Difficulty</th><th>Actions</th></tr></thead>
-              <tbody id="questionsTbody"><tr><td colspan="7" style="text-align:center;color:var(--gray-400);padding:32px">No questions loaded.</td></tr></tbody>
+              <tbody id="questionsTbody"><tr><td colspan="7" style="text-align:center;color:var(--gray-400);padding:40px">Click the tab to load questions.</td></tr></tbody>
             </table>
           </div>
           <div class="pagination" id="qPagination"></div>
@@ -946,42 +1274,50 @@ tr:last-child td{border-bottom:none}
       </div>
     </div>
 
-    <!-- PANEL: SESSIONS -->
+    <!-- SESSIONS -->
     <div id="panelSessions" class="admin-panel">
       <div class="card">
         <div class="card-header">
-          <div class="card-title"><i class="fas fa-calendar-alt" style="color:var(--gold)"></i> Exam Sessions</div>
+          <div class="card-title"><i class="fas fa-calendar-days" style="color:var(--amber)"></i> Exam Sessions</div>
           <button class="btn btn-primary btn-sm" onclick="openSessionModal()"><i class="fas fa-plus"></i> Create Session</button>
         </div>
         <div class="card-body">
           <div class="table-wrap">
             <table>
               <thead><tr><th>Session ID</th><th>Subject</th><th>Class</th><th>Duration</th><th>Questions</th><th>Status</th><th>Actions</th></tr></thead>
-              <tbody id="sessionsTbody"><tr><td colspan="7" style="text-align:center;color:var(--gray-400);padding:32px">No sessions loaded.</td></tr></tbody>
+              <tbody id="sessionsTbody"><tr><td colspan="7" style="text-align:center;color:var(--gray-400);padding:40px">No sessions loaded.</td></tr></tbody>
             </table>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- PANEL: STUDENTS -->
+    <!-- STUDENTS -->
     <div id="panelStudents" class="admin-panel">
       <div class="card">
         <div class="card-header">
-          <div class="card-title"><i class="fas fa-users" style="color:var(--gold)"></i> Students</div>
-          <button class="btn btn-primary btn-sm" onclick="openStudentModal()"><i class="fas fa-plus"></i> Add Student</button>
+          <div class="card-title"><i class="fas fa-users" style="color:var(--amber)"></i> Students</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn btn-info btn-sm" onclick="openBulkStudentModal()"><i class="fas fa-file-csv"></i> Bulk CSV Upload</button>
+            <button class="btn btn-primary btn-sm" onclick="openStudentModal()"><i class="fas fa-user-plus"></i> Add Student</button>
+          </div>
         </div>
         <div class="card-body">
-          <div style="display:flex;gap:12px;margin-bottom:16px">
-            <div class="search-bar" style="flex:1">
-              <i class="fas fa-search"></i>
-              <input type="text" class="form-control" id="stuSearchInput" placeholder="Search students..." oninput="filterStudents()"/>
+          <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap">
+            <div class="search-bar" style="flex:1;min-width:180px">
+              <i class="fas fa-magnifying-glass"></i>
+              <input type="text" class="form-control" id="stuSearchInput" placeholder="Search by name or reg number..." oninput="filterStudents()"/>
             </div>
+            <select class="form-control" id="stuClassFilter" style="max-width:180px" onchange="filterStudents()">
+              <option value="">All Classes</option>
+              <option>YEAR 10 YELLOW</option><option>YEAR 10 SILVER</option><option>YEAR 10 PINK</option>
+              <option>SS2A</option><option>SS2B</option><option>SS3A</option><option>SS3B</option>
+            </select>
           </div>
           <div class="table-wrap">
             <table>
-              <thead><tr><th>#</th><th>Name</th><th>Reg Number</th><th>Class</th><th>Status</th><th>Actions</th></tr></thead>
-              <tbody id="studentsTbody"><tr><td colspan="6" style="text-align:center;color:var(--gray-400);padding:32px">No students loaded.</td></tr></tbody>
+              <thead><tr><th>#</th><th>Full Name</th><th>Reg Number</th><th>Class</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody id="studentsTbody"><tr><td colspan="6" style="text-align:center;color:var(--gray-400);padding:40px">No students loaded.</td></tr></tbody>
             </table>
           </div>
           <div class="pagination" id="stuPagination"></div>
@@ -989,63 +1325,75 @@ tr:last-child td{border-bottom:none}
       </div>
     </div>
 
-    <!-- PANEL: RESULTS -->
+    <!-- RESULTS -->
     <div id="panelResults" class="admin-panel">
       <div class="card">
         <div class="card-header">
-          <div class="card-title"><i class="fas fa-chart-bar" style="color:var(--gold)"></i> Exam Results</div>
-          <button class="btn btn-success btn-sm" onclick="exportResults()"><i class="fas fa-download"></i> Export CSV</button>
+          <div class="card-title"><i class="fas fa-chart-bar" style="color:var(--amber)"></i> Exam Results</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn btn-info btn-sm" onclick="printResults()"><i class="fas fa-print"></i> Print</button>
+            <button class="btn btn-success btn-sm" onclick="exportResults()"><i class="fas fa-download"></i> Download CSV</button>
+          </div>
         </div>
         <div class="card-body">
-          <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap">
-            <input type="text" class="form-control" id="resStudentFilter" placeholder="Filter by student name..." style="flex:1;min-width:160px" oninput="filterResults()"/>
+          <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap">
+            <div class="search-bar" style="flex:1;min-width:180px">
+              <i class="fas fa-magnifying-glass"></i>
+              <input type="text" class="form-control" id="resStudentFilter" placeholder="Search student..." oninput="filterResults()"/>
+            </div>
             <select class="form-control" id="resSubjectFilter" style="max-width:180px" onchange="filterResults()">
               <option value="">All Subjects</option>
               <option>Mathematics</option><option>English Language</option>
               <option>Physics</option><option>Chemistry</option><option>Biology</option>
               <option>Further Mathematics</option>
             </select>
+            <select class="form-control" id="resPassFilter" style="max-width:160px" onchange="filterResults()">
+              <option value="">All Results</option>
+              <option value="pass">Passed Only</option>
+              <option value="fail">Failed Only</option>
+            </select>
           </div>
-          <div class="table-wrap">
-            <table>
+          <div class="table-wrap" id="resultsTableWrap">
+            <table id="resultsTable">
               <thead><tr><th>#</th><th>Student</th><th>Reg No.</th><th>Subject</th><th>Score</th><th>Percentage</th><th>Grade</th><th>Submitted</th></tr></thead>
-              <tbody id="resultsTbody"><tr><td colspan="8" style="text-align:center;color:var(--gray-400);padding:32px">No results loaded.</td></tr></tbody>
+              <tbody id="resultsTbody"><tr><td colspan="8" style="text-align:center;color:var(--gray-400);padding:40px">No results loaded.</td></tr></tbody>
             </table>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- PANEL: VIOLATIONS -->
+    <!-- VIOLATIONS -->
     <div id="panelViolations" class="admin-panel">
       <div class="card">
         <div class="card-header">
-          <div class="card-title"><i class="fas fa-shield-alt" style="color:var(--gold)"></i> Audit Log — Anti-Cheat Violations</div>
+          <div class="card-title"><i class="fas fa-shield-halved" style="color:var(--amber)"></i> Audit Log — Anti-Cheat Violations</div>
+          <button class="btn btn-info btn-sm" onclick="exportViolations()"><i class="fas fa-download"></i> Export</button>
         </div>
         <div class="card-body">
           <div class="table-wrap">
             <table>
-              <thead><tr><th>#</th><th>Student</th><th>Reg No.</th><th>Session</th><th>Violation Type</th><th>Timestamp</th></tr></thead>
-              <tbody id="violationsTbody"><tr><td colspan="6" style="text-align:center;color:var(--gray-400);padding:32px">No violations recorded.</td></tr></tbody>
+              <thead><tr><th>#</th><th>Student</th><th>Reg No.</th><th>Session</th><th>Violation</th><th>Timestamp</th></tr></thead>
+              <tbody id="violationsTbody"><tr><td colspan="6" style="text-align:center;color:var(--gray-400);padding:40px">No violations recorded.</td></tr></tbody>
             </table>
           </div>
         </div>
       </div>
     </div>
 
-  </div><!-- /main-content -->
-</div><!-- /screenAdmin -->
+  </div>
+</div>
 
-<!-- ================================
+<!-- ================================================================
      MODALS
-================================ -->
+================================================================ -->
 
-<!-- Question Modal -->
+<!-- Add/Edit Question Modal -->
 <div id="questionModal" class="modal-backdrop" style="display:none">
   <div class="modal">
     <div class="modal-header">
-      <span class="modal-title" id="questionModalTitle"><i class="fas fa-question-circle"></i> Add Question</span>
-      <button class="modal-close" onclick="closeModal('questionModal')"><i class="fas fa-times"></i></button>
+      <span class="modal-title" id="questionModalTitle"><i class="fas fa-plus-circle"></i> Add Question</span>
+      <button class="modal-close" onclick="closeModal('questionModal')"><i class="fas fa-xmark"></i></button>
     </div>
     <div class="modal-body">
       <input type="hidden" id="qEditID"/>
@@ -1077,32 +1425,73 @@ tr:last-child td{border-bottom:none}
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
         <div class="form-group">
           <label class="form-label">Correct Answer *</label>
-          <select class="form-control" id="qCorrect">
-            <option value="A">A</option><option value="B">B</option>
-            <option value="C">C</option><option value="D">D</option>
-          </select>
+          <select class="form-control" id="qCorrect"><option>A</option><option>B</option><option>C</option><option>D</option></select>
         </div>
         <div class="form-group">
           <label class="form-label">Difficulty</label>
-          <select class="form-control" id="qDifficulty">
-            <option>Easy</option><option selected>Medium</option><option>Hard</option>
-          </select>
+          <select class="form-control" id="qDifficulty"><option>Easy</option><option selected>Medium</option><option>Hard</option></select>
         </div>
       </div>
     </div>
     <div class="modal-footer">
       <button class="btn btn-outline btn-sm" onclick="closeModal('questionModal')">Cancel</button>
-      <button class="btn btn-primary" onclick="saveQuestion()"><i class="fas fa-save"></i> Save Question</button>
+      <button class="btn btn-primary" onclick="saveQuestion()"><i class="fas fa-floppy-disk"></i> Save Question</button>
     </div>
   </div>
 </div>
 
-<!-- Session Modal -->
+<!-- Bulk JSON Questions Modal -->
+<div id="bulkQModal" class="modal-backdrop" style="display:none">
+  <div class="modal modal-wide">
+    <div class="modal-header">
+      <span class="modal-title"><i class="fas fa-file-import"></i> Bulk Upload Questions (JSON)</span>
+      <button class="modal-close" onclick="closeModal('bulkQModal')"><i class="fas fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="info-box">
+        <i class="fas fa-circle-info"></i>
+        <div>
+          Upload a JSON array of questions. Each question must have:
+          <strong>subject, questionText, optionA, optionB, optionC, optionD, correctAnswer (A/B/C/D)</strong>.
+          Optional: topic, difficulty (Easy/Medium/Hard).
+        </div>
+      </div>
+      <button class="btn btn-outline btn-sm" onclick="downloadQTemplate()" style="margin-bottom:14px">
+        <i class="fas fa-download"></i> Download JSON Template
+      </button>
+      <div class="drop-zone" id="qDropZone">
+        <input type="file" id="qFileInput" accept=".json" onchange="handleQFile(this)"/>
+        <div class="drop-zone-icon"><i class="fas fa-file-code"></i></div>
+        <h4>Drop your JSON file here</h4>
+        <p>or click to browse · .json files only</p>
+      </div>
+      <div id="qFileStatus" style="margin-top:10px;font-size:0.84rem;color:var(--gray-600)"></div>
+      <div id="qPreviewWrap" class="preview-wrap" style="display:none">
+        <table>
+          <thead><tr><th>#</th><th>Subject</th><th>Topic</th><th>Question (preview)</th><th>Correct</th></tr></thead>
+          <tbody id="qPreviewBody"></tbody>
+        </table>
+      </div>
+      <div id="qUploadProgress" class="upload-progress" style="display:none">
+        <div class="progress-text"><span id="qProgressText">Uploading...</span><span id="qProgressCount">0/0</span></div>
+        <div class="progress-bar-wrap"><div class="progress-bar-fill" id="qProgressBar" style="width:0%"></div></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline btn-sm" onclick="closeModal('bulkQModal')">Cancel</button>
+      <button class="btn btn-primary" id="bulkQUploadBtn" onclick="uploadBulkQuestions()" disabled>
+        <i class="fas fa-upload"></i> Upload Questions (<span id="bulkQCount">0</span>)
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Create Session Modal -->
 <div id="sessionModal" class="modal-backdrop" style="display:none">
   <div class="modal">
     <div class="modal-header">
       <span class="modal-title"><i class="fas fa-calendar-plus"></i> Create Exam Session</span>
-      <button class="modal-close" onclick="closeModal('sessionModal')"><i class="fas fa-times"></i></button>
+      <button class="modal-close" onclick="closeModal('sessionModal')"><i class="fas fa-xmark"></i></button>
     </div>
     <div class="modal-body">
       <div class="form-group">
@@ -1140,21 +1529,27 @@ tr:last-child td{border-bottom:none}
   </div>
 </div>
 
-<!-- Student Modal -->
+<!-- Add Student Modal -->
 <div id="studentModal" class="modal-backdrop" style="display:none">
   <div class="modal">
     <div class="modal-header">
       <span class="modal-title"><i class="fas fa-user-plus"></i> Add Student</span>
-      <button class="modal-close" onclick="closeModal('studentModal')"><i class="fas fa-times"></i></button>
+      <button class="modal-close" onclick="closeModal('studentModal')"><i class="fas fa-xmark"></i></button>
     </div>
     <div class="modal-body">
       <div class="form-group">
         <label class="form-label">Full Name *</label>
         <input type="text" class="form-control" id="newStuName" placeholder="e.g. Chukwuemeka Okafor"/>
       </div>
-      <div class="form-group">
-        <label class="form-label">Registration Number *</label>
-        <input type="text" class="form-control" id="newStuReg" placeholder="e.g. IJA/2024/001"/>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="form-group">
+          <label class="form-label">Registration Number *</label>
+          <input type="text" class="form-control" id="newStuReg" placeholder="e.g. IJA/2024/001"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Initial PIN</label>
+          <input type="text" class="form-control" id="newStuPin" value="1234" maxlength="6"/>
+        </div>
       </div>
       <div class="form-group">
         <label class="form-label">Class *</label>
@@ -1162,11 +1557,6 @@ tr:last-child td{border-bottom:none}
           <option>YEAR 10 YELLOW</option><option>YEAR 10 SILVER</option><option>YEAR 10 PINK</option>
           <option>SS2A</option><option>SS2B</option><option>SS3A</option><option>SS3B</option>
         </select>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Initial PIN</label>
-        <input type="text" class="form-control" id="newStuPin" placeholder="Default: 1234" value="1234" maxlength="6"/>
-        <small style="color:var(--gray-600)">Student should change PIN after first login.</small>
       </div>
     </div>
     <div class="modal-footer">
@@ -1176,25 +1566,71 @@ tr:last-child td{border-bottom:none}
   </div>
 </div>
 
+<!-- Bulk Student Upload Modal -->
+<div id="bulkStudentModal" class="modal-backdrop" style="display:none">
+  <div class="modal modal-wide">
+    <div class="modal-header">
+      <span class="modal-title"><i class="fas fa-file-csv"></i> Bulk Upload Students (CSV)</span>
+      <button class="modal-close" onclick="closeModal('bulkStudentModal')"><i class="fas fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="info-box">
+        <i class="fas fa-circle-info"></i>
+        <div>
+          Upload a CSV file with columns: <strong>FullName, RegNumber, Class, PIN</strong> (PIN is optional — defaults to 1234).
+          First row must be the header row.
+        </div>
+      </div>
+      <button class="btn btn-outline btn-sm" onclick="downloadStudentTemplate()" style="margin-bottom:14px">
+        <i class="fas fa-download"></i> Download CSV Template
+      </button>
+      <div class="drop-zone" id="stuDropZone">
+        <input type="file" id="stuFileInput" accept=".csv" onchange="handleStuFile(this)"/>
+        <div class="drop-zone-icon"><i class="fas fa-file-csv"></i></div>
+        <h4>Drop your CSV file here</h4>
+        <p>or click to browse · .csv files only</p>
+      </div>
+      <div id="stuFileStatus" style="margin-top:10px;font-size:0.84rem;color:var(--gray-600)"></div>
+      <div id="stuPreviewWrap" class="preview-wrap" style="display:none">
+        <table>
+          <thead><tr><th>#</th><th>Full Name</th><th>Reg Number</th><th>Class</th><th>PIN</th></tr></thead>
+          <tbody id="stuPreviewBody"></tbody>
+        </table>
+      </div>
+      <div id="stuUploadProgress" class="upload-progress" style="display:none">
+        <div class="progress-text"><span id="stuProgressText">Uploading...</span><span id="stuProgressCount">0/0</span></div>
+        <div class="progress-bar-wrap"><div class="progress-bar-fill" id="stuProgressBar" style="width:0%"></div></div>
+      </div>
+      <div id="stuUploadSummary" style="display:none;margin-top:12px"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline btn-sm" onclick="closeModal('bulkStudentModal')">Cancel</button>
+      <button class="btn btn-primary" id="bulkStuUploadBtn" onclick="uploadBulkStudents()" disabled>
+        <i class="fas fa-upload"></i> Upload Students (<span id="bulkStuCount">0</span>)
+      </button>
+    </div>
+  </div>
+</div>
+
 <!-- Confirm Submit Modal -->
 <div id="confirmModal" class="modal-backdrop" style="display:none">
   <div class="modal" style="max-width:400px">
-    <div class="modal-header" style="background:var(--warning)">
-      <span class="modal-title"><i class="fas fa-exclamation-triangle"></i> Confirm Submission</span>
+    <div class="modal-header" style="background:linear-gradient(135deg,#7c4a00,var(--amber))">
+      <span class="modal-title"><i class="fas fa-triangle-exclamation"></i> Confirm Submission</span>
     </div>
-    <div class="modal-body" style="text-align:center;padding:32px 24px">
-      <i class="fas fa-paper-plane" style="font-size:3rem;color:var(--warning);display:block;margin-bottom:16px"></i>
-      <h3 style="margin-bottom:8px">Are you sure?</h3>
-      <p style="color:var(--gray-600)" id="confirmMessage">You are about to submit your exam. This action cannot be undone.</p>
-      <div style="margin-top:16px;background:var(--gray-50);border-radius:var(--radius-sm);padding:12px;font-size:0.88rem">
-        <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span>Answered:</span><strong id="confAnswered">0</strong></div>
-        <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span>Unanswered:</span><strong id="confUnanswered" style="color:var(--danger)">0</strong></div>
-        <div style="display:flex;justify-content:space-between"><span>Flagged:</span><strong id="confFlagged" style="color:var(--gold-dark)">0</strong></div>
+    <div class="modal-body" style="text-align:center;padding:30px 24px">
+      <i class="fas fa-paper-plane" style="font-size:3rem;color:var(--amber);display:block;margin-bottom:14px"></i>
+      <h3 style="margin-bottom:8px;color:var(--crimson-dark)">Ready to Submit?</h3>
+      <p style="color:var(--gray-600);font-size:0.9rem">This action cannot be undone. Your answers will be submitted for grading.</p>
+      <div style="margin-top:16px;background:var(--gray-50);border-radius:var(--radius-sm);padding:14px;font-size:0.86rem;text-align:left">
+        <div style="display:flex;justify-content:space-between;margin-bottom:5px"><span>Answered:</span><strong style="color:var(--success)" id="confAnswered">0</strong></div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:5px"><span>Unanswered:</span><strong style="color:var(--danger)" id="confUnanswered">0</strong></div>
+        <div style="display:flex;justify-content:space-between"><span>Flagged:</span><strong style="color:var(--amber)" id="confFlagged">0</strong></div>
       </div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-outline btn-sm" onclick="closeModal('confirmModal')">Continue Exam</button>
-      <button class="btn btn-gold" onclick="submitExam()"><i class="fas fa-check"></i> Yes, Submit</button>
+      <button class="btn btn-outline btn-sm" onclick="closeModal('confirmModal')"><i class="fas fa-arrow-left"></i> Continue Exam</button>
+      <button class="btn btn-amber" onclick="submitExam()"><i class="fas fa-check"></i> Submit Now</button>
     </div>
   </div>
 </div>
@@ -1204,14 +1640,14 @@ tr:last-child td{border-bottom:none}
   <div class="modal" style="max-width:380px">
     <div class="modal-header">
       <span class="modal-title"><i class="fas fa-key"></i> Reset Student PIN</span>
-      <button class="modal-close" onclick="closeModal('resetPinModal')"><i class="fas fa-times"></i></button>
+      <button class="modal-close" onclick="closeModal('resetPinModal')"><i class="fas fa-xmark"></i></button>
     </div>
     <div class="modal-body">
-      <p style="margin-bottom:16px;color:var(--gray-600)">Resetting PIN for: <strong id="resetPinStudentName"></strong></p>
+      <p style="margin-bottom:16px;color:var(--gray-600)">Resetting PIN for: <strong id="resetPinStudentName" style="color:var(--crimson-dark)"></strong></p>
       <input type="hidden" id="resetPinStudentID"/>
       <div class="form-group">
         <label class="form-label">New PIN</label>
-        <input type="text" class="form-control" id="newPinValue" placeholder="Enter new PIN" value="1234" maxlength="6"/>
+        <input type="text" class="form-control" id="newPinValue" value="1234" maxlength="6"/>
       </div>
     </div>
     <div class="modal-footer">
@@ -1221,188 +1657,152 @@ tr:last-child td{border-bottom:none}
   </div>
 </div>
 
-
 <script>
 // =============================================================
-// CONFIGURATION
+// CONFIGURATION — Replace with your GAS Web App URL
 // =============================================================
-const API_URL = 'https://script.google.com/macros/s/AKfycbxWx0vTwRFgWeuP78P86XeIR7pWsP3l5pcI6cwnMON8WnsgbzPCF3Yyf25546oHSTXwIg/exec'; // ← Replace this!
+const API_URL = 'https://script.google.com/macros/s/AKfycbxWx0vTwRFgWeuP78P86XeIR7pWsP3l5pcI6cwnMON8WnsgbzPCF3Yyf25546oHSTXwIg/exec';
 
 // =============================================================
 // STATE
 // =============================================================
 let state = {
-  studentToken: null,
-  adminToken: null,
-  student: null,
-  admin: null,
-  sessions: [],
-  // Exam state
-  questions: [],
-  currentQ: 0,
-  answers: {}, // { index: { key, isCorrect } }
-  flagged: new Set(),
-  examSession: null,
-  timerInterval: null,
-  examStartTime: null,
-  timeLeft: 0,
-  tabSwitchCount: 0,
-  // Admin state
-  allQuestions: [],
-  filteredQuestions: [],
-  allStudents: [],
-  filteredStudents: [],
-  allResults: [],
-  qPage: 1,
-  stuPage: 1,
-  itemsPerPage: 15,
+  studentToken:null, adminToken:null, student:null, admin:null, sessions:[],
+  questions:[],currentQ:0,answers:{},flagged:new Set(),
+  examSession:null,timerInterval:null,examStartTime:null,timeLeft:0,tabSwitchCount:0,
+  allQuestions:[],filteredQuestions:[],
+  allStudents:[],filteredStudents:[],
+  allResults:[],filteredResults:[],
+  allViolations:[],
+  qPage:1, stuPage:1, itemsPerPage:15,
+  bulkQData:[], bulkStuData:[],
 };
 
 // =============================================================
-// API UTILITY
+// API
 // =============================================================
 async function api(payload) {
   try {
-    const res = await fetch(API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain' }, // GAS requires text/plain for CORS
-      body: JSON.stringify(payload),
-      redirect: 'follow',
-    });
-    const data = await res.json();
-    return data;
-  } catch (e) {
-    return { success: false, message: 'Network error: ' + e.message };
-  }
+    const res = await fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify(payload),redirect:'follow'});
+    return await res.json();
+  } catch(e) { return {success:false,message:'Network error: '+e.message}; }
 }
 
 // =============================================================
 // SCREEN MANAGEMENT
 // =============================================================
 function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
+  // Show orbs on dark screens
+  const darkScreens=['screenLanding','screenStudentLogin','screenAdminLogin','screenResult'];
+  document.getElementById('orbBg').style.display=darkScreens.includes(id)?'block':'none';
 }
 
 // =============================================================
-// TOAST NOTIFICATIONS
+// TOAST
 // =============================================================
-function showToast(msg, type = 'success') {
-  const icons = { success: 'fa-check-circle', error: 'fa-times-circle', warning: 'fa-exclamation-triangle' };
-  const t = document.createElement('div');
-  t.className = `toast ${type}`;
-  t.innerHTML = `<i class="fas ${icons[type]}"></i><span>${msg}</span>`;
+function showToast(msg,type='success') {
+  const icons={success:'fa-circle-check',error:'fa-circle-xmark',warning:'fa-triangle-exclamation'};
+  const t=document.createElement('div');
+  t.className=`toast ${type}`;
+  t.innerHTML=`<i class="fas ${icons[type]||icons.success}"></i><span>${msg}</span>`;
   document.getElementById('toastContainer').appendChild(t);
-  setTimeout(() => t.remove(), 4000);
+  setTimeout(()=>t.style.opacity='0',3500);
+  setTimeout(()=>t.remove(),4000);
 }
 
 // =============================================================
 // SPINNER
 // =============================================================
-let spinnerEl = null;
-function showSpinner() {
-  if (spinnerEl) return;
-  spinnerEl = document.createElement('div');
-  spinnerEl.className = 'spinner-overlay';
-  spinnerEl.innerHTML = '<div class="spinner"></div>';
+let spinnerEl=null;
+function showSpinner(msg='Processing...') {
+  if(spinnerEl)return;
+  spinnerEl=document.createElement('div');
+  spinnerEl.className='spinner-overlay';
+  spinnerEl.innerHTML=`<div class="spinner-wrap"><div class="spinner"></div><p>${msg}</p></div>`;
   document.body.appendChild(spinnerEl);
 }
-function hideSpinner() {
-  if (spinnerEl) { spinnerEl.remove(); spinnerEl = null; }
-}
+function hideSpinner(){if(spinnerEl){spinnerEl.remove();spinnerEl=null;}}
 
 // =============================================================
 // MODALS
 // =============================================================
-function openModal(id) { document.getElementById(id).style.display = 'flex'; }
-function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+function openModal(id){document.getElementById(id).style.display='flex'}
+function closeModal(id){document.getElementById(id).style.display='none'}
 
 // =============================================================
-// UTILITIES
+// UTILS
 // =============================================================
-function togglePwd(id, btn) {
-  const inp = document.getElementById(id);
-  inp.type = inp.type === 'password' ? 'text' : 'password';
-  btn.querySelector('i').className = inp.type === 'password' ? 'fas fa-eye' : 'fas fa-eye-slash';
+function togglePwd(id,btn){
+  const inp=document.getElementById(id);
+  inp.type=inp.type==='password'?'text':'password';
+  btn.querySelector('i').className='fas '+(inp.type==='password'?'fa-eye':'fa-eye-slash');
 }
-
-function formatTime(seconds) {
-  const m = Math.floor(seconds / 60).toString().padStart(2, '0');
-  const s = (seconds % 60).toString().padStart(2, '0');
+function formatTime(sec){
+  const m=Math.floor(sec/60).toString().padStart(2,'0');
+  const s=(sec%60).toString().padStart(2,'0');
   return `${m}:${s}`;
 }
-
-function getGrade(pct) {
-  if (pct >= 75) return 'A';
-  if (pct >= 65) return 'B';
-  if (pct >= 55) return 'C';
-  if (pct >= 45) return 'D';
-  return 'F';
+function getGrade(pct){
+  if(pct>=75)return'A'; if(pct>=65)return'B'; if(pct>=55)return'C'; if(pct>=45)return'D'; return'F';
 }
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 
 // =============================================================
 // STUDENT LOGIN
 // =============================================================
 async function studentLogin() {
-  const regNumber = document.getElementById('stuRegNumber').value.trim();
-  const pin = document.getElementById('stuPin').value.trim();
-  if (!regNumber || !pin) { showToast('Please fill in all fields.', 'error'); return; }
-  showSpinner();
-  const res = await api({ action: 'studentLogin', regNumber, pin });
+  const regNumber=document.getElementById('stuRegNumber').value.trim();
+  const pin=document.getElementById('stuPin').value.trim();
+  if(!regNumber||!pin){showToast('Please fill in all fields.','error');return;}
+  showSpinner('Logging in...');
+  const res=await api({action:'studentLogin',regNumber,pin});
   hideSpinner();
-  if (!res.success) { showToast(res.message, 'error'); return; }
-  state.studentToken = res.data.token;
-  state.student = res.data.student;
-  state.sessions = res.data.sessions;
-  document.getElementById('headerStudentName').textContent = state.student.fullName;
-  document.getElementById('headerStudentClass').textContent = state.student.class;
-  document.getElementById('welcomeName').textContent = state.student.fullName.split(' ')[0];
-  document.getElementById('welcomeClass').textContent = state.student.class;
+  if(!res.success){showToast(res.message,'error');return;}
+  state.studentToken=res.data.token;
+  state.student=res.data.student;
+  state.sessions=res.data.sessions;
+  document.getElementById('headerStudentName').textContent=state.student.fullName;
+  document.getElementById('headerStudentClass').textContent=state.student.class;
+  document.getElementById('welcomeName').textContent=state.student.fullName.split(' ')[0];
+  document.getElementById('welcomeClass').textContent=state.student.class;
   renderStudentSessions();
   showScreen('screenStudentDashboard');
-  showToast('Login successful! Welcome, ' + state.student.fullName.split(' ')[0]);
+  showToast('Welcome, '+state.student.fullName.split(' ')[0]+'!');
 }
-
-function studentLogout() {
-  state.studentToken = null; state.student = null;
-  document.getElementById('stuRegNumber').value = '';
-  document.getElementById('stuPin').value = '';
+function studentLogout(){
+  state.studentToken=null;state.student=null;
+  document.getElementById('stuRegNumber').value='';
+  document.getElementById('stuPin').value='';
   showScreen('screenLanding');
 }
-
-async function loadStudentSessions() {
-  if (!state.studentToken) return;
-  showSpinner();
-  const res = await api({ action: 'studentLogin',
-    regNumber: state.student.regNumber, pin: '' }); // Won't work - just refresh
-  // Better: re-use existing sessions or re-login
-  hideSpinner();
+async function loadStudentSessions(){
+  if(!state.studentToken)return;
   renderStudentSessions();
+  showToast('Sessions refreshed.','success');
 }
-
-function renderStudentSessions() {
-  const grid = document.getElementById('sessionsGrid');
-  const sessions = state.sessions || [];
-  if (!sessions.length) {
-    grid.innerHTML = '<div class="empty-state"><i class="fas fa-inbox"></i><p>No exam sessions available for your class right now.</p></div>';
+function renderStudentSessions(){
+  const grid=document.getElementById('sessionsGrid');
+  const sessions=state.sessions||[];
+  if(!sessions.length){
+    grid.innerHTML='<div class="empty-state"><i class="fas fa-inbox"></i><h3>No Sessions Available</h3><p>No active exam sessions for your class right now.</p></div>';
     return;
   }
-  grid.innerHTML = sessions.map(s => `
-    <div class="session-card ${s.AlreadySubmitted ? 'submitted' : ''}">
+  grid.innerHTML=sessions.map(s=>`
+    <div class="session-card ${s.AlreadySubmitted?'submitted':''}">
       <div class="session-card-top">
-        <h3>${s.Subject}</h3>
-        <span><i class="fas fa-users"></i> ${s.Class}</span>
+        <h3>${esc(s.Subject)}</h3>
+        <div class="class-tag"><i class="fas fa-users"></i>${esc(s.Class)}</div>
       </div>
       <div class="session-card-body">
         <div class="session-meta">
           <div class="session-meta-item"><i class="fas fa-clock"></i>${s.Duration} mins</div>
-          <div class="session-meta-item"><i class="fas fa-list"></i>${s.TotalQuestions} questions</div>
+          <div class="session-meta-item"><i class="fas fa-list-ol"></i>${s.TotalQuestions} questions</div>
         </div>
         ${s.AlreadySubmitted
-          ? '<div class="badge badge-success" style="width:100%;justify-content:center;padding:8px"><i class="fas fa-check"></i> Already Submitted</div>'
-          : `<button class="btn btn-primary" style="width:100%" onclick="startExam('${s.SessionID}')">
-               <i class="fas fa-play"></i> Start Exam
-             </button>`
+          ?'<div class="badge badge-success" style="width:100%;justify-content:center;padding:9px;font-size:0.84rem"><i class="fas fa-check-circle"></i> Already Submitted</div>'
+          :`<button class="btn btn-primary" style="width:100%" onclick="startExam('${s.SessionID}')"><i class="fas fa-play"></i> Start Exam</button>`
         }
       </div>
     </div>
@@ -1412,383 +1812,240 @@ function renderStudentSessions() {
 // =============================================================
 // START EXAM
 // =============================================================
-async function startExam(sessionId) {
-  showSpinner();
-  const res = await api({ action: 'getExamQuestions', token: state.studentToken, sessionId });
+async function startExam(sessionId){
+  showSpinner('Loading exam...');
+  const res=await api({action:'getExamQuestions',token:state.studentToken,sessionId});
   hideSpinner();
-  if (!res.success) { showToast(res.message, 'error'); return; }
-
-  state.questions = res.data.questions;
-  state.examSession = res.data.session;
-  state.currentQ = 0;
-  state.answers = {};
-  state.flagged = new Set();
-  state.tabSwitchCount = 0;
-  state.examStartTime = Date.now();
-  state.timeLeft = (res.data.session.duration || 60) * 60;
-
-  document.getElementById('examSubjectLabel').textContent = res.data.session.subject;
-
-  setupExamScreen();
+  if(!res.success){showToast(res.message,'error');return;}
+  state.questions=res.data.questions;
+  state.examSession=res.data.session;
+  state.currentQ=0;state.answers={};state.flagged=new Set();
+  state.tabSwitchCount=0;state.examStartTime=Date.now();
+  state.timeLeft=(res.data.session.duration||60)*60;
+  document.getElementById('examSubjectLabel').textContent=res.data.session.subject;
+  buildPalette();renderQuestion();updatePalette();
   showScreen('screenExam');
-  requestFullscreen();
-  startTimer();
-  setupAntiCheat();
-}
-
-function setupExamScreen() {
-  renderQuestion();
-  buildPalette();
-  updatePalette();
+  requestFullscreen();startTimer();setupAntiCheat();
 }
 
 // =============================================================
-// EXAM TIMER
+// TIMER
 // =============================================================
-function startTimer() {
-  clearInterval(state.timerInterval);
-  updateTimerDisplay();
-  state.timerInterval = setInterval(() => {
-    state.timeLeft--;
-    updateTimerDisplay();
-    if (state.timeLeft <= 0) {
-      clearInterval(state.timerInterval);
-      showToast('Time is up! Auto-submitting...', 'warning');
-      submitExam(true);
-    }
-  }, 1000);
+function startTimer(){
+  clearInterval(state.timerInterval);updateTimerDisplay();
+  state.timerInterval=setInterval(()=>{
+    state.timeLeft--;updateTimerDisplay();
+    if(state.timeLeft<=0){clearInterval(state.timerInterval);showToast('Time is up! Auto-submitting...','warning');submitExam(true);}
+  },1000);
 }
-
-function updateTimerDisplay() {
-  const el = document.getElementById('examTimer');
-  el.textContent = formatTime(state.timeLeft);
-  if (state.timeLeft <= 300) el.classList.add('urgent');
-  else el.classList.remove('urgent');
+function updateTimerDisplay(){
+  const el=document.getElementById('examTimer');
+  el.textContent=formatTime(state.timeLeft);
+  el.classList.toggle('urgent',state.timeLeft<=300);
 }
 
 // =============================================================
 // QUESTION RENDERING
 // =============================================================
-function renderQuestion() {
-  const q = state.questions[state.currentQ];
-  if (!q) return;
-  const total = state.questions.length;
-
-  document.getElementById('currentQNum').textContent = state.currentQ + 1;
-  document.getElementById('examProgressLabel').textContent = `Q ${state.currentQ + 1} of ${total}`;
-  document.getElementById('questionText').textContent = q.questionText;
-
-  // Flag button
-  const flagBtn = document.getElementById('flagBtn');
-  const isFlagged = state.flagged.has(state.currentQ);
-  flagBtn.className = 'flag-btn' + (isFlagged ? ' flagged' : '');
-  document.getElementById('flagBtnText').textContent = isFlagged ? 'Flagged' : 'Flag';
-
-  // Options
-  const saved = state.answers[state.currentQ];
-  document.getElementById('optionsList').innerHTML = q.options.map(o => `
-    <div class="option-item ${saved && saved.key === o.key ? 'selected' : ''}"
-         onclick="selectAnswer('${o.key}', ${o.key === q.correctAnswer})">
+function renderQuestion(){
+  const q=state.questions[state.currentQ];if(!q)return;
+  const total=state.questions.length;
+  document.getElementById('currentQNum').textContent=state.currentQ+1;
+  document.getElementById('examProgressLabel').textContent=`Q ${state.currentQ+1} of ${total}`;
+  document.getElementById('questionText').textContent=q.questionText;
+  const isFlagged=state.flagged.has(state.currentQ);
+  const flagBtn=document.getElementById('flagBtn');
+  flagBtn.className='flag-btn'+(isFlagged?' flagged':'');
+  document.getElementById('flagBtnText').textContent=isFlagged?'Flagged':'Flag for Review';
+  const saved=state.answers[state.currentQ];
+  document.getElementById('optionsList').innerHTML=q.options.map(o=>`
+    <div class="option-item ${saved&&saved.key===o.key?'selected':''}" onclick="selectAnswer('${o.key}',${o.key===q.correctAnswer})">
       <div class="option-key">${o.key}</div>
-      <div class="option-text">${o.text}</div>
+      <div class="option-text">${esc(o.text)}</div>
     </div>
   `).join('');
-
-  // Nav buttons
-  document.getElementById('btnPrev').disabled = state.currentQ === 0;
-  document.getElementById('btnNext').textContent = state.currentQ === total - 1 ? 'Finish' : 'Next';
-  document.getElementById('btnNext').innerHTML = state.currentQ === total - 1
-    ? '<i class="fas fa-flag-checkered"></i> Finish'
-    : 'Next <i class="fas fa-chevron-right"></i>';
-
-  const unanswered = state.questions.length - Object.keys(state.answers).length;
-  document.getElementById('navHint').textContent = unanswered > 0 ? `${unanswered} unanswered` : 'All answered ✓';
-
-  updatePaletteHighlight();
-  updateExamSummary();
+  document.getElementById('btnPrev').disabled=state.currentQ===0;
+  document.getElementById('btnNext').innerHTML=state.currentQ===total-1
+    ?'<i class="fas fa-flag-checkered"></i> Finish'
+    :'Next <i class="fas fa-chevron-right"></i>';
+  const unanswered=total-Object.keys(state.answers).length;
+  document.getElementById('navHint').textContent=unanswered>0?`${unanswered} unanswered`:'All answered ✓';
+  updatePaletteHighlight();updateExamSummary();
 }
-
-function selectAnswer(key, isCorrect) {
-  state.answers[state.currentQ] = { key, isCorrect };
-  renderQuestion();
-  updatePalette();
+function selectAnswer(key,isCorrect){
+  state.answers[state.currentQ]={key,isCorrect};renderQuestion();updatePalette();
 }
-
-function prevQuestion() {
-  if (state.currentQ > 0) { state.currentQ--; renderQuestion(); }
-}
-
-function nextQuestion() {
-  if (state.currentQ < state.questions.length - 1) { state.currentQ++; renderQuestion(); }
+function prevQuestion(){if(state.currentQ>0){state.currentQ--;renderQuestion();}}
+function nextQuestion(){
+  if(state.currentQ<state.questions.length-1){state.currentQ++;renderQuestion();}
   else confirmSubmit();
 }
-
-function toggleFlag() {
-  if (state.flagged.has(state.currentQ)) state.flagged.delete(state.currentQ);
+function toggleFlag(){
+  if(state.flagged.has(state.currentQ))state.flagged.delete(state.currentQ);
   else state.flagged.add(state.currentQ);
-  renderQuestion();
-  updatePalette();
+  renderQuestion();updatePalette();
 }
-
-// =============================================================
-// PALETTE
-// =============================================================
-function buildPalette() {
-  const grid = document.getElementById('paletteGrid');
-  grid.innerHTML = state.questions.map((_, i) => `
-    <div class="palette-item" id="pal_${i}" onclick="goToQuestion(${i})">${i + 1}</div>
+function buildPalette(){
+  document.getElementById('paletteGrid').innerHTML=state.questions.map((_,i)=>`
+    <div class="palette-item" id="pal_${i}" onclick="goToQuestion(${i})">${i+1}</div>
   `).join('');
 }
-
-function updatePalette() {
-  state.questions.forEach((_, i) => {
-    const el = document.getElementById('pal_' + i);
-    if (!el) return;
-    el.className = 'palette-item';
-    if (state.flagged.has(i)) el.classList.add('flagged');
-    else if (state.answers[i]) el.classList.add('answered');
-    if (i === state.currentQ) el.classList.add('current');
+function updatePalette(){
+  state.questions.forEach((_,i)=>{
+    const el=document.getElementById('pal_'+i);if(!el)return;
+    el.className='palette-item';
+    if(state.flagged.has(i))el.classList.add('flagged');
+    else if(state.answers[i])el.classList.add('answered');
+    if(i===state.currentQ)el.classList.add('current');
   });
 }
-
-function updatePaletteHighlight() {
-  document.querySelectorAll('.palette-item').forEach((el, i) => {
-    el.classList.toggle('current', i === state.currentQ);
-  });
+function updatePaletteHighlight(){
+  document.querySelectorAll('.palette-item').forEach((el,i)=>el.classList.toggle('current',i===state.currentQ));
 }
-
-function updateExamSummary() {
-  const answered = Object.keys(state.answers).length;
-  const flaggedCount = state.flagged.size;
-  const total = state.questions.length;
-  document.getElementById('examSummary').innerHTML = `
+function updateExamSummary(){
+  const answered=Object.keys(state.answers).length;
+  const total=state.questions.length;
+  document.getElementById('examSummary').innerHTML=`
     <div><span>Answered:</span><strong>${answered}/${total}</strong></div>
-    <div><span>Flagged:</span><strong style="color:var(--gold-dark)">${flaggedCount}</strong></div>
-    <div><span>Remaining:</span><strong style="color:var(--danger)">${total - answered}</strong></div>
+    <div><span>Flagged:</span><strong style="color:var(--amber)">${state.flagged.size}</strong></div>
+    <div><span>Remaining:</span><strong style="color:var(--danger)">${total-answered}</strong></div>
   `;
 }
-
-function goToQuestion(i) {
-  state.currentQ = i;
-  renderQuestion();
-}
+function goToQuestion(i){state.currentQ=i;renderQuestion();}
 
 // =============================================================
 // SUBMIT EXAM
 // =============================================================
-function confirmSubmit() {
-  const answered = Object.keys(state.answers).length;
-  const total = state.questions.length;
-  document.getElementById('confAnswered').textContent = answered;
-  document.getElementById('confUnanswered').textContent = total - answered;
-  document.getElementById('confFlagged').textContent = state.flagged.size;
+function confirmSubmit(){
+  const answered=Object.keys(state.answers).length;
+  const total=state.questions.length;
+  document.getElementById('confAnswered').textContent=answered;
+  document.getElementById('confUnanswered').textContent=total-answered;
+  document.getElementById('confFlagged').textContent=state.flagged.size;
   openModal('confirmModal');
 }
-
-async function submitExam(autoSubmit = false) {
+async function submitExam(autoSubmit=false){
   closeModal('confirmModal');
-  clearInterval(state.timerInterval);
-  removeAntiCheat();
-
-  const timeSpent = Math.floor((Date.now() - state.examStartTime) / 1000);
-  const totalQ = state.questions.length;
-  let score = 0;
-  const answersPayload = {};
-
-  state.questions.forEach((q, i) => {
-    const ans = state.answers[i];
-    if (ans) {
-      if (ans.isCorrect) score++;
-      answersPayload[q.questionID] = ans.key;
-    }
+  clearInterval(state.timerInterval);removeAntiCheat();
+  const timeSpent=Math.floor((Date.now()-state.examStartTime)/1000);
+  const totalQ=state.questions.length;
+  let score=0;
+  const answersPayload={};
+  state.questions.forEach((q,i)=>{
+    const ans=state.answers[i];
+    if(ans){if(ans.isCorrect)score++;answersPayload[q.questionID]=ans.key;}
   });
-
-  const percentage = totalQ > 0 ? Math.round((score / totalQ) * 100) : 0;
-
-  showSpinner();
-  const res = await api({
-    action: 'submitExam',
-    token: state.studentToken,
-    sessionId: state.examSession.sessionID,
-    answers: answersPayload,
-    score,
-    totalQuestions: totalQ,
-    timeSpent,
+  showSpinner('Submitting exam...');
+  const res=await api({
+    action:'submitExam',token:state.studentToken,
+    sessionId:state.examSession.sessionID,
+    answers:answersPayload,score,totalQuestions:totalQ,timeSpent,
   });
   hideSpinner();
-
-  if (!res.success) {
-    showToast(res.message || 'Submission failed.', 'error');
-    return;
-  }
-
+  if(!res.success){showToast(res.message||'Submission failed.','error');return;}
   exitFullscreen();
-
-  // Show result screen
-  const d = res.data;
-  document.getElementById('resultGradeCircle').textContent = d.grade;
-  document.getElementById('resultGradeCircle').className = 'result-grade-circle ' + (d.passed ? 'pass' : 'fail');
-  document.getElementById('resultSubject').textContent = state.examSession.subject;
-  document.getElementById('resultStudentName').textContent = state.student.fullName;
-  document.getElementById('resultScore').textContent = `${d.score}/${d.totalQuestions}`;
-  document.getElementById('resultPct').textContent = d.percentage + '%';
-  document.getElementById('resultGrade').textContent = d.grade;
-  document.getElementById('resultTime').textContent = formatTime(d.timeSpent);
-  const passBadge = document.getElementById('resultPassedBadge');
-  passBadge.className = 'result-passed-badge ' + (d.passed ? 'pass' : 'fail');
-  passBadge.innerHTML = d.passed
-    ? '<i class="fas fa-check-circle"></i> PASSED'
-    : '<i class="fas fa-times-circle"></i> FAILED';
-
+  const d=res.data;
+  document.getElementById('resultGradeCircle').textContent=d.grade;
+  document.getElementById('resultGradeCircle').className='result-grade-circle '+(d.passed?'pass':'fail');
+  document.getElementById('resultSubject').textContent=state.examSession.subject;
+  document.getElementById('resultStudentName').textContent=state.student.fullName;
+  document.getElementById('resultScore').textContent=`${d.score}/${d.totalQuestions}`;
+  document.getElementById('resultPct').textContent=d.percentage+'%';
+  document.getElementById('resultGrade').textContent=d.grade;
+  document.getElementById('resultTime').textContent=formatTime(d.timeSpent);
+  const verdict=document.getElementById('resultVerdict');
+  verdict.className='result-verdict '+(d.passed?'pass':'fail');
+  verdict.innerHTML=d.passed
+    ?'<i class="fas fa-check-circle"></i> EXAMINATION PASSED'
+    :'<i class="fas fa-times-circle"></i> EXAMINATION FAILED';
   showScreen('screenResult');
-  showToast(d.passed ? '🎉 Congratulations! You passed!' : 'Exam submitted. Keep practising!', d.passed ? 'success' : 'warning');
+  showToast(d.passed?'🎉 Congratulations! You passed!':'Exam submitted. Keep studying!',d.passed?'success':'warning');
 }
-
-function goToDashboard() {
-  // Refresh sessions
-  state.sessions = (state.sessions || []).map(s => {
-    if (s.SessionID === state.examSession?.sessionID) s.AlreadySubmitted = true;
-    return s;
-  });
-  renderStudentSessions();
-  showScreen('screenStudentDashboard');
+function goToDashboard(){
+  state.sessions=(state.sessions||[]).map(s=>{if(s.SessionID===state.examSession?.sessionID)s.AlreadySubmitted=true;return s;});
+  renderStudentSessions();showScreen('screenStudentDashboard');
 }
 
 // =============================================================
 // ANTI-CHEAT
 // =============================================================
-function setupAntiCheat() {
-  document.addEventListener('visibilitychange', handleVisibilityChange);
-  document.addEventListener('contextmenu', blockEvent);
-  document.addEventListener('copy', blockEvent);
-  document.addEventListener('paste', blockEvent);
-  document.addEventListener('cut', blockEvent);
-  document.addEventListener('selectstart', blockEvent);
-  document.addEventListener('fullscreenchange', handleFullscreen);
-  document.addEventListener('keydown', blockShortcuts);
+function setupAntiCheat(){
+  document.addEventListener('visibilitychange',handleVisChange);
+  document.addEventListener('contextmenu',blockEv);
+  document.addEventListener('copy',blockEv);document.addEventListener('paste',blockEv);
+  document.addEventListener('cut',blockEv);document.addEventListener('selectstart',blockEv);
+  document.addEventListener('fullscreenchange',handleFS);
+  document.addEventListener('keydown',blockKeys);
 }
-
-function removeAntiCheat() {
-  document.removeEventListener('visibilitychange', handleVisibilityChange);
-  document.removeEventListener('contextmenu', blockEvent);
-  document.removeEventListener('copy', blockEvent);
-  document.removeEventListener('paste', blockEvent);
-  document.removeEventListener('cut', blockEvent);
-  document.removeEventListener('selectstart', blockEvent);
-  document.removeEventListener('fullscreenchange', handleFullscreen);
-  document.removeEventListener('keydown', blockShortcuts);
+function removeAntiCheat(){
+  document.removeEventListener('visibilitychange',handleVisChange);
+  document.removeEventListener('contextmenu',blockEv);
+  document.removeEventListener('copy',blockEv);document.removeEventListener('paste',blockEv);
+  document.removeEventListener('cut',blockEv);document.removeEventListener('selectstart',blockEv);
+  document.removeEventListener('fullscreenchange',handleFS);
+  document.removeEventListener('keydown',blockKeys);
   removeCheatBanner();
 }
-
-function blockEvent(e) {
-  const screen = document.getElementById('screenExam');
-  if (screen && screen.classList.contains('active')) { e.preventDefault(); return false; }
+function blockEv(e){if(document.getElementById('screenExam').classList.contains('active')){e.preventDefault();return false;}}
+function blockKeys(e){
+  if(!document.getElementById('screenExam').classList.contains('active'))return;
+  if(e.key==='F12'||(e.ctrlKey&&['u','s','p','a','c'].includes(e.key.toLowerCase())))e.preventDefault();
 }
-
-function blockShortcuts(e) {
-  const screen = document.getElementById('screenExam');
-  if (!screen || !screen.classList.contains('active')) return;
-  if (e.key === 'F12' || (e.ctrlKey && ['u','s','p','a'].includes(e.key.toLowerCase()))) {
-    e.preventDefault();
-  }
+function handleVisChange(){
+  if(!document.getElementById('screenExam').classList.contains('active'))return;
+  if(document.visibilityState==='hidden'){
+    state.tabSwitchCount++;logViolation('TAB_SWITCH');
+    if(state.tabSwitchCount>=3){showToast('Auto-submitting: Too many tab switches!','error');submitExam(true);}
+  } else showCheatBanner(`⚠️ Tab switch detected! Warning ${state.tabSwitchCount}/3 — auto-submit at 3.`);
 }
-
-function handleVisibilityChange() {
-  const screen = document.getElementById('screenExam');
-  if (!screen || !screen.classList.contains('active')) return;
-  if (document.visibilityState === 'hidden') {
-    state.tabSwitchCount++;
-    logViolation('TAB_SWITCH');
-    if (state.tabSwitchCount >= 3) {
-      showToast('Auto-submitting due to repeated tab switching!', 'error');
-      submitExam(true);
-    }
-  } else {
-    showCheatBanner(`⚠️ Tab switch detected! Warning ${state.tabSwitchCount}/3. Auto-submit at 3.`);
-  }
+function handleFS(){
+  if(!document.getElementById('screenExam').classList.contains('active'))return;
+  if(!document.fullscreenElement){logViolation('FULLSCREEN_EXIT');showCheatBanner('⚠️ Fullscreen exited. Please return to fullscreen to continue.');}
 }
-
-function handleFullscreen() {
-  const screen = document.getElementById('screenExam');
-  if (!screen || !screen.classList.contains('active')) return;
-  if (!document.fullscreenElement) {
-    logViolation('FULLSCREEN_EXIT');
-    showCheatBanner('⚠️ Please return to fullscreen mode to continue your exam.');
-  }
-}
-
-function showCheatBanner(msg) {
+function showCheatBanner(msg){
   removeCheatBanner();
-  const div = document.createElement('div');
-  div.id = 'cheatBanner';
-  div.className = 'cheat-warning';
-  div.innerHTML = `<i class="fas fa-exclamation-triangle"></i>${msg}<button onclick="this.parentElement.remove();requestFullscreen()">OK</button>`;
-  document.body.prepend(div);
-  setTimeout(() => { if (div.parentElement) div.remove(); }, 6000);
+  const div=document.createElement('div');div.id='cheatBanner';div.className='cheat-banner';
+  div.innerHTML=`<i class="fas fa-triangle-exclamation"></i>${msg}<button onclick="this.parentElement.remove();requestFullscreen()">OK / Fullscreen</button>`;
+  document.body.prepend(div);setTimeout(()=>{if(div.parentElement)div.remove();},7000);
 }
-
-function removeCheatBanner() {
-  const b = document.getElementById('cheatBanner');
-  if (b) b.remove();
+function removeCheatBanner(){const b=document.getElementById('cheatBanner');if(b)b.remove();}
+async function logViolation(type){
+  if(!state.studentToken||!state.examSession)return;
+  await api({action:'logViolation',token:state.studentToken,sessionId:state.examSession.sessionID,violationType:type});
 }
-
-async function logViolation(type) {
-  if (!state.studentToken || !state.examSession) return;
-  await api({
-    action: 'logViolation',
-    token: state.studentToken,
-    sessionId: state.examSession.sessionID,
-    violationType: type,
-  });
+function requestFullscreen(){
+  try{const el=document.documentElement;(el.requestFullscreen||el.webkitRequestFullscreen||function(){}).call(el);}catch(e){}
 }
-
-function requestFullscreen() {
-  try {
-    const el = document.documentElement;
-    if (el.requestFullscreen) el.requestFullscreen();
-    else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
-  } catch (e) {}
-}
-
-function exitFullscreen() {
-  try {
-    if (document.exitFullscreen) document.exitFullscreen();
-  } catch (e) {}
-}
+function exitFullscreen(){try{if(document.exitFullscreen)document.exitFullscreen();}catch(e){}}
 
 // =============================================================
 // ADMIN LOGIN
 // =============================================================
-async function adminLogin() {
-  const username = document.getElementById('adminUsername').value.trim();
-  const password = document.getElementById('adminPassword').value.trim();
-  if (!username || !password) { showToast('Please fill in all fields.', 'error'); return; }
-  showSpinner();
-  const res = await api({ action: 'adminLogin', username, password });
+async function adminLogin(){
+  const username=document.getElementById('adminUsername').value.trim();
+  const password=document.getElementById('adminPassword').value.trim();
+  if(!username||!password){showToast('Please fill in all fields.','error');return;}
+  showSpinner('Authenticating...');
+  const res=await api({action:'adminLogin',username,password});
   hideSpinner();
-  if (!res.success) { showToast(res.message, 'error'); return; }
-  state.adminToken = res.data.token;
-  state.admin = res.data.admin;
-  document.getElementById('adminHeaderName').textContent = state.admin.username;
-  document.getElementById('adminHeaderRole').textContent = state.admin.role.toUpperCase();
-  loadDashboardStats();
-  showScreen('screenAdmin');
-  showToast('Admin login successful!');
+  if(!res.success){showToast(res.message,'error');return;}
+  state.adminToken=res.data.token;state.admin=res.data.admin;
+  document.getElementById('adminHeaderName').textContent=state.admin.username;
+  document.getElementById('adminHeaderRole').textContent=state.admin.role;
+  loadDashboardStats();showScreen('screenAdmin');showToast('Admin login successful!');
 }
-
-function adminLogout() {
-  state.adminToken = null; state.admin = null;
-  document.getElementById('adminUsername').value = '';
-  document.getElementById('adminPassword').value = '';
+function adminLogout(){
+  state.adminToken=null;state.admin=null;
+  document.getElementById('adminUsername').value='';document.getElementById('adminPassword').value='';
   showScreen('screenLanding');
 }
 
 // =============================================================
-// ADMIN PANEL NAVIGATION
+// ADMIN NAV
 // =============================================================
-function switchAdminPanel(panelId, btn) {
-  document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.admin-nav-btn').forEach(b => b.classList.remove('active'));
+function switchPanel(panelId,btn){
+  document.querySelectorAll('.admin-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.admin-nav-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById(panelId).classList.add('active');
   btn.classList.add('active');
 }
@@ -1796,418 +2053,597 @@ function switchAdminPanel(panelId, btn) {
 // =============================================================
 // DASHBOARD STATS
 // =============================================================
-async function loadDashboardStats() {
-  const res = await api({ action: 'getDashboardStats', token: state.adminToken });
-  if (!res.success) return;
-  const d = res.data;
-  document.getElementById('stTotalStudents').textContent = d.totalStudents;
-  document.getElementById('stActiveStudents').textContent = d.activeStudents;
-  document.getElementById('stTotalExams').textContent = d.totalExams;
-  document.getElementById('stActiveSessions').textContent = d.activeSessions;
-  document.getElementById('stAvgScore').textContent = d.avgPercentage + '%';
-  document.getElementById('stPassRate').textContent = d.passRate + '%';
+async function loadDashboardStats(){
+  const res=await api({action:'getDashboardStats',token:state.adminToken});
+  if(!res.success)return;const d=res.data;
+  document.getElementById('stTotalStudents').textContent=d.totalStudents;
+  document.getElementById('stActiveStudents').textContent=d.activeStudents;
+  document.getElementById('stTotalExams').textContent=d.totalExams;
+  document.getElementById('stActiveSessions').textContent=d.activeSessions;
+  document.getElementById('stAvgScore').textContent=d.avgPercentage+'%';
+  document.getElementById('stPassRate').textContent=d.passRate+'%';
 }
 
 // =============================================================
-// ADMIN: QUESTIONS
+// QUESTIONS
 // =============================================================
-async function loadAdminQuestions() {
+async function loadAdminQuestions(){
   showSpinner();
-  const res = await api({ action: 'getQuestions', token: state.adminToken });
+  const res=await api({action:'getQuestions',token:state.adminToken});
   hideSpinner();
-  if (!res.success) { showToast(res.message, 'error'); return; }
-  state.allQuestions = res.data;
-  state.filteredQuestions = [...res.data];
-  state.qPage = 1;
+  if(!res.success){showToast(res.message,'error');return;}
+  state.allQuestions=res.data;state.filteredQuestions=[...res.data];state.qPage=1;
   renderQuestionsTable();
 }
-
-function filterQuestions() {
-  const search = document.getElementById('qSearchInput').value.toLowerCase();
-  const subject = document.getElementById('qSubjectFilter').value.toLowerCase();
-  state.filteredQuestions = state.allQuestions.filter(q => {
-    const matchSearch = !search || q.QuestionText.toLowerCase().includes(search) || (q.Topic || '').toLowerCase().includes(search);
-    const matchSubject = !subject || q.Subject.toLowerCase() === subject;
-    return matchSearch && matchSubject;
+function filterQuestions(){
+  const search=document.getElementById('qSearchInput').value.toLowerCase();
+  const subject=document.getElementById('qSubjectFilter').value.toLowerCase();
+  state.filteredQuestions=state.allQuestions.filter(q=>{
+    const ms=!search||q.QuestionText.toLowerCase().includes(search)||(q.Topic||'').toLowerCase().includes(search);
+    const msj=!subject||q.Subject.toLowerCase()===subject;
+    return ms&&msj;
   });
-  state.qPage = 1;
-  renderQuestionsTable();
+  state.qPage=1;renderQuestionsTable();
 }
-
-function renderQuestionsTable() {
-  const start = (state.qPage - 1) * state.itemsPerPage;
-  const page = state.filteredQuestions.slice(start, start + state.itemsPerPage);
-  const tbody = document.getElementById('questionsTbody');
-
-  if (!page.length) {
-    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--gray-400);padding:32px">No questions found.</td></tr>';
-    document.getElementById('qPagination').innerHTML = '';
-    return;
+function renderQuestionsTable(){
+  const start=(state.qPage-1)*state.itemsPerPage;
+  const page=state.filteredQuestions.slice(start,start+state.itemsPerPage);
+  const tbody=document.getElementById('questionsTbody');
+  if(!page.length){
+    tbody.innerHTML='<tr><td colspan="7" style="text-align:center;color:var(--gray-400);padding:40px">No questions found.</td></tr>';
+    document.getElementById('qPagination').innerHTML='';return;
   }
-
-  tbody.innerHTML = page.map((q, i) => `
+  tbody.innerHTML=page.map((q,i)=>`
     <tr>
-      <td>${start + i + 1}</td>
-      <td><span class="badge badge-primary">${q.Subject}</span></td>
-      <td style="max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${q.Topic || '—'}</td>
-      <td style="max-width:280px">${q.QuestionText.substring(0, 80)}${q.QuestionText.length > 80 ? '...' : ''}</td>
-      <td><span class="badge badge-success">Option ${q.CorrectAnswer}</span></td>
-      <td><span class="badge ${q.Difficulty === 'Hard' ? 'badge-danger' : q.Difficulty === 'Easy' ? 'badge-success' : 'badge-warning'}">${q.Difficulty}</span></td>
-      <td style="display:flex;gap:6px;flex-wrap:wrap">
-        <button class="btn btn-outline btn-sm" onclick="editQuestion('${q.QuestionID}')"><i class="fas fa-edit"></i></button>
-        <button class="btn btn-danger btn-sm" onclick="deleteQuestion('${q.QuestionID}','${q.QuestionText.substring(0,30).replace(/'/g,'')}')" ><i class="fas fa-trash"></i></button>
+      <td>${start+i+1}</td>
+      <td><span class="badge badge-primary">${esc(q.Subject)}</span></td>
+      <td style="max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(q.Topic||'—')}</td>
+      <td style="max-width:280px">${esc(q.QuestionText.substring(0,80))}${q.QuestionText.length>80?'...':''}</td>
+      <td><span class="badge badge-success">Opt ${esc(q.CorrectAnswer)}</span></td>
+      <td><span class="badge ${q.Difficulty==='Hard'?'badge-danger':q.Difficulty==='Easy'?'badge-success':'badge-warning'}">${esc(q.Difficulty||'Medium')}</span></td>
+      <td style="display:flex;gap:5px;flex-wrap:wrap">
+        <button class="btn btn-outline btn-sm" onclick="editQuestion('${esc(q.QuestionID)}')"><i class="fas fa-pen"></i></button>
+        <button class="btn btn-danger btn-sm" onclick="deleteQuestion('${esc(q.QuestionID)}','${esc(q.QuestionText.substring(0,30))}')"><i class="fas fa-trash"></i></button>
       </td>
     </tr>
   `).join('');
-
-  renderPagination('qPagination', state.filteredQuestions.length, state.qPage, (p) => { state.qPage = p; renderQuestionsTable(); });
+  renderPagination('qPagination',state.filteredQuestions.length,state.qPage,p=>{state.qPage=p;renderQuestionsTable();});
 }
-
-function openQuestionModal(qID = null) {
-  document.getElementById('qEditID').value = '';
-  document.getElementById('questionModalTitle').innerHTML = '<i class="fas fa-plus"></i> Add Question';
-  ['qSubject','qTopic','qText','qOptA','qOptB','qOptC','qOptD'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el.tagName === 'SELECT') el.selectedIndex = 0;
-    else el.value = '';
-  });
-  document.getElementById('qCorrect').value = 'A';
-  document.getElementById('qDifficulty').value = 'Medium';
+function openQuestionModal(){
+  document.getElementById('qEditID').value='';
+  document.getElementById('questionModalTitle').innerHTML='<i class="fas fa-plus-circle"></i> Add Question';
+  ['qTopic','qText','qOptA','qOptB','qOptC','qOptD'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('qSubject').selectedIndex=0;
+  document.getElementById('qCorrect').value='A';
+  document.getElementById('qDifficulty').value='Medium';
   openModal('questionModal');
 }
-
-function editQuestion(qID) {
-  const q = state.allQuestions.find(x => x.QuestionID === qID);
-  if (!q) return;
-  document.getElementById('qEditID').value = qID;
-  document.getElementById('questionModalTitle').innerHTML = '<i class="fas fa-edit"></i> Edit Question';
-  document.getElementById('qSubject').value = q.Subject;
-  document.getElementById('qTopic').value = q.Topic || '';
-  document.getElementById('qText').value = q.QuestionText;
-  document.getElementById('qOptA').value = q.OptionA;
-  document.getElementById('qOptB').value = q.OptionB;
-  document.getElementById('qOptC').value = q.OptionC;
-  document.getElementById('qOptD').value = q.OptionD;
-  document.getElementById('qCorrect').value = q.CorrectAnswer;
-  document.getElementById('qDifficulty').value = q.Difficulty || 'Medium';
+function editQuestion(qID){
+  const q=state.allQuestions.find(x=>x.QuestionID===qID);if(!q)return;
+  document.getElementById('qEditID').value=qID;
+  document.getElementById('questionModalTitle').innerHTML='<i class="fas fa-pen"></i> Edit Question';
+  document.getElementById('qSubject').value=q.Subject;
+  document.getElementById('qTopic').value=q.Topic||'';
+  document.getElementById('qText').value=q.QuestionText;
+  document.getElementById('qOptA').value=q.OptionA;
+  document.getElementById('qOptB').value=q.OptionB;
+  document.getElementById('qOptC').value=q.OptionC;
+  document.getElementById('qOptD').value=q.OptionD;
+  document.getElementById('qCorrect').value=q.CorrectAnswer;
+  document.getElementById('qDifficulty').value=q.Difficulty||'Medium';
   openModal('questionModal');
 }
-
-async function saveQuestion() {
-  const qID = document.getElementById('qEditID').value;
-  const payload = {
-    action: qID ? 'updateQuestion' : 'addQuestion',
-    token: state.adminToken,
-    questionID: qID,
-    subject: document.getElementById('qSubject').value,
-    topic: document.getElementById('qTopic').value,
-    questionText: document.getElementById('qText').value,
-    optionA: document.getElementById('qOptA').value,
-    optionB: document.getElementById('qOptB').value,
-    optionC: document.getElementById('qOptC').value,
-    optionD: document.getElementById('qOptD').value,
-    correctAnswer: document.getElementById('qCorrect').value,
-    difficulty: document.getElementById('qDifficulty').value,
+async function saveQuestion(){
+  const qID=document.getElementById('qEditID').value;
+  const payload={
+    action:qID?'updateQuestion':'addQuestion',token:state.adminToken,questionID:qID,
+    subject:document.getElementById('qSubject').value,
+    topic:document.getElementById('qTopic').value,
+    questionText:document.getElementById('qText').value,
+    optionA:document.getElementById('qOptA').value,
+    optionB:document.getElementById('qOptB').value,
+    optionC:document.getElementById('qOptC').value,
+    optionD:document.getElementById('qOptD').value,
+    correctAnswer:document.getElementById('qCorrect').value,
+    difficulty:document.getElementById('qDifficulty').value,
   };
-
-  if (!payload.questionText || !payload.optionA || !payload.optionB || !payload.optionC || !payload.optionD) {
-    showToast('Please fill in all required fields.', 'error'); return;
+  if(!payload.questionText||!payload.optionA||!payload.optionB||!payload.optionC||!payload.optionD){
+    showToast('Please fill in all required fields.','error');return;
   }
-
-  showSpinner();
-  const res = await api(payload);
-  hideSpinner();
-  if (!res.success) { showToast(res.message, 'error'); return; }
-  showToast(qID ? 'Question updated!' : 'Question added!');
-  closeModal('questionModal');
-  loadAdminQuestions();
+  showSpinner();const res=await api(payload);hideSpinner();
+  if(!res.success){showToast(res.message,'error');return;}
+  showToast(qID?'Question updated!':'Question added!');
+  closeModal('questionModal');loadAdminQuestions();
 }
-
-async function deleteQuestion(qID, preview) {
-  if (!confirm(`Delete question: "${preview}..."?`)) return;
-  showSpinner();
-  const res = await api({ action: 'deleteQuestion', token: state.adminToken, questionID: qID });
+async function deleteQuestion(qID,preview){
+  if(!confirm(`Delete question:\n"${preview}..."\n\nThis cannot be undone.`))return;
+  showSpinner();const res=await api({action:'deleteQuestion',token:state.adminToken,questionID:qID});
   hideSpinner();
-  if (!res.success) { showToast(res.message, 'error'); return; }
-  showToast('Question deleted.');
-  loadAdminQuestions();
+  if(!res.success){showToast(res.message,'error');return;}
+  showToast('Question deleted.');loadAdminQuestions();
 }
 
 // =============================================================
-// ADMIN: SESSIONS
+// BULK QUESTIONS JSON UPLOAD
 // =============================================================
-async function loadAdminSessions() {
-  showSpinner();
-  const res = await api({ action: 'getSessions', token: state.adminToken });
-  hideSpinner();
-  if (!res.success) { showToast(res.message, 'error'); return; }
-  const tbody = document.getElementById('sessionsTbody');
-  if (!res.data.length) {
-    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--gray-400);padding:32px">No sessions found.</td></tr>';
-    return;
+let bulkQParsed=[];
+function openBulkQModal(){
+  bulkQParsed=[];
+  document.getElementById('qFileInput').value='';
+  document.getElementById('qFileStatus').textContent='';
+  document.getElementById('qPreviewWrap').style.display='none';
+  document.getElementById('qUploadProgress').style.display='none';
+  document.getElementById('bulkQUploadBtn').disabled=true;
+  document.getElementById('bulkQCount').textContent='0';
+  document.getElementById('qDropZone').className='drop-zone';
+  openModal('bulkQModal');
+}
+function handleQFile(input){
+  const file=input.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    try{
+      const data=JSON.parse(e.target.result);
+      if(!Array.isArray(data))throw new Error('JSON must be an array of question objects.');
+      const required=['subject','questionText','optionA','optionB','optionC','optionD','correctAnswer'];
+      const invalid=data.filter(q=>required.some(k=>!q[k]));
+      if(invalid.length>0)throw new Error(`${invalid.length} question(s) are missing required fields.`);
+      bulkQParsed=data;
+      document.getElementById('qFileStatus').innerHTML=`<span style="color:var(--success)"><i class="fas fa-check-circle"></i> ${data.length} valid questions loaded from "${file.name}"</span>`;
+      document.getElementById('qDropZone').className='drop-zone has-file';
+      document.getElementById('qPreviewWrap').style.display='block';
+      document.getElementById('qPreviewBody').innerHTML=data.slice(0,20).map((q,i)=>`
+        <tr>
+          <td>${i+1}</td>
+          <td><span class="badge badge-primary">${esc(q.subject)}</span></td>
+          <td>${esc(q.topic||'—')}</td>
+          <td style="max-width:220px">${esc(q.questionText.substring(0,60))}...</td>
+          <td><span class="badge badge-success">${esc(q.correctAnswer)}</span></td>
+        </tr>
+      `).join('')+(data.length>20?`<tr><td colspan="5" style="text-align:center;color:var(--gray-600);padding:8px">... and ${data.length-20} more</td></tr>`:'');
+      document.getElementById('bulkQCount').textContent=data.length;
+      document.getElementById('bulkQUploadBtn').disabled=false;
+    } catch(err){
+      document.getElementById('qFileStatus').innerHTML=`<span style="color:var(--danger)"><i class="fas fa-circle-xmark"></i> Error: ${err.message}</span>`;
+      document.getElementById('qDropZone').className='drop-zone';
+      bulkQParsed=[];
+      document.getElementById('bulkQUploadBtn').disabled=true;
+    }
+  };
+  reader.readAsText(file);
+}
+async function uploadBulkQuestions(){
+  if(!bulkQParsed.length)return;
+  const btn=document.getElementById('bulkQUploadBtn');btn.disabled=true;
+  const total=bulkQParsed.length;
+  let success=0,failed=0;
+  document.getElementById('qUploadProgress').style.display='block';
+  document.getElementById('qProgressBar').style.width='0%';
+  for(let i=0;i<total;i++){
+    const q=bulkQParsed[i];
+    const res=await api({
+      action:'addQuestion',token:state.adminToken,
+      subject:q.subject,topic:q.topic||'',
+      questionText:q.questionText,
+      optionA:q.optionA,optionB:q.optionB,optionC:q.optionC,optionD:q.optionD,
+      correctAnswer:String(q.correctAnswer).toUpperCase(),
+      difficulty:q.difficulty||'Medium',
+    });
+    if(res.success)success++;else failed++;
+    const pct=Math.round(((i+1)/total)*100);
+    document.getElementById('qProgressBar').style.width=pct+'%';
+    document.getElementById('qProgressCount').textContent=`${i+1}/${total}`;
+    document.getElementById('qProgressText').textContent=`Uploading... ${pct}%`;
   }
-  tbody.innerHTML = res.data.map((s, i) => `
+  showToast(`Upload complete: ${success} added, ${failed} failed.`,failed>0?'warning':'success');
+  closeModal('bulkQModal');loadAdminQuestions();
+}
+function downloadQTemplate(){
+  const template=[
+    {subject:'Mathematics',topic:'Quadratic Equations',questionText:'Solve: x² - 5x + 6 = 0',optionA:'x = 1,2',optionB:'x = 2,3',optionC:'x = 3,4',optionD:'x = -2,-3',correctAnswer:'B',difficulty:'Medium'},
+    {subject:'Physics',topic:'Mechanics',questionText:'What is the SI unit of force?',optionA:'Watt',optionB:'Joule',optionC:'Newton',optionD:'Pascal',correctAnswer:'C',difficulty:'Easy'},
+  ];
+  const blob=new Blob([JSON.stringify(template,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download='ija_questions_template.json';a.click();
+  URL.revokeObjectURL(url);
+}
+
+// =============================================================
+// SESSIONS
+// =============================================================
+async function loadAdminSessions(){
+  showSpinner();const res=await api({action:'getSessions',token:state.adminToken});hideSpinner();
+  if(!res.success){showToast(res.message,'error');return;}
+  const tbody=document.getElementById('sessionsTbody');
+  if(!res.data.length){
+    tbody.innerHTML='<tr><td colspan="7" style="text-align:center;color:var(--gray-400);padding:40px">No sessions found.</td></tr>';return;
+  }
+  tbody.innerHTML=res.data.map(s=>`
     <tr>
-      <td style="font-family:monospace;font-size:0.78rem">${String(s.SessionID).substring(0,20)}</td>
-      <td><strong>${s.Subject}</strong></td>
-      <td>${s.Class}</td>
+      <td style="font-family:monospace;font-size:0.76rem;color:var(--gray-600)">${String(s.SessionID).substring(0,22)}...</td>
+      <td><strong>${esc(s.Subject)}</strong></td>
+      <td><span class="badge badge-primary">${esc(s.Class)}</span></td>
       <td>${s.Duration} min</td>
       <td>${s.TotalQuestions}</td>
-      <td><span class="badge ${s.IsActive ? 'badge-success' : 'badge-danger'}">${s.IsActive ? 'Active' : 'Inactive'}</span></td>
+      <td><span class="badge ${s.IsActive?'badge-success':'badge-danger'}">${s.IsActive?'Active':'Inactive'}</span></td>
       <td>
-        <button class="btn btn-sm ${s.IsActive ? 'btn-danger' : 'btn-success'}" onclick="toggleSession('${s.SessionID}')">
-          <i class="fas fa-${s.IsActive ? 'pause' : 'play'}"></i> ${s.IsActive ? 'Deactivate' : 'Activate'}
+        <button class="btn btn-sm ${s.IsActive?'btn-danger':'btn-success'}" onclick="toggleSession('${s.SessionID}')">
+          <i class="fas fa-${s.IsActive?'pause':'play'}"></i> ${s.IsActive?'Deactivate':'Activate'}
         </button>
       </td>
     </tr>
   `).join('');
 }
-
-function openSessionModal() { openModal('sessionModal'); }
-
-async function createSession() {
-  const payload = {
-    action: 'createSession',
-    token: state.adminToken,
-    subject: document.getElementById('sessSubject').value,
-    class: document.getElementById('sessClass').value,
-    duration: document.getElementById('sessDuration').value,
-    totalQuestions: document.getElementById('sessTotalQ').value,
+function openSessionModal(){openModal('sessionModal');}
+async function createSession(){
+  const payload={
+    action:'createSession',token:state.adminToken,
+    subject:document.getElementById('sessSubject').value,
+    class:document.getElementById('sessClass').value,
+    duration:document.getElementById('sessDuration').value,
+    totalQuestions:document.getElementById('sessTotalQ').value,
   };
-  showSpinner();
-  const res = await api(payload);
-  hideSpinner();
-  if (!res.success) { showToast(res.message, 'error'); return; }
-  showToast('Session created!');
-  closeModal('sessionModal');
-  loadAdminSessions();
+  showSpinner();const res=await api(payload);hideSpinner();
+  if(!res.success){showToast(res.message,'error');return;}
+  showToast('Session created successfully!');closeModal('sessionModal');loadAdminSessions();
 }
-
-async function toggleSession(sessionId) {
-  showSpinner();
-  const res = await api({ action: 'toggleSession', token: state.adminToken, sessionId });
-  hideSpinner();
-  if (!res.success) { showToast(res.message, 'error'); return; }
-  showToast('Session ' + (res.data.isActive ? 'activated' : 'deactivated') + '.');
-  loadAdminSessions();
+async function toggleSession(sessionId){
+  showSpinner();const res=await api({action:'toggleSession',token:state.adminToken,sessionId});hideSpinner();
+  if(!res.success){showToast(res.message,'error');return;}
+  showToast('Session '+(res.data.isActive?'activated':'deactivated')+'.');loadAdminSessions();
 }
 
 // =============================================================
-// ADMIN: STUDENTS
+// STUDENTS
 // =============================================================
-async function loadAdminStudents() {
-  showSpinner();
-  const res = await api({ action: 'getStudents', token: state.adminToken });
-  hideSpinner();
-  if (!res.success) { showToast(res.message, 'error'); return; }
-  state.allStudents = res.data;
-  state.filteredStudents = [...res.data];
-  state.stuPage = 1;
+async function loadAdminStudents(){
+  showSpinner();const res=await api({action:'getStudents',token:state.adminToken});hideSpinner();
+  if(!res.success){showToast(res.message,'error');return;}
+  state.allStudents=res.data;state.filteredStudents=[...res.data];state.stuPage=1;
   renderStudentsTable();
 }
-
-function filterStudents() {
-  const search = document.getElementById('stuSearchInput').value.toLowerCase();
-  state.filteredStudents = state.allStudents.filter(s =>
-    s.fullName.toLowerCase().includes(search) || s.regNumber.toLowerCase().includes(search)
-  );
-  state.stuPage = 1;
-  renderStudentsTable();
+function filterStudents(){
+  const search=document.getElementById('stuSearchInput').value.toLowerCase();
+  const cls=document.getElementById('stuClassFilter').value;
+  state.filteredStudents=state.allStudents.filter(s=>{
+    const ms=!search||s.fullName.toLowerCase().includes(search)||s.regNumber.toLowerCase().includes(search);
+    const mc=!cls||s.class===cls;
+    return ms&&mc;
+  });
+  state.stuPage=1;renderStudentsTable();
 }
-
-function renderStudentsTable() {
-  const start = (state.stuPage - 1) * state.itemsPerPage;
-  const page = state.filteredStudents.slice(start, start + state.itemsPerPage);
-  const tbody = document.getElementById('studentsTbody');
-  if (!page.length) {
-    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--gray-400);padding:32px">No students found.</td></tr>';
-    document.getElementById('stuPagination').innerHTML = '';
-    return;
+function renderStudentsTable(){
+  const start=(state.stuPage-1)*state.itemsPerPage;
+  const page=state.filteredStudents.slice(start,start+state.itemsPerPage);
+  const tbody=document.getElementById('studentsTbody');
+  if(!page.length){
+    tbody.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--gray-400);padding:40px">No students found.</td></tr>';
+    document.getElementById('stuPagination').innerHTML='';return;
   }
-  tbody.innerHTML = page.map((s, i) => `
+  tbody.innerHTML=page.map((s,i)=>`
     <tr>
-      <td>${start + i + 1}</td>
-      <td><strong>${s.fullName}</strong></td>
-      <td style="font-family:monospace">${s.regNumber}</td>
-      <td><span class="badge badge-primary">${s.class}</span></td>
-      <td><span class="badge ${s.isActive ? 'badge-success' : 'badge-danger'}">${s.isActive ? 'Active' : 'Inactive'}</span></td>
-      <td style="display:flex;gap:6px;flex-wrap:wrap">
-        <button class="btn btn-outline btn-sm" onclick="openResetPin('${s.studentID}','${s.fullName.replace(/'/g,'')}')">
-          <i class="fas fa-key"></i> PIN
-        </button>
-        <button class="btn btn-sm ${s.isActive ? 'btn-danger' : 'btn-success'}" onclick="toggleStudent('${s.studentID}')">
-          <i class="fas fa-${s.isActive ? 'ban' : 'check'}"></i> ${s.isActive ? 'Disable' : 'Enable'}
+      <td>${start+i+1}</td>
+      <td><strong>${esc(s.fullName)}</strong></td>
+      <td style="font-family:monospace;font-size:0.86rem">${esc(s.regNumber)}</td>
+      <td><span class="badge badge-primary">${esc(s.class)}</span></td>
+      <td><span class="badge ${s.isActive?'badge-success':'badge-danger'}">${s.isActive?'Active':'Inactive'}</span></td>
+      <td style="display:flex;gap:5px;flex-wrap:wrap">
+        <button class="btn btn-outline btn-sm" onclick="openResetPin('${s.studentID}','${esc(s.fullName)}')"><i class="fas fa-key"></i> PIN</button>
+        <button class="btn btn-sm ${s.isActive?'btn-danger':'btn-success'}" onclick="toggleStudent('${s.studentID}')">
+          <i class="fas fa-${s.isActive?'ban':'check'}"></i> ${s.isActive?'Disable':'Enable'}
         </button>
       </td>
     </tr>
   `).join('');
-  renderPagination('stuPagination', state.filteredStudents.length, state.stuPage, (p) => { state.stuPage = p; renderStudentsTable(); });
+  renderPagination('stuPagination',state.filteredStudents.length,state.stuPage,p=>{state.stuPage=p;renderStudentsTable();});
 }
-
-function openStudentModal() { openModal('studentModal'); }
-
-async function addStudent() {
-  const payload = {
-    action: 'addStudent',
-    token: state.adminToken,
-    fullName: document.getElementById('newStuName').value,
-    regNumber: document.getElementById('newStuReg').value,
-    class: document.getElementById('newStuClass').value,
-    pin: document.getElementById('newStuPin').value || '1234',
+function openStudentModal(){openModal('studentModal');}
+async function addStudent(){
+  const payload={
+    action:'addStudent',token:state.adminToken,
+    fullName:document.getElementById('newStuName').value,
+    regNumber:document.getElementById('newStuReg').value,
+    class:document.getElementById('newStuClass').value,
+    pin:document.getElementById('newStuPin').value||'1234',
   };
-  if (!payload.fullName || !payload.regNumber) { showToast('Name and Reg Number are required.', 'error'); return; }
-  showSpinner();
-  const res = await api(payload);
-  hideSpinner();
-  if (!res.success) { showToast(res.message, 'error'); return; }
-  showToast('Student added!');
-  closeModal('studentModal');
-  loadAdminStudents();
+  if(!payload.fullName||!payload.regNumber){showToast('Name and Reg Number are required.','error');return;}
+  showSpinner();const res=await api(payload);hideSpinner();
+  if(!res.success){showToast(res.message,'error');return;}
+  showToast('Student added successfully!');closeModal('studentModal');loadAdminStudents();
 }
-
-async function toggleStudent(studentID) {
-  showSpinner();
-  const res = await api({ action: 'toggleStudent', token: state.adminToken, studentID });
-  hideSpinner();
-  if (!res.success) { showToast(res.message, 'error'); return; }
-  showToast('Student ' + (res.data.isActive ? 'enabled' : 'disabled') + '.');
-  loadAdminStudents();
+async function toggleStudent(studentID){
+  showSpinner();const res=await api({action:'toggleStudent',token:state.adminToken,studentID});hideSpinner();
+  if(!res.success){showToast(res.message,'error');return;}
+  showToast('Student '+(res.data.isActive?'enabled':'disabled')+'.');loadAdminStudents();
 }
-
-function openResetPin(studentID, name) {
-  document.getElementById('resetPinStudentID').value = studentID;
-  document.getElementById('resetPinStudentName').textContent = name;
-  document.getElementById('newPinValue').value = '1234';
+function openResetPin(studentID,name){
+  document.getElementById('resetPinStudentID').value=studentID;
+  document.getElementById('resetPinStudentName').textContent=name;
+  document.getElementById('newPinValue').value='1234';
   openModal('resetPinModal');
 }
-
-async function doResetPin() {
-  const studentID = document.getElementById('resetPinStudentID').value;
-  const newPin = document.getElementById('newPinValue').value;
-  if (!newPin) { showToast('Enter a new PIN.', 'error'); return; }
-  showSpinner();
-  const res = await api({ action: 'resetPin', token: state.adminToken, studentID, newPin });
-  hideSpinner();
-  if (!res.success) { showToast(res.message, 'error'); return; }
-  showToast('PIN reset successfully! New PIN: ' + newPin);
-  closeModal('resetPinModal');
+async function doResetPin(){
+  const studentID=document.getElementById('resetPinStudentID').value;
+  const newPin=document.getElementById('newPinValue').value;
+  if(!newPin){showToast('Enter a new PIN.','error');return;}
+  showSpinner();const res=await api({action:'resetPin',token:state.adminToken,studentID,newPin});hideSpinner();
+  if(!res.success){showToast(res.message,'error');return;}
+  showToast('PIN reset! New PIN: '+newPin);closeModal('resetPinModal');
 }
 
 // =============================================================
-// ADMIN: RESULTS
+// BULK STUDENT UPLOAD (CSV)
 // =============================================================
-async function loadAdminResults() {
-  showSpinner();
-  const res = await api({ action: 'getResults', token: state.adminToken });
-  hideSpinner();
-  if (!res.success) { showToast(res.message, 'error'); return; }
-  state.allResults = res.data;
-  filterResults();
+let bulkStuParsed=[];
+function openBulkStudentModal(){
+  bulkStuParsed=[];
+  document.getElementById('stuFileInput').value='';
+  document.getElementById('stuFileStatus').textContent='';
+  document.getElementById('stuPreviewWrap').style.display='none';
+  document.getElementById('stuUploadProgress').style.display='none';
+  document.getElementById('stuUploadSummary').style.display='none';
+  document.getElementById('bulkStuUploadBtn').disabled=true;
+  document.getElementById('bulkStuCount').textContent='0';
+  document.getElementById('stuDropZone').className='drop-zone';
+  openModal('bulkStudentModal');
 }
-
-function filterResults() {
-  const name = document.getElementById('resStudentFilter').value.toLowerCase();
-  const subject = document.getElementById('resSubjectFilter').value.toLowerCase();
-  const filtered = state.allResults.filter(r => {
-    const matchName = !name || r.StudentName.toLowerCase().includes(name);
-    const matchSubj = !subject || r.Subject.toLowerCase() === subject;
-    return matchName && matchSubj;
-  });
-
-  const tbody = document.getElementById('resultsTbody');
-  if (!filtered.length) {
-    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--gray-400);padding:32px">No results found.</td></tr>';
-    return;
+function handleStuFile(input){
+  const file=input.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    try{
+      const text=e.target.result;
+      const lines=text.trim().split(/\r?\n/);
+      if(lines.length<2)throw new Error('CSV must have a header row and at least one data row.');
+      const headers=lines[0].split(',').map(h=>h.trim().toLowerCase().replace(/['"]/g,''));
+      const nameIdx=headers.findIndex(h=>h.includes('name'));
+      const regIdx=headers.findIndex(h=>h.includes('reg'));
+      const clsIdx=headers.findIndex(h=>h.includes('class'));
+      const pinIdx=headers.findIndex(h=>h.includes('pin'));
+      if(nameIdx<0||regIdx<0||clsIdx<0)throw new Error('CSV must have FullName, RegNumber, Class columns.');
+      const parsed=lines.slice(1).map((line,i)=>{
+        const cols=line.match(/(".*?"|[^,]+)/g)||[];
+        const clean=cols.map(c=>c.replace(/^"|"$/g,'').trim());
+        return{
+          fullName:clean[nameIdx]||'',
+          regNumber:clean[regIdx]||'',
+          class:clean[clsIdx]||'',
+          pin:pinIdx>=0?(clean[pinIdx]||'1234'):'1234',
+        };
+      }).filter(r=>r.fullName&&r.regNumber);
+      if(!parsed.length)throw new Error('No valid rows found in CSV.');
+      bulkStuParsed=parsed;
+      document.getElementById('stuFileStatus').innerHTML=`<span style="color:var(--success)"><i class="fas fa-check-circle"></i> ${parsed.length} students loaded from "${file.name}"</span>`;
+      document.getElementById('stuDropZone').className='drop-zone has-file';
+      document.getElementById('stuPreviewWrap').style.display='block';
+      document.getElementById('stuPreviewBody').innerHTML=parsed.slice(0,20).map((s,i)=>`
+        <tr>
+          <td>${i+1}</td>
+          <td>${esc(s.fullName)}</td>
+          <td style="font-family:monospace">${esc(s.regNumber)}</td>
+          <td><span class="badge badge-primary">${esc(s.class)}</span></td>
+          <td style="font-family:monospace">${esc(s.pin)}</td>
+        </tr>
+      `).join('')+(parsed.length>20?`<tr><td colspan="5" style="text-align:center;color:var(--gray-600);padding:8px">... and ${parsed.length-20} more</td></tr>`:'');
+      document.getElementById('bulkStuCount').textContent=parsed.length;
+      document.getElementById('bulkStuUploadBtn').disabled=false;
+    } catch(err){
+      document.getElementById('stuFileStatus').innerHTML=`<span style="color:var(--danger)"><i class="fas fa-circle-xmark"></i> Error: ${err.message}</span>`;
+      document.getElementById('stuDropZone').className='drop-zone';
+      bulkStuParsed=[];document.getElementById('bulkStuUploadBtn').disabled=true;
+    }
+  };
+  reader.readAsText(file);
+}
+async function uploadBulkStudents(){
+  if(!bulkStuParsed.length)return;
+  const btn=document.getElementById('bulkStuUploadBtn');btn.disabled=true;
+  const total=bulkStuParsed.length;
+  let success=0,failed=0,skipped=0;
+  document.getElementById('stuUploadProgress').style.display='block';
+  document.getElementById('stuProgressBar').style.width='0%';
+  for(let i=0;i<total;i++){
+    const s=bulkStuParsed[i];
+    const res=await api({action:'addStudent',token:state.adminToken,fullName:s.fullName,regNumber:s.regNumber,class:s.class,pin:s.pin||'1234'});
+    if(res.success)success++;
+    else if(res.message&&res.message.toLowerCase().includes('already'))skipped++;
+    else failed++;
+    const pct=Math.round(((i+1)/total)*100);
+    document.getElementById('stuProgressBar').style.width=pct+'%';
+    document.getElementById('stuProgressCount').textContent=`${i+1}/${total}`;
+    document.getElementById('stuProgressText').textContent=`Uploading... ${pct}%`;
   }
+  const summaryEl=document.getElementById('stuUploadSummary');
+  summaryEl.style.display='block';
+  summaryEl.innerHTML=`
+    <div style="background:var(--success-light);border:1px solid rgba(26,122,58,0.2);border-radius:var(--radius-sm);padding:12px;font-size:0.86rem">
+      <strong>Upload Complete!</strong><br>
+      ✅ ${success} students added &nbsp;|&nbsp;
+      ⚠️ ${skipped} skipped (duplicates) &nbsp;|&nbsp;
+      ❌ ${failed} failed
+    </div>
+  `;
+  showToast(`Upload done: ${success} added, ${skipped} skipped, ${failed} failed.`,failed>0?'warning':'success');
+  loadAdminStudents();
+}
+function downloadStudentTemplate(){
+  const csv=`FullName,RegNumber,Class,PIN\nChukwuemeka Okafor,IJA/2024/001,YEAR 10 YELLOW,1234\nAmara Nwosu,IJA/2024/002,YEAR 10 SILVER,5678\n`;
+  const blob=new Blob([csv],{type:'text/csv'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download='ija_students_template.csv';a.click();
+  URL.revokeObjectURL(url);
+}
 
-  tbody.innerHTML = filtered.map((r, i) => {
-    const pct = parseFloat(r.Percentage) || 0;
-    const grade = getGrade(pct);
-    const passed = pct >= 50;
-    return `
-      <tr>
-        <td>${i + 1}</td>
-        <td><strong>${r.StudentName}</strong></td>
-        <td style="font-family:monospace">${r.RegNumber}</td>
-        <td>${r.Subject}</td>
-        <td>${r.Score}/${r.TotalQuestions}</td>
-        <td>
-          <div style="display:flex;align-items:center;gap:8px">
-            <div style="flex:1;background:var(--gray-200);border-radius:10px;height:8px">
-              <div style="width:${pct}%;height:8px;border-radius:10px;background:${passed ? 'var(--success)' : 'var(--danger)'}"></div>
-            </div>
-            <span style="font-weight:700;min-width:40px">${pct}%</span>
+// =============================================================
+// RESULTS
+// =============================================================
+async function loadAdminResults(){
+  showSpinner();const res=await api({action:'getResults',token:state.adminToken});hideSpinner();
+  if(!res.success){showToast(res.message,'error');return;}
+  state.allResults=res.data;state.filteredResults=[...res.data];filterResults();
+}
+function filterResults(){
+  const name=document.getElementById('resStudentFilter').value.toLowerCase();
+  const subject=document.getElementById('resSubjectFilter').value.toLowerCase();
+  const pass=document.getElementById('resPassFilter').value;
+  state.filteredResults=state.allResults.filter(r=>{
+    const mn=!name||r.StudentName.toLowerCase().includes(name);
+    const ms=!subject||r.Subject.toLowerCase()===subject;
+    const mp=!pass||(pass==='pass'?(parseFloat(r.Percentage)>=50):(parseFloat(r.Percentage)<50));
+    return mn&&ms&&mp;
+  });
+  renderResultsTable();
+}
+function renderResultsTable(){
+  const tbody=document.getElementById('resultsTbody');
+  if(!state.filteredResults.length){
+    tbody.innerHTML='<tr><td colspan="8" style="text-align:center;color:var(--gray-400);padding:40px">No results found.</td></tr>';return;
+  }
+  tbody.innerHTML=state.filteredResults.map((r,i)=>{
+    const pct=parseFloat(r.Percentage)||0;
+    const grade=getGrade(pct);const passed=pct>=50;
+    return`<tr>
+      <td>${i+1}</td>
+      <td><strong>${esc(r.StudentName)}</strong></td>
+      <td style="font-family:monospace;font-size:0.84rem">${esc(r.RegNumber)}</td>
+      <td>${esc(r.Subject)}</td>
+      <td><strong>${r.Score}/${r.TotalQuestions}</strong></td>
+      <td>
+        <div style="display:flex;align-items:center;gap:8px">
+          <div style="flex:1;background:var(--gray-200);border-radius:6px;height:7px;min-width:60px">
+            <div style="width:${pct}%;height:7px;border-radius:6px;background:${passed?'var(--success)':'var(--danger)'}"></div>
           </div>
-        </td>
-        <td><span class="badge ${passed ? 'badge-success' : 'badge-danger'}">${grade}</span></td>
-        <td style="font-size:0.82rem;color:var(--gray-600)">${r.SubmittedAt}</td>
-      </tr>
-    `;
+          <span style="font-weight:700;min-width:38px;font-size:0.86rem">${pct}%</span>
+        </div>
+      </td>
+      <td><span class="badge ${passed?'badge-success':'badge-danger'}">${grade}</span></td>
+      <td style="font-size:0.8rem;color:var(--gray-600)">${r.SubmittedAt}</td>
+    </tr>`;
   }).join('');
 }
 
-function exportResults() {
-  if (!state.allResults.length) { showToast('No results to export.', 'warning'); return; }
-  const headers = ['Student Name','Reg Number','Subject','Score','Total','Percentage','Submitted'];
-  const rows = state.allResults.map(r => [
-    r.StudentName, r.RegNumber, r.Subject, r.Score, r.TotalQuestions, r.Percentage + '%', r.SubmittedAt
-  ]);
-  const csv = [headers, ...rows].map(r => r.join(',')).join('\n');
-  const blob = new Blob([csv], { type: 'text/csv' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = 'IJA_CBT_Results.csv'; a.click();
-  URL.revokeObjectURL(url);
-  showToast('Results exported!');
+function exportResults(){
+  if(!state.filteredResults.length){showToast('No results to export.','warning');return;}
+  const headers=['#','Student Name','Reg Number','Subject','Score','Total','Percentage','Grade','Passed','Submitted'];
+  const rows=state.filteredResults.map((r,i)=>{
+    const pct=parseFloat(r.Percentage)||0;
+    return[i+1,r.StudentName,r.RegNumber,r.Subject,r.Score,r.TotalQuestions,pct+'%',getGrade(pct),pct>=50?'YES':'NO',r.SubmittedAt];
+  });
+  const csv=[headers,...rows].map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;
+  a.download=`IJA_CBT_Results_${new Date().toISOString().split('T')[0]}.csv`;a.click();
+  URL.revokeObjectURL(url);showToast('Results exported as CSV!');
+}
+
+function printResults(){
+  if(!state.filteredResults.length){showToast('No results to print.','warning');return;}
+  const now=new Date().toLocaleString('en-NG',{timeZone:'Africa/Lagos'});
+  const rows=state.filteredResults.map((r,i)=>{
+    const pct=parseFloat(r.Percentage)||0;
+    return`<tr>
+      <td>${i+1}</td><td>${r.StudentName}</td><td>${r.RegNumber}</td>
+      <td>${r.Subject}</td><td>${r.Score}/${r.TotalQuestions}</td>
+      <td>${pct}%</td><td>${getGrade(pct)}</td>
+      <td>${pct>=50?'PASS':'FAIL'}</td><td>${r.SubmittedAt}</td>
+    </tr>`;
+  }).join('');
+  const printArea=document.getElementById('printArea');
+  printArea.innerHTML=`
+    <div class="print-header">
+      <div>
+        <h1>Infant Jesus Academy — CBT Results</h1>
+        <p>Printed: ${now} &nbsp;|&nbsp; Total Records: ${state.filteredResults.length}</p>
+      </div>
+      <div style="text-align:right;font-size:11px;color:#666">
+        <p>Confidential</p>
+      </div>
+    </div>
+    <table class="print-table">
+      <thead><tr><th>#</th><th>Student Name</th><th>Reg Number</th><th>Subject</th><th>Score</th><th>Percentage</th><th>Grade</th><th>Status</th><th>Submitted</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+  `;
+  printArea.style.display='block';
+  window.print();
+  setTimeout(()=>{printArea.style.display='none';printArea.innerHTML='';},1000);
 }
 
 // =============================================================
-// ADMIN: VIOLATIONS
+// VIOLATIONS
 // =============================================================
-async function loadViolations() {
-  showSpinner();
-  const res = await api({ action: 'getViolations', token: state.adminToken });
-  hideSpinner();
-  const tbody = document.getElementById('violationsTbody');
-  if (!res.success || !res.data.length) {
-    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--gray-400);padding:32px">No violations recorded.</td></tr>';
-    return;
+async function loadViolations(){
+  showSpinner();const res=await api({action:'getViolations',token:state.adminToken});hideSpinner();
+  const tbody=document.getElementById('violationsTbody');
+  if(!res.success||!res.data.length){
+    tbody.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--gray-400);padding:40px">No violations recorded.</td></tr>';
+    state.allViolations=[];return;
   }
-  tbody.innerHTML = res.data.map((v, i) => `
+  state.allViolations=res.data;
+  tbody.innerHTML=res.data.map((v,i)=>`
     <tr>
-      <td>${i + 1}</td>
-      <td><strong>${v.StudentName}</strong></td>
-      <td style="font-family:monospace">${v.RegNumber}</td>
-      <td style="font-family:monospace;font-size:0.78rem">${String(v.SessionID).substring(0,20)}</td>
-      <td><span class="badge badge-danger">${v.ViolationType}</span></td>
+      <td>${i+1}</td>
+      <td><strong>${esc(v.StudentName)}</strong></td>
+      <td style="font-family:monospace;font-size:0.84rem">${esc(v.RegNumber)}</td>
+      <td style="font-family:monospace;font-size:0.76rem;color:var(--gray-600)">${String(v.SessionID).substring(0,22)}</td>
+      <td><span class="badge badge-danger"><i class="fas fa-triangle-exclamation"></i> ${esc(v.ViolationType)}</span></td>
       <td style="font-size:0.82rem">${v.Timestamp}</td>
     </tr>
   `).join('');
 }
-
-// =============================================================
-// PAGINATION HELPER
-// =============================================================
-function renderPagination(containerId, total, currentPage, onPageChange) {
-  const totalPages = Math.ceil(total / state.itemsPerPage);
-  const container = document.getElementById(containerId);
-  if (totalPages <= 1) { container.innerHTML = ''; return; }
-  let html = '';
-  for (let p = 1; p <= totalPages; p++) {
-    html += `<button class="page-btn ${p === currentPage ? 'active' : ''}" onclick="(${onPageChange.toString()})(${p})">${p}</button>`;
-  }
-  container.innerHTML = `<span style="font-size:0.82rem;color:var(--gray-600)">Page ${currentPage}/${totalPages}</span>${html}`;
+function exportViolations(){
+  if(!state.allViolations.length){showToast('No violations to export.','warning');return;}
+  const headers=['#','Student Name','Reg Number','Session ID','Violation Type','Timestamp'];
+  const rows=state.allViolations.map((v,i)=>[i+1,v.StudentName,v.RegNumber,v.SessionID,v.ViolationType,v.Timestamp]);
+  const csv=[headers,...rows].map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download=`IJA_Violations_${new Date().toISOString().split('T')[0]}.csv`;a.click();
+  URL.revokeObjectURL(url);showToast('Violations exported!');
 }
 
 // =============================================================
-// KEYBOARD SHORTCUTS (ADMIN)
+// PAGINATION
 // =============================================================
-document.addEventListener('keydown', e => {
-  const examActive = document.getElementById('screenExam').classList.contains('active');
-  if (examActive) return; // Anti-cheat handles this
-  if (e.key === 'Escape') {
-    document.querySelectorAll('.modal-backdrop').forEach(m => m.style.display = 'none');
-  }
+function renderPagination(containerId,total,currentPage,onPageChange){
+  const totalPages=Math.ceil(total/state.itemsPerPage);
+  const container=document.getElementById(containerId);
+  if(totalPages<=1){container.innerHTML='';return;}
+  let html=`<span style="font-size:0.8rem;color:var(--gray-600)">Page ${currentPage}/${totalPages} &nbsp;·&nbsp; ${total} records</span>`;
+  const start=Math.max(1,currentPage-2);
+  const end=Math.min(totalPages,currentPage+2);
+  if(start>1)html+=`<button class="page-btn" onclick="(${onPageChange.toString()})(1)">1</button>${start>2?'<span style="color:var(--gray-400)">…</span>':''}`;
+  for(let p=start;p<=end;p++)html+=`<button class="page-btn ${p===currentPage?'active':''}" onclick="(${onPageChange.toString()})(${p})">${p}</button>`;
+  if(end<totalPages)html+=`${end<totalPages-1?'<span style="color:var(--gray-400)">…</span>':''}<button class="page-btn" onclick="(${onPageChange.toString()})(${totalPages})">${totalPages}</button>`;
+  container.innerHTML=html;
+}
+
+// =============================================================
+// DRAG & DROP
+// =============================================================
+['qDropZone','stuDropZone'].forEach(id=>{
+  const zone=document.getElementById(id);if(!zone)return;
+  zone.addEventListener('dragover',e=>{e.preventDefault();zone.classList.add('drag-over');});
+  zone.addEventListener('dragleave',()=>zone.classList.remove('drag-over'));
+  zone.addEventListener('drop',e=>{
+    e.preventDefault();zone.classList.remove('drag-over');
+    const files=e.dataTransfer.files;
+    if(!files.length)return;
+    const inputId=id==='qDropZone'?'qFileInput':'stuFileInput';
+    const input=document.getElementById(inputId);
+    const dt=new DataTransfer();dt.items.add(files[0]);input.files=dt.files;
+    if(id==='qDropZone')handleQFile(input);else handleStuFile(input);
+  });
+});
+
+// =============================================================
+// KEYBOARD SHORTCUTS
+// =============================================================
+document.addEventListener('keydown',e=>{
+  if(document.getElementById('screenExam').classList.contains('active'))return;
+  if(e.key==='Escape')document.querySelectorAll('.modal-backdrop').forEach(m=>m.style.display='none');
 });
 </script>
 </body>
