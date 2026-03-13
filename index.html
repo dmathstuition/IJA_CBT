@@ -1314,7 +1314,7 @@ tbody tr{transition:background 0.15s}
 // =============================================================
 // CONFIGURATION
 // =============================================================
-const API_URL = 'https://script.google.com/macros/s/AKfycbw4LdwLyxesRhzFsaWG50u9AI90Cza_NcrFkQ3oQ2ZhIeFFVf2nqz5g0gkQbBzvad1FJQ/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbwzaTy9e6E3LfQB66Vby-cVTUTOEO8vj5bVshvFTr5J9wlJ_0IfoDy1ue4l2qvnGTREwA/exec';
 
 // =============================================================
 // STATE
@@ -1336,22 +1336,21 @@ let state = {
 // API
 // =============================================================
 async function api(payload) {
-  // GAS only exposes doGet(e), so we send everything as URL query parameters.
-  // Each key in payload becomes its own param: ?action=X&token=Y&...
-  // This avoids CORS preflight entirely — GET to GAS always works.
+  // Sends JSON as a plain-text POST body.
+  // GAS reads it via: JSON.parse(e.postData.contents)
+  // Content-Type: text/plain avoids CORS preflight — no OPTIONS request.
   try {
-    const params = new URLSearchParams();
-    for (const [k, v] of Object.entries(payload)) {
-      // Objects/arrays (e.g. answers:{}) are JSON-stringified
-      params.append(k, (typeof v === 'object' && v !== null) ? JSON.stringify(v) : v);
-    }
-    const url = API_URL + '?' + params.toString();
-    const res  = await fetch(url, { redirect: 'follow' });
+    const res  = await fetch(API_URL, {
+      method : 'POST',
+      redirect: 'follow',
+      headers : { 'Content-Type': 'text/plain;charset=utf-8' },
+      body    : JSON.stringify(payload),
+    });
     const text = await res.text();
     try { return JSON.parse(text); }
-    catch { return { success: false, message: 'Bad response from server: ' + text.substring(0, 200) }; }
+    catch { return { success: false, message: 'Bad server response: ' + text.substring(0, 200) }; }
   } catch(e) {
-    return { success: false, message: 'Network error — make sure the GAS is deployed as "Execute as: Me" and "Who has access: Anyone". (' + e.message + ')' };
+    return { success: false, message: 'Network error — check internet connection and confirm GAS is deployed as "Anyone" access. (' + e.message + ')' };
   }
 }
 
