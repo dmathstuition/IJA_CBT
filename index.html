@@ -1314,7 +1314,7 @@ tbody tr{transition:background 0.15s}
 // =============================================================
 // CONFIGURATION
 // =============================================================
-const API_URL = 'https://script.google.com/macros/s/AKfycbzP5jw9IRDpE6VKb0BQGh629cZUUd8t00WJLCS9HvJExUqtvSXDhvXEA31mk-OPdJ4z/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbx8gMdAl3IfSRrN2csJmZil6iZKxRDIJet5JUZN4wiKxDKTsOCakpEIu2v_DwwVNJFc/exec';
 
 // =============================================================
 // STATE
@@ -1336,10 +1336,23 @@ let state = {
 // API
 // =============================================================
 async function api(payload) {
+  // GAS only exposes doGet(e), so we send everything as URL query parameters.
+  // Each key in payload becomes its own param: ?action=X&token=Y&...
+  // This avoids CORS preflight entirely — GET to GAS always works.
   try {
-    const res = await fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify(payload),redirect:'follow'});
-    return await res.json();
-  } catch(e) { return {success:false,message:'Network error: '+e.message}; }
+    const params = new URLSearchParams();
+    for (const [k, v] of Object.entries(payload)) {
+      // Objects/arrays (e.g. answers:{}) are JSON-stringified
+      params.append(k, (typeof v === 'object' && v !== null) ? JSON.stringify(v) : v);
+    }
+    const url = API_URL + '?' + params.toString();
+    const res  = await fetch(url, { redirect: 'follow' });
+    const text = await res.text();
+    try { return JSON.parse(text); }
+    catch { return { success: false, message: 'Bad response from server: ' + text.substring(0, 200) }; }
+  } catch(e) {
+    return { success: false, message: 'Network error — make sure the GAS is deployed as "Execute as: Me" and "Who has access: Anyone". (' + e.message + ')' };
+  }
 }
 
 // =============================================================
