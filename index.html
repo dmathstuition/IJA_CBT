@@ -298,7 +298,6 @@ tr:last-child td{border-bottom:none}
 #screenExam{
   background: var(--jamb-bg);
   min-height: 100vh;
-  display: flex;
   flex-direction: column;
 }
 #screenExam.active { display: flex; }
@@ -1266,7 +1265,7 @@ tr:last-child td{border-bottom:none}
     </div>
   </header>
   <nav class="admin-nav">
-    <button class="admin-nav-btn active" onclick="switchPanel('panelDashboard',this);loadDashboardCharts()"><i class="fas fa-chart-pie"></i> Dashboard</button>
+    <button class="admin-nav-btn active" onclick="switchPanel('panelDashboard',this);loadDashboardStats();loadDashboardCharts()"><i class="fas fa-chart-pie"></i> Dashboard</button>
     <button class="admin-nav-btn" onclick="switchPanel('panelLeaderboard',this);loadLeaderboard()"><i class="fas fa-trophy"></i> Leaderboard</button>
     <button class="admin-nav-btn" onclick="switchPanel('panelQuestions',this);loadAdminQuestions()"><i class="fas fa-circle-question"></i> Questions</button>
     <button class="admin-nav-btn" onclick="switchPanel('panelSessions',this);loadAdminSessions()"><i class="fas fa-calendar-days"></i> Sessions</button>
@@ -1287,7 +1286,7 @@ tr:last-child td{border-bottom:none}
         <div class="stat-card"><div class="stat-icon"><i class="fas fa-trophy"></i></div><div class="stat-info"><p>Pass Rate</p><h3 id="stPassRate">—</h3></div></div>
       </div>
       <div class="chart-grid">
-        <div class="chart-card"><div class="chart-card-header"><i class="fas fa-chart-pie" style="color:var(--amber)"></i><span class="chart-card-title">Pass / Fail Distribution</span><button class="refresh-btn-sm" style="margin-left:auto" onclick="loadDashboardCharts()"><i class="fas fa-rotate"></i> Refresh</button></div><div class="chart-body"><div class="chart-empty" id="chartPassFailEmpty"><i class="fas fa-database"></i>No data yet</div><canvas id="chartPassFail" style="display:none"></canvas></div></div>
+        <div class="chart-card"><div class="chart-card-header"><i class="fas fa-chart-pie" style="color:var(--amber)"></i><span class="chart-card-title">Pass / Fail Distribution</span><button class="refresh-btn-sm" style="margin-left:auto" onclick="loadDashboardStats();loadDashboardCharts()"><i class="fas fa-rotate"></i> Refresh</button></div><div class="chart-body"><div class="chart-empty" id="chartPassFailEmpty"><i class="fas fa-database"></i>No data yet</div><canvas id="chartPassFail" style="display:none"></canvas></div></div>
         <div class="chart-card"><div class="chart-card-header"><i class="fas fa-chart-bar" style="color:var(--crimson)"></i><span class="chart-card-title">Score Distribution</span></div><div class="chart-body"><div class="chart-empty" id="chartDistEmpty"><i class="fas fa-database"></i>No data yet</div><canvas id="chartDist" style="display:none"></canvas></div></div>
         <div class="chart-card"><div class="chart-card-header"><i class="fas fa-book" style="color:var(--info)"></i><span class="chart-card-title">Subject Average Scores</span></div><div class="chart-body"><div class="chart-empty" id="chartSubjectEmpty"><i class="fas fa-database"></i>No data yet</div><canvas id="chartSubject" style="display:none"></canvas></div></div>
         <div class="chart-card"><div class="chart-card-header"><i class="fas fa-users" style="color:var(--success)"></i><span class="chart-card-title">Class Performance</span></div><div class="chart-body"><div class="chart-empty" id="chartClassEmpty"><i class="fas fa-database"></i>No data yet</div><canvas id="chartClass" style="display:none"></canvas></div></div>
@@ -1628,7 +1627,7 @@ tr:last-child td{border-bottom:none}
 // ============================================================
 // CONFIGURATION — replace with your GAS Web App URL
 // ============================================================
-const API_URL = 'https://script.google.com/macros/s/AKfycbywIwNrefLAl4-dpfy0B4blzHyZ3QYhXgaau00A0bxLGFBdwOOaGE_OtqOdCaya2ggQVg/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbwzaTy9e6E3LfQB66Vby-cVTUTOEO8vj5bVshvFTr5J9wlJ_0IfoDy1ue4l2qvnGTREwA/exec';
 
 // ============================================================
 // STATE
